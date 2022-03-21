@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    Fore more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="The best online grocery store in India. Fellahi is an online supermarket for all your daily needs. Online shopping now made easy with a wide range of groceries and home needs."/>
+
+  <meta name="google-signin-client_id" content="191232159427-cledf6r5s676p2adrqk6u1b2imr8asir.apps.googleusercontent.com">
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Online Grocery Shopping and Online Supermarket">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Fellahi</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+
+
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<script src="https://flutterfacebooklogin.s3.us-east-2.amazonaws.com/web_interop.js"></script>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId            : "1495828983943937",
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v7.0'
+    });
+  };
+</script>
+<!-- This script installs service_worker.js to provide PWA functionality to
+     application. For more information, see:
+     https://developers.google.com/web/fundamentals/primers/service-workers -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuSBpFHZO3R32b1kmCFmcVe2uh-GIzItI"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
+
+
+<script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+  </script>
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAFCt9F1mhl_69_tikiJsKArWgpJtCH3ok",
+  authDomain: "fellahi-b245a.firebaseapp.com",
+  projectId: "fellahi-b245a",
+  storageBucket: "fellahi-b245a.appspot.com",
+  messagingSenderId: "191232159427",
+  appId: "1:191232159427:web:4bd826bfc492d8adfe7c76",
+  measurementId: "G-JBSYVBSP76"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+<script src="main.dart.js?version=12" type="application/javascript"></script>
+</body>
+</html>

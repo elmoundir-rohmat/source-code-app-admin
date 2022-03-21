@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "191232159427",
+    "project_id": "fellahi-b245a",
+    "storage_bucket": "fellahi-b245a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191232159427:android:7c92c868e77ed130fe7c76",
+        "android_client_info": {
+          "package_name": "com.fellahi.store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191232159427-op5pcerjfhfh74bdr1ko2jq7bo9vt38q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fellahi.store",
+            "certificate_hash": "0d9a3c4cbdfc1e558b57a93a32718cc032070da6"
+          }
+        },
+        {
+          "client_id": "191232159427-cledf6r5s676p2adrqk6u1b2imr8asir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuSBpFHZO3R32b1kmCFmcVe2uh-GIzItI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191232159427-cledf6r5s676p2adrqk6u1b2imr8asir.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "191232159427-mmm8cdekosdvt723nqh9a86h4rr4k24i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fellahi.store"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191232159427:android:a291e552578d7d13fe7c76",
+        "android_client_info": {
+          "package_name": "com.fellahidelivery.store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191232159427-cfi4onf4ut3cuvl0c5jnbs0g9cils9cb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fellahidelivery.store",
+            "certificate_hash": "0bddb61c28ed08c33a5f1367e0a4e28572453ec5"
+          }
+        },
+        {
+          "client_id": "191232159427-lecee3g8t6d631g9douc0mqe01rprjdd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fellahidelivery.store",
+            "certificate_hash": "0d9a3c4cbdfc1e558b57a93a32718cc032070da6"
+          }
+        },
+        {
+          "client_id": "191232159427-cledf6r5s676p2adrqk6u1b2imr8asir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuSBpFHZO3R32b1kmCFmcVe2uh-GIzItI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191232159427-cledf6r5s676p2adrqk6u1b2imr8asir.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "191232159427-mmm8cdekosdvt723nqh9a86h4rr4k24i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fellahi.store"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

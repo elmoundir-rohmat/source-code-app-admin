@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_notification_channel_id">com.fellahi.store.default</string>
+    <string name="app_name">Fellahi</string>
+    <string name="facebook_app_id">1495828983943937</string>
+    <string name="fb_login_protocol_scheme">fb1495828983943937</string>
+
+    <!--<string name="facebook_app_id">199852941186524</string>
+    <string name="fb_login_protocol_scheme">fb199852941186524</string>-->
+    <string name="freshchat_file_provider_authority">com.fellahi.store.provider</string>
+</resources>
