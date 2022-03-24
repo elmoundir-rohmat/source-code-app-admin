@@ -71,9 +71,7 @@ class _UpdateAppState extends State<UpdateApp> {
           context,
           "A newer version of the app is available\n${appVersion.about ?? ""}",
         );
-        print('Update available');
       } else {
-        print('App is up to date');
       }
     }
   }
@@ -102,7 +100,6 @@ class _UpdateAppState extends State<UpdateApp> {
   }
 
   _onUpdateNowClicked() {
-    print('On update app clicked');
   }
 
   _showCompulsoryUpdateDialog(context, String message) async {

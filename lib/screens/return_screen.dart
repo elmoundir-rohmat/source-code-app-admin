@@ -85,13 +85,8 @@ class ReturnScreenState extends State<ReturnScreen> {
             context,
             listen: false,
           );
-          debugPrint("Orders. . . . . . . .. .. . ");
-          debugPrint(orderitemData.vieworder1[0].returnTime);
-          debugPrint(orderitemData.vieworder1[0].deliveryOn);
           DateTime today = new DateTime.now();
           DateTime fiftyDaysAgo = today.subtract(new Duration(hours: 2));
-          debugPrint(today.toString());
-          debugPrint(fiftyDaysAgo.toString());
           _isLoading = false;
         });
       });

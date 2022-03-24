@@ -145,14 +145,12 @@ class _ExampleScreenState extends State<ExampleScreen> {
 
   Future<void> success1(double latitude,
       double longitude,) async {
-    debugPrint("lat ... long ..siccess 1"+latitude.toString()+longitude.toString());
     const _host = 'https://maps.google.com/maps/api/geocode/json';
     const apiKey =
         "AIzaSyDuSBpFHZO3R32b1kmCFmcVe2uh-GIzItI&v=3.21.5a&libraries=drawing&signed_in=true&libraries=places,drawing,geometry.key";
 
     final uri =
     await Uri.parse('$_host?key=$apiKey&latlng=$latitude,$longitude');
-    debugPrint("uri...."+uri.toString());
     http.Response response = await http.get(uri);
 
 
@@ -252,15 +250,13 @@ setState(() {
     setState(() {
       _lat = locationJsondecode["lat"];
       _lng = locationJsondecode["lng"];
-      debugPrint("Location : " + _lat.toString() + _lng.toString());
       setState(() {
         ++htmlId;
       });
       success1(_lat, _lng);
       // _child = mapWidget();
       myLatlng = new LatLng(_lat, _lng);
-      debugPrint("myLatlng???????????........");
-      debugPrint(myLatlng.toString());
+
       final mapOptions = new MapOptions()
         ..zoom = 16
         ..center = new LatLng(_lat, _lng);
@@ -283,10 +279,6 @@ setState(() {
       marker.onDragend.listen((position) async {
         var latttt = position.latLng.lat;
         var longgg = position.latLng.lng;
-        print("check..........." +
-            latttt.toString() +
-            "     " +
-            longgg.toString());
         success1(position.latLng.lat, position.latLng.lng);
       });
       this.htmlId = createdViewUpdate as int;
@@ -337,19 +329,15 @@ setState(() {
       } else {
         pincode = ", " + _controllerPincode.text;
       }
-      debugPrint("example screen 123. . . .. . . ");
-      debugPrint(latitude + "                   " + longitude);
       prefs.setString('newaddress',
           (_controllerHouseno.text + apartment + street + landmark + ", " + _fullAddress + ". " ));
       if (addresstype == "edit") {
         Provider.of<AddressItemsList>(context, listen: false).UpdateAddress(
             addressid, latitude, longitude, branch).then((_) {
-          debugPrint('Addres');
           Provider.of<AddressItemsList>(context, listen: false)
               .fetchAddress()
               .then((_) {
             _isLoading = false;
-            debugPrint('Addres1');
             if (prefs.containsKey("addressbook")) {
               if (prefs.getString("addressbook") == "AddressbookScreen") {
                 prefs.setString("addressbook", "");
@@ -360,7 +348,6 @@ setState(() {
                 Navigator.of(context).pushReplacementNamed(
                     ReturnScreen.routeName);
               } else {
-                debugPrint('Addres3');
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacementNamed(
                     ConfirmorderScreen.routeName,
@@ -383,9 +370,6 @@ setState(() {
         });
       }
       else {
-        debugPrint("example screen . . . .. . . ");
-        debugPrint(latitude + "                   " + longitude);
-
         Provider.of<AddressItemsList>(context, listen: false).NewAddress(
               latitude, longitude, branch).then((_) {
             Provider.of<AddressItemsList>(context, listen: false)
@@ -415,7 +399,6 @@ setState(() {
               } else {
                 if (productBox.length > 0) {
                   if (prefs.getString("mobile").toString() != "null") {
-                    debugPrint("present");
                     prefs.setString("isPickup", "no");
                     //prefs.setString("isPickup", "no");
                     Navigator.of(context).pushReplacementNamed(
@@ -423,8 +406,6 @@ setState(() {
                         arguments: {"prev": "cart_screen"});
                   }
                   else {
-                    debugPrint(" not present");
-                    debugPrint("mobile" + "if");
                     //prefs.setString('prevscreen', "confirmorder");
                     Navigator.of(context)
                         .pushNamed(LoginScreen.routeName,);
@@ -488,15 +469,7 @@ setState(() {
                     left: 50.0, top: 20.0, right: 50.0, bottom: 20.0),
                 child: GestureDetector(
                   onTap: () async {
-                    print("OnTap............ ");
-                    print(FlutterGooglePlacesWeb.showResults);
-                    print("name....." +
-                        FlutterGooglePlacesWeb.value[
-                        'name']); // '1600 Amphitheatre Parkway, Mountain View, CA, USA'
-                    print(FlutterGooglePlacesWeb
-                        .value['streetAddress']); // '1600 Amphitheatre Parkway'
-                    print(FlutterGooglePlacesWeb.value['city']); // 'CA'
-                    print(FlutterGooglePlacesWeb.value['country']);
+
                     setState(() {
                       _fullAddress = FlutterGooglePlacesWeb.value['name'];
                       _address = FlutterGooglePlacesWeb.value['streetAddress'];
@@ -544,17 +517,7 @@ setState(() {
 
   @override
   Widget build(BuildContext context) {
-    print("build........ ");
-    print(FlutterGooglePlacesWeb.showResults);
-    debugPrint("After..............");
-    debugPrint(_lat.toString());
-    debugPrint(_lng.toString());
-    debugPrint(prefs.getString("latitude").toString());
-    debugPrint(prefs.getString("longitude").toString());
-       _lat = double.parse(prefs.getString("latitude").toString()) ;
-        _lng = double.parse(prefs.getString("longitude").toString());
-    debugPrint(_lat.toString());
-    debugPrint(_lng.toString());
+
     queryData = MediaQuery.of(context);
     wid = queryData.size.width;
     maxwid = wid * 0.90;
@@ -611,17 +574,13 @@ setState(() {
   }
 
   Widget mapWidget() {
-    print("fullAddress..............");
-    print(_lat);
-    print(_lng);
 
 
     // ignore: undefined_prefixed_name
     bool val = ui.platformViewRegistry.registerViewFactory(
         String.fromCharCode(htmlId), (int viewId) {
       myLatlng = new LatLng(_lat, _lng);
-      debugPrint("myLatlng........");
-      debugPrint(myLatlng.toString());
+
       final mapOptions = new MapOptions()
         ..zoom = 16
         ..center = myLatlng;
@@ -648,22 +607,15 @@ setState(() {
         marker.onDragend.listen((position) async {
           var latttt = position.latLng.lat;
           var longgg = position.latLng.lng;
-          print("check..........." +
-              latttt.toString() +
-              "     " +
-              longgg.toString());
+
           success1(position.latLng.lat, position.latLng.lng);
         });
 
-        debugPrint("mycenter latLang event : " + map.center.toString());
       });
-      debugPrint("my Element : " + elem.toString());
 
 
       return elem;
     });
-
-    debugPrint("val..................... " + val.toString());
 
     return Column(
       children: <Widget>[
@@ -703,10 +655,7 @@ setState(() {
         });
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final responseJson = json.decode(response.body);
-        debugPrint("checkLocation........");
-        debugPrint(_lat.toString());
-        debugPrint(_lng.toString());
-        debugPrint(responseJson.toString());
+
         bool _isCartCheck = false;
         if (responseJson['status'].toString() == "yes") {
           if (prefs.getString("branch") == responseJson['branch'].toString()) {
@@ -719,8 +668,7 @@ setState(() {
           } else {
             // location();
             if (prefs.getString("formapscreen") == "addressscreen") {
-              debugPrint("No...........");
-              debugPrint(addressLine);
+
               final routeArgs = ModalRoute
                   .of(context)
                   .settings
@@ -1204,7 +1152,6 @@ setState(() {
 
 
   Future<void> addprimarylocation() async {
-    debugPrint("A d d p r i m r y .....");
     var url = IConstants.API_PATH + 'add-primary-location';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1816,27 +1763,20 @@ class _ExampleScreenState extends State<ExampleScreen> {
       addresstype=routeArgs['addresstype'];
       addressid = routeArgs['addressid'];
       if(routeArgs['delieveryLocation'].toString() == "") {
-        debugPrint("if,,,,,,,,,,,,,,,,,,,,,");
         setState(() {
           _deliverylocation = prefs.getString("deliverylocation");
           _latitude = prefs.getString('latitude');
           _longitude = prefs.getString('longitude');
           _branch = prefs.getString("branch");
-          debugPrint("lataddemp"+_latitude);
-          debugPrint("longaddwmp"+_longitude);
           //mapForAddress();
         });
       } else {
-        debugPrint("else");
         setState(() {
           _deliverylocation = routeArgs['delieveryLocation'];
           _latitude = routeArgs['latitude'];
           _longitude = routeArgs['longitude'];
           _branch = routeArgs['branch'];
           addresstype= routeArgs['addresstype'];
-          debugPrint("addedit"+addresstype);
-          debugPrint("latadd"+_latitude.toString());
-          debugPrint("longadd"+_longitude.toString());
           _controllerHouseno.text = routeArgs['houseNo'];
           _controllerApartment.text = routeArgs['apartment'];
           _controllerStreet.text = routeArgs['street'];
@@ -1905,7 +1845,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
 
   void mapForAddress() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    debugPrint("new adreess map"+prefs.getString('newaddress').toString());
     var addresses;
     try {
       addresses = await Geocoder.local.findAddressesFromQuery(
@@ -1920,8 +1859,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
     setState(() {
       _lat = first.coordinates.latitude;
       _lng = first.coordinates.longitude;
-      debugPrint("maplat"+_lat.toString());
-      debugPrint("maplong"+_lng.toString());
       getAddress(_lat, _lng);
     });
 
@@ -2010,8 +1947,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
   List<Placemark> placemark;
 
   void getAddress(double latitude, double longitude) async {
-    debugPrint("maplat"+latitude.toString());
-    debugPrint("maplong"+longitude.toString());
     loc.Location location = new loc.Location();
     var temp = await location.serviceEnabled();
     setState(() {
@@ -2030,8 +1965,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
   mapAddress()async{
 
     // _address=_deliverylocation;
-    debugPrint("deliverylocation"+_deliverylocation);
-    debugPrint("deliverylocation"+_deliverylocation);
     if (placemark[0].subLocality.toString() == "") {
       if (placemark[0].locality.toString() == "") {
         _address = "";
@@ -2045,12 +1978,10 @@ class _ExampleScreenState extends State<ExampleScreen> {
 
         var first = addresses.first;
 
-        //print("${first.featureName} :${first.subLocality}: ${first.locality}:${first.adminArea}:${first.adminArea}:${first.postalCode}:");
         setState(() {
 
           _address = (first.featureName!=null)?(first.featureName):first.featureName;
           addressLine=first.addressLine;
-          debugPrint("addressline"+addressLine);
         });
 
         _child = mapWidget();
@@ -2061,12 +1992,10 @@ class _ExampleScreenState extends State<ExampleScreen> {
       addresses = await Geocoder.local.findAddressesFromCoordinates(new Coordinates(_lat, _lng));
 
       var first = addresses.first;
-      // print("${first.featureName} :${first.subLocality}: ${first.locality}:${first.adminArea}:${first.postalCode}");
       setState(() {
 
         _address = (first.featureName!=null)?(first.featureName):first.featureName;
         addressLine=first.addressLine;
-        debugPrint("addressline"+addressLine);
       });
       _child = mapWidget();
     }
@@ -2126,8 +2055,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
           _child = mapWidget();
         }
       });
-      debugPrint("longdisplay"+_lng.toString());
-      debugPrint("latdisplay"+_lat.toString());
 
     }
   }
@@ -2355,7 +2282,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                             cursor: SystemMouseCursors.click,
                             child: GestureDetector(
                               onTap: () {
-                                debugPrint("tap home");
                                 setState(() {
                                   _addresstag = "Home";
                                   _home = Theme.of(context).primaryColor;
@@ -2364,7 +2290,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                                   _homeWidth = 2.0;
                                   _workWidth = 1.0;
                                   _otherWidth = 1.0;
-                                  debugPrint("otehrcc,oor"+_home.toString());
                                 });
                               },
                               child: Container(
@@ -2401,7 +2326,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                             child: GestureDetector(
                               //behavior: HitTestBehavior.translucent,
                               onTap: () {
-                                debugPrint("tap work");
                                 setState(() {
                                   _addresstag = "Work";
                                   _home = Colors.grey;
@@ -2410,7 +2334,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                                   _homeWidth = 1.0;
                                   _workWidth = 2.0;
                                   _otherWidth = 1.0;
-                                  debugPrint("otehrcc,oor"+_work.toString());
                                 });
                               },
                               child: Container(
@@ -2443,8 +2366,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                             cursor: SystemMouseCursors.click,
                             child: GestureDetector(
                               onTap: () {
-                                debugPrint("tap other");
-
                                 setState(() {
                                   _addresstag = "Other";
                                   _home = Colors.grey;
@@ -2453,7 +2374,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                                   _homeWidth = 1.0;
                                   _workWidth = 1.0;
                                   _otherWidth = 2.0;
-                                  debugPrint("otehrcc,oor"+_other.toString());
                                 });
                               },
                               child: Container(
@@ -2628,10 +2548,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
   }
   _saveaddress() async {
     prefs.setString('newaddresstype', _addresstag);
-    debugPrint("addresstag" + _addresstag.toString());
-    debugPrint("del loction"+_deliverylocation.toString());
-    debugPrint("del loca"+prefs.getString('deliverylocation'));
-    debugPrint("lat long"+prefs.getString('latitude')+"  "+prefs.getString('longitude'));
     _latitude=prefs.getString('latitude');
     _longitude=prefs.getString('longitude');
     final isValid = _form.currentState.validate();
@@ -2672,10 +2588,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
       } else {
         pincode = ", " + _controllerPincode.text;
       }
-      debugPrint(translate('forconvience.ADD')+_address);
-      debugPrint("addline"+addressLine);
-      debugPrint("house no"+_controllerHouseno.text.toString());
-      debugPrint("location"+_deliverylocation.toString());
 
       (_controllerHouseno.text.isEmpty)?
       prefs.setString('newaddress',
@@ -2707,7 +2619,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                 Navigator.of(context).pop();
 
                 if (prefs.getString('mobile').toString() != "null") {
-                  debugPrint("present");
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   prefs.setString("isPickup", "no");
@@ -2716,8 +2627,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                       arguments: {"prev": "cart_screen"});
                 }
                 else {
-                  debugPrint(" not present");
-                  debugPrint("mobile" + "if");
                   //prefs.setString('prevscreen', "confirmorder");
                   Navigator.of(context)
                       .pushNamed(MobileAuthScreen.routeName,);
@@ -2728,20 +2637,15 @@ class _ExampleScreenState extends State<ExampleScreen> {
             else {
 
 
-              debugPrint("address" + prefs.getString('mobile').toString());
               if (prefs.getString('mobile').toString() != "null") {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-                debugPrint("present");
                 prefs.setString("isPickup", "no");
                 Navigator.of(context).pushReplacementNamed(
                     ConfirmorderScreen.routeName,
                     arguments: {"prev": "cart_screen"});
               }
               else {
-                debugPrint(" not present");
-                debugPrint("mobile" + "if");
-                //prefs.setString('prevscreen', "confirmorder");
                 Navigator.of(context)
                     .pushNamed(MobileAuthScreen.routeName,);
               }
@@ -2751,8 +2655,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
         });
       }
       else {
-        debugPrint("example screen . . . .. . . ");
-        debugPrint(_latitude + "                   " + _longitude);
         Provider.of<AddressItemsList>(context, listen: false).NewAddress(
             _latitude, _longitude, _branch).then((_) {
           Provider.of<AddressItemsList>(context, listen: false)
@@ -2781,7 +2683,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
               } else {
                 if (productBox.length > 0) {
                   if (prefs.getString('mobile').toString() != "null") {
-                    debugPrint("present");
                     prefs.setString("isPickup", "no");
                     Navigator.of(context).pop();
                     //Navigator.of(context).pop();
@@ -2790,9 +2691,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                         arguments: {"prev": "cart_screen"});
                   }
                   else {
-                    debugPrint(" not present");
-                    debugPrint("mobile" + "if");
-                    //prefs.setString('prevscreen', "confirmorder");
                     Navigator.of(context)
                         .pushNamed(MobileAuthScreen.routeName,);
                   }
@@ -2806,7 +2704,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
             } else {
               if (productBox.length > 0) {
                 if (prefs.getString('mobile').toString() != "null") {
-                  debugPrint("present");
                   prefs.setString("isPickup", "no");
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
@@ -2815,9 +2712,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                       arguments: {"prev": "cart_screen"});
                 }
                 else {
-                  debugPrint(" not present");
-                  debugPrint("mobile" + "if");
-                  //prefs.setString('prevscreen', "confirmorder");
                   Navigator.of(context)
                       .pushNamed(MobileAuthScreen.routeName,);
                 }
@@ -2861,16 +2755,12 @@ class _ExampleScreenState extends State<ExampleScreen> {
           } else {
             if(productBox.length > 0) {
               if (prefs.getString('mobile').toString()!="null") {
-                debugPrint("present");
                 prefs.setString("isPickup", "no");
                 Navigator.of(context).pushReplacementNamed(
                     ConfirmorderScreen.routeName,
                     arguments: {"prev": "cart_screen"});
               }
               else{
-                debugPrint(" not present");
-                debugPrint("mobile" +"if");
-                //prefs.setString('prevscreen', "confirmorder");
                 Navigator.of(context)
                     .pushNamed(MobileAuthScreen.routeName,);
               }
@@ -2884,16 +2774,12 @@ class _ExampleScreenState extends State<ExampleScreen> {
         } else {
           if(productBox.length > 0) {
             if (prefs.getString('mobile').toString()!="null") {
-              debugPrint("present");
               prefs.setString("isPickup", "no");
               Navigator.of(context).pushReplacementNamed(
                   ConfirmorderScreen.routeName,
                   arguments: {"prev": "cart_screen"});
             }
             else{
-              debugPrint(" not present");
-              debugPrint("mobile" +"if");
-              //prefs.setString('prevscreen', "confirmorder");
               Navigator.of(context)
                   .pushNamed(MobileAuthScreen.routeName,);
             }
@@ -2924,15 +2810,9 @@ class _ExampleScreenState extends State<ExampleScreen> {
         });
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final responseJson = json.decode(response.body);
-        debugPrint("checkLocation........");
-        debugPrint(_lat.toString());
-        debugPrint(_lng.toString());
-        debugPrint(responseJson.toString());
         bool _isCartCheck = false;
         if (responseJson['status'].toString() == "yes") {
           if (prefs.getString("branch") == responseJson['branch'].toString()) {
-            debugPrint("if.......");
-            debugPrint("addresslline"+addressLine);
             IConstants.deliverylocationmain.value = addressLine;
             prefs.setString('deliverylocation', addressLine);
             prefs.setString("latitude", _lat.toString());
@@ -2943,8 +2823,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
           } else {
             // location();
             if (prefs.getString("formapscreen") == "addressscreen") {
-              debugPrint("No...........");
-              debugPrint("addressline......." + addressLine);
               final routeArgs = ModalRoute
                   .of(context)
                   .settings
@@ -2966,7 +2844,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                 'pincode': routeArgs['pincode'],
               });
             } else {
-              debugPrint( " Delivery Location..........."+prefs.getString("deliverylocation"));
               if (productBox.length > 0) { //Suppose cart is not empty
                 _dialogforAvailability(
                     prefs.getString("branch"),
@@ -3252,7 +3129,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
                                       if (Platform.isIOS || Platform.isAndroid) {
                                         //await Hive.openBox<Product>(productBoxName);
 
-                                        debugPrint("Opening box . . . .  . . . ");
                                       }
                                     } catch (e) {
                                       //await Hive.openBox<Product>(productBoxName);
@@ -3309,7 +3185,6 @@ class _ExampleScreenState extends State<ExampleScreen> {
   }
 
   Future<void> addprimarylocation() async {
-    debugPrint("A d d p r i m r y .....");
     var url = IConstants.API_PATH + 'add-primary-location';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();

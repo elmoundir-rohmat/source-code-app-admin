@@ -72,15 +72,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
          notificationData = Provider.of<NotificationItemsList>(context,listen: false);
          setState(() {
            if (notificationData.notItems.length <= 0) {
-             debugPrint("if..........");
              _isNotification = false;
              _isloading=false;
-             debugPrint("if.........."+_isloading.toString());
            } else {
-             debugPrint("else..........");
              _isNotification = true;
              _isloading=false;
-             debugPrint("else.........."+_isloading.toString());
            }
 
          });
@@ -356,7 +352,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     itemCount: notificationData.notItems.length,
                     itemBuilder: (_, i) => GestureDetector(
                       onTap: () {
-                        //print date
 
                         if (notificationData
                             .notItems[i].notificationFor ==
@@ -559,7 +554,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
         )),
       );}
   Widget _bodyMobile() {
-debugPrint("notification length"+notificationData.notItems.length.toString());
     return !_isNotification
         ?         Expanded(
       child: SingleChildScrollView(
@@ -641,12 +635,9 @@ debugPrint("notification length"+notificationData.notItems.length.toString());
                     itemCount: notificationData.notItems.length,
                     itemBuilder: (_, i) => GestureDetector(
                       onTap: () {
-                        debugPrint("notificationData id"+notificationData.notItems[i].id.toString());
-                        debugPrint("notificationData id"+notificationData.notItems[i].status.toString());
                         if (notificationData
                             .notItems[i].notificationFor ==
                             "2") {
-                          debugPrint("order");
                           // Order and fetching order id
                           Navigator.of(context).pushNamed(
                               orderexample.routeName,
@@ -668,10 +659,7 @@ debugPrint("notification length"+notificationData.notItems.length.toString());
                         } else if (notificationData
                             .notItems[i].notificationFor ==
                             "4") {
-                          debugPrint("notificationData id"+notificationData.notItems[i].id.toString());
-                          debugPrint("notificationData id"+notificationData.notItems[i].status.toString());
-                          debugPrint("notificationData id"+notificationData.notItems[i].data.toString());
-                          debugPrint("notroductr");
+
                           //Product with array of product id (Then have to call api)
                           Navigator.of(context).pushNamed(
                               NotProductScreen.routeName,
@@ -688,9 +676,6 @@ debugPrint("notification length"+notificationData.notItems.length.toString());
                         } else if (notificationData
                             .notItems[i].notificationFor ==
                             "5") {
-                          debugPrint("notificationData id"+notificationData.notItems[i].id.toString());
-                          debugPrint("notificationData id"+notificationData.notItems[i].status.toString());
-                          debugPrint("notsub");
                           //Sub category with array of sub category
                           Navigator.of(context).pushNamed(NotSubcategoryScreen.routeName,
                               arguments: {
@@ -713,7 +698,6 @@ debugPrint("notification length"+notificationData.notItems.length.toString());
                         } else if (notificationData
                             .notItems[i].notificationFor ==
                             "4") {
-                          debugPrint("notprodyuc");
                           //Product with array of product id (Then have to call api)
                           Navigator.of(context).pushNamed(
                               NotProductScreen.routeName,
@@ -730,7 +714,6 @@ debugPrint("notification length"+notificationData.notItems.length.toString());
                         } else if (notificationData
                             .notItems[i].notificationFor ==
                             "5") {
-                          debugPrint("notsub");
                           //Sub category with array of sub category
                           Navigator.of(context).pushNamed(
                               NotSubcategoryScreen.routeName,
@@ -750,7 +733,6 @@ debugPrint("notification length"+notificationData.notItems.length.toString());
                             Provider.of<NotificationItemsList>(context,listen: false).updateNotificationStatus(notificationData.notItems[i].id, "1");
                           Navigator.of(context).popUntil(ModalRoute.withName(HomeScreen.routeName,));
                         } else if(notificationData.notItems[i].notificationFor == "10") {
-                          debugPrint("notbrand");
                           Navigator.of(context).pushReplacementNamed(NotBrandScreen.routeName,
                               arguments: {
                                 'brandsId' : notificationData.notItems[i].data.toString(),

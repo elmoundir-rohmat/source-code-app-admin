@@ -76,7 +76,6 @@ class _AppDrawerState extends State<AppDrawer> {
         } else {
           name = prefs.getString('FirstName');
         }
-        debugPrint('Initial state name : '+name);
       } else {
         name = "";
       }
@@ -99,13 +98,11 @@ class _AppDrawerState extends State<AppDrawer> {
       }
       if (prefs.getString('skip') == "yes") {
         checkskip = true;
-        debugPrint('checkskip off setstate ? : '+checkskip.toString());
       } else {
         checkskip = false;
       }
 
       setState(() {
-        debugPrint('On App Drawer::');
 
         if (prefs.getString('FirstName') != null) {
           if (prefs.getString('LastName') != null) {
@@ -115,7 +112,6 @@ class _AppDrawerState extends State<AppDrawer> {
           } else {
             name = prefs.getString('FirstName');
           }
-          debugPrint('Initial state name : '+name);
         } else {
           name = "";
         }
@@ -138,14 +134,11 @@ class _AppDrawerState extends State<AppDrawer> {
         }
         if (prefs.getString('skip') == "yes") {
           checkskip = true;
-          debugPrint('checkskip setstate ? : '+checkskip.toString());
         } else {
           checkskip = false;
         }
-        debugPrint('checkskip ? : '+ prefs.getString('skip') );
       });
     });
-    debugPrint('checkskip ? : '+checkskip.toString());
     //initPlatformState();
     super.initState();
   }
@@ -202,19 +195,16 @@ class _AppDrawerState extends State<AppDrawer> {
   _getPrefs() async{
    /* mobile=await PrefUtils.getMobileNum();
     countrycode=await PrefUtils.getCountrycode();
-    debugPrint("countrycode"+countrycode);*/
+    */
   }
   @override
   Widget build(BuildContext context) {
-    debugPrint('name : '+name);
 
     void launchWhatsApp() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String phone = /*"+212652-655363"*/prefs.getString("secondary_mobile");
-      debugPrint("Whatsapp . .. . . .. . .");
       String url() {
         if (Platform.isIOS) {
-          debugPrint("Whatsapp1 . .. . . .. . .");
           return "whatsapp://wa.me/$phone/?text=${Uri.parse(translate('forconvience.hello'))}";
         } else {
           return "whatsapp://send?phone=$phone&text=${Uri.parse(translate('forconvience.hello'))}";
@@ -1003,7 +993,6 @@ class _AppDrawerState extends State<AppDrawer> {
                   if (prefs.getString('prevscreen') == 'signingoogle') {
                     prefs.setString("photoUrl", "");
                     await _googleSignIn.signOut();
-                    debugPrint("googleccode"+countrycode);
                     //String countryCode = prefs.getString("country_code");
                    /* String countryCode = prefs.getString("country_code");
                     String branch = prefs.getString("branch");
@@ -1046,7 +1035,6 @@ class _AppDrawerState extends State<AppDrawer> {
                     prefs.setString("deliverylocation", deliverylocation);
                     prefs.setString("longitude", _longitude);
                     prefs.setString("latitude", _latitude);
-                    debugPrint("is delivery"+prefs.getString("isdelivering").toString());
 
                     IConstants.currentdeliverylocation.value = currentdeliverylocation;
 
@@ -1098,7 +1086,6 @@ class _AppDrawerState extends State<AppDrawer> {
                     prefs.setString("longitude", _longitude);
                     prefs.setString("latitude", _latitude);
                     prefs.setString("guestuserId", guestUserId);
-                    debugPrint("is delivery"+prefs.getString("isdelivering").toString());
 
                     IConstants.currentdeliverylocation.value = currentdeliverylocation;
                     Navigator.of(context).pushReplacementNamed(
@@ -1118,7 +1105,6 @@ class _AppDrawerState extends State<AppDrawer> {
                       /*String countryCode = prefs.getString("country_code");
                       String branch = prefs.getString("branch");
                       String _tokenId = prefs.getString("tokenid");
-                      debugPrint("fbccode"+countrycode);
                       String _mapFetch = "null";
                       String _isDelivering = "false";
                       String defaultLocation = "null";
@@ -1158,7 +1144,6 @@ class _AppDrawerState extends State<AppDrawer> {
                       prefs.setString("deliverylocation", deliverylocation);
                       prefs.setString("longitude", _longitude);
                       prefs.setString("latitude", _latitude);
-                      debugPrint("is delivery"+prefs.getString("isdelivering").toString());
 
                       IConstants.currentdeliverylocation.value = currentdeliverylocation;
                       Navigator.of(context).pushReplacementNamed(
@@ -1208,7 +1193,6 @@ class _AppDrawerState extends State<AppDrawer> {
                       prefs.setString("longitude", _longitude);
                       prefs.setString("latitude", _latitude);
                       prefs.setString("guestuserId", guestUserId);
-                      debugPrint("is delivery"+prefs.getString("isdelivering").toString());
 
                       IConstants.currentdeliverylocation.value = currentdeliverylocation;
                       Navigator.of(context).pushReplacementNamed(
@@ -1260,7 +1244,6 @@ class _AppDrawerState extends State<AppDrawer> {
                     prefs.setString("longitude", _longitude);
                     prefs.setString("latitude", _latitude);
                     prefs.setString("guestuserId", guestUserId);
-                    debugPrint("is delivery"+prefs.getString("isdelivering").toString());
 
                     IConstants.currentdeliverylocation.value = currentdeliverylocation;
                     Navigator.of(context).pushReplacementNamed(

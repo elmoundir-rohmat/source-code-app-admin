@@ -246,33 +246,8 @@ class _CartScreenState extends State<CartScreen>
           });
         }
       });
-
-
-      /* Provider.of<AddressItemsList>(context,listen: false).fetchAddress().then((_) {
-        debugPrint("checkLocation6..........");
-        setState(() {
-          addressitemsData = Provider.of<AddressItemsList>(context, listen: false);
-          if (addressitemsData.items.length > 0) {
-            _checkaddress = true;
-            checkLocation();
-          } else {
-            debugPrint("confirmorder address.......");
-            Navigator.of(context).pushReplacementNamed(
-                ExampleScreen.routeName,
-                arguments: {
-                  'addresstype': "new",
-                  'addressid': "",
-                  'delieveryLocation': "",
-                  'latitude': "",
-                  'longitude': "",
-                  'branch': ""
-                });
-          }
-        });
-      });*/
     if(_isWeb)
       Provider.of<AddressItemsList>(context,listen: false).fetchAddress().then((_) {
-        debugPrint("checkLocation6...cart.......");
         setState(() {
           addressitemsData = Provider.of<AddressItemsList>(context, listen: false);
           if (addressitemsData.items.length > 0) {
@@ -351,11 +326,6 @@ class _CartScreenState extends State<CartScreen>
           _isSkip = false;
         }
         _deliverLocation = prefs.getString("deliverylocation");
-        debugPrint(_deliverLocation);
-        /* if (!prefs.containsKey("welcomeSheet") &&
-            prefs.getString('LoginStatus') != "true" &&
-            !_isWeb) welcomeSheet();*/
-        //welcomeSheet();
         if (prefs.getString('skip') == "yes") {
           _isUnreadNot = false;
         } else {
@@ -416,8 +386,6 @@ class _CartScreenState extends State<CartScreen>
         deliverycharge = double.parse(prefs.getString("delivery_charge"));
         minimumOrderAmount =
             double.parse(prefs.getString("minimum_order_amount"));
-        debugPrint("min order amt"+minimumOrderAmount.toString());
-        debugPrint("minimum order amt"+minorderamount.toString());
         currency_format = prefs.getString("currency_format");
         deliverlocation = prefs.getString("deliverylocation");
         prefs.setString('fixtime', "");
@@ -538,7 +506,6 @@ class _CartScreenState extends State<CartScreen>
           }
       );
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("response otp"+responseJson.toString());
       if (responseJson['status'].toString() == "true") {
         if (responseJson['type'].toString() == "old") {
           Navigator.of(context).pop();
@@ -1315,11 +1282,7 @@ class _CartScreenState extends State<CartScreen>
                                   : prefs.setString('skip', "no");
                               prefs.setString('prevscreen', "mobilenumber");
                               FocusScope.of(context).unfocus();
-                              // _saveForm();
-                              // print("count" + count.toString());
-                              //_dialogforProcessing();
                               _saveFormmobile();
-                              //_verifyOtp();
 
                             },
                             child: Container(
@@ -1776,7 +1739,6 @@ class _CartScreenState extends State<CartScreen>
                   .items[0].userid);
               deliveryCharge(addressitemsData
                   .items[0].userid);
-              debugPrint("address1"+ address);
               _loading = false;
               _isLoading = false;
             } else {
@@ -1970,7 +1932,6 @@ class _CartScreenState extends State<CartScreen>
       _loading = false;
       for(int i=0;i<deliveryslotData.items.length; i++){
         setState((){
-          print("call deliver slot i ....."+i.toString());
           if(i==0){
             deliveryslotData.items[i].selectedColor=Color(0xFF45B343);
             deliveryslotData.items[i].borderColor=Color(0xFF45B343);
@@ -2017,7 +1978,6 @@ class _CartScreenState extends State<CartScreen>
           ).findById(timeslotsindex);
           for(int i = 0; i < timeslotsData.length; i++) {
             setState(() {
-              print("call time slot i ....."+i.toString());
               if(i == 0) {
 
                 timeslotsData[i].selectedColor=Color(0xFF45B343);
@@ -2412,60 +2372,18 @@ class _CartScreenState extends State<CartScreen>
     } //it will check all validators
     _formsignup.currentState.save();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //checkemail();
     _dialogforProcessing();
     checkemail();
 
 
-
-    //  Login();
     setState(() {
       _isLoading = false;
     });
-    //SignupUser();
-    // LoginEmail();
+
   }
 
-  // Future<void> checkemail() async { // imp feature in adding async is the it automatically wrap into Future.
-  //   var url = IConstants.API_PATH + 'customer/email-check';
-  //   try {
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //
-  //     final response = await http
-  //         .post(
-  //         url,
-  //         body: { // await keyword is used to wait to this operation is complete.
-  //           "email": prefs.getString('Email'),
-  //         }
-  //     );
-  //     final responseJson = json.decode(response.body);
-  //     debugPrint("checkemail ........");
-  //     debugPrint("responseemailcheck"+responseJson.toString());
-  //     if (responseJson['status'].toString() == "true") {
-  //       if (responseJson['type'].toString() == "old") {
-  //         /*Fluttertoast.showToast(msg: translate('forconvience.Email id already exists!!!') //"Email id already exists!!!"
-  //         );*/
-  //         Navigator.of(context).pop();
-  //         return _customToast(translate('forconvience.Email id already exists!!!'));
-  //         /*return   Navigator.of(context).pushReplacementNamed(
-  //             SignupSelectionScreen.routeName);*/
-  //       } else if (responseJson['type'].toString() == "new") {
-  //         return SignupUser();
-  //       }
-  //     } else {
-  //       Navigator.of(context).pop();
-  //       return _customToast("Something went wrong!!!");
-  //       // return Fluttertoast.showToast(msg: "Something went wrong!!!");
-  //     }
-  //
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
 
   Future<void> SignupUser() async {
-    debugPrint('signupuser');
-    debugPrint("availabilty....."+IConstants.currentdeliverylocation.value.toString()) ;
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'customer/password-register';
 
@@ -2480,7 +2398,6 @@ class _CartScreenState extends State<CartScreen>
       channel = "Web";
     }
 
-    print("channel"+channel.toString());
     try {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -2507,7 +2424,6 @@ class _CartScreenState extends State<CartScreen>
         "device": channel,
       });
       final responseJson = json.decode(response.body);
-      debugPrint("responseemailcheckafter"+responseJson.toString());
       if (responseJson['status'].toString() == "true") {
         final data = responseJson['data'] as Map<String, dynamic>;
         prefs.setString('apiKey', data['apiKey'].toString());
@@ -2550,46 +2466,21 @@ class _CartScreenState extends State<CartScreen>
             photourl = "";
           }
         });
-        debugPrint("getmap"+prefs.getString("ismap").toString());
-        //Navigator.of(context).pop();
-        // if(prefs.getString("latitude").toString()!="null"||prefs.getString("longitude").toString()!="null") {
         if (prefs.getString("ismap").toString() == "true") {
-          print("if........");
 
           addprimarylocation();
         } else if (prefs.getString("isdelivering").toString() == "true") {
-          print("if else........");
-          // Navigator.of(context).pop();
           addprimarylocation();
         } else {
           Navigator.of(context).pop();
-          debugPrint("else...");
           prefs.setString("formapscreen", "homescreen");
 
           Navigator.of(context).pushReplacementNamed(MapScreen.routeName);
-          /* Navigator.of(context).pushReplacementNamed(
-              LocationScreen.routeName,
-            );*/
         }
-        /*}
-        else{
-          Navigator.of(context).pushReplacementNamed(
-            LocationScreen.routeName,
-          );
-        }*/
-
-
-        /*Navigator.of(context).pushReplacementNamed(
-          HomeScreen.routeName,
-        );*/
 
       } else if (responseJson['status'].toString() == "false") {
         Navigator.of(context).pop();
         _customToast(responseJson['data'].toString());
-        /*Fluttertoast.showToast(
-            msg: responseJson['data'].toString(),
-            backgroundColor: Colors.black87,
-            textColor: Colors.white);*/
       }
     } catch (error) {
       setState(() {});
@@ -2599,14 +2490,9 @@ class _CartScreenState extends State<CartScreen>
 
 
   Future<void> addprimarylocation() async {
-    debugPrint("A d d p r i m r y .....");
-
     var url = IConstants.API_PATH + 'add-primary-location';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      debugPrint("del location"+IConstants.deliverylocationmain.value.toString());
-      debugPrint("del lat"+prefs.getString("latitude"));
-      debugPrint("del longitude"+prefs.getString("longitude"));
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "id": prefs.getString("userID"),
@@ -2616,7 +2502,6 @@ class _CartScreenState extends State<CartScreen>
         "branch": prefs.getString('branch'),
       });
       final responseJson = json.decode(response.body);
-      debugPrint("response add primary...."+responseJson.toString());
       if (responseJson["data"].toString() == "true") {
         if(prefs.getString("ismap").toString()=="true") {
           if(prefs.getString("fromcart").toString()=="cart_screen"){
@@ -2670,16 +2555,6 @@ class _CartScreenState extends State<CartScreen>
 
         }
         else if(prefs.getString("isdelivering").toString()=="true"){
-          debugPrint("no permission"+prefs.getString("nopermission").toString());
-          debugPrint("ismap"+prefs.getString("ismap").toString());
-          debugPrint("is delivery"+prefs.getString("isdelivering").toString());
-          //if(prefs.getString("nopermission").toString()!="null"){
-          /*if(prefs.getString("isdelivering").toString()=="true"){*/
-          debugPrint("iffff..." + (prefs.getString("nopermission").toString()!="null").toString() + "    " + (prefs.getString("nopermission").toString()!="").toString());
-
-          /*Navigator.of(context).pushReplacementNamed(
-            HomeScreen.routeName,
-          );*/
           setState(() {
             checkSkip = false;
             if (prefs.getString('FirstName') != null) {
@@ -2719,7 +2594,6 @@ class _CartScreenState extends State<CartScreen>
 
         }
         else {
-          debugPrint("else...");
           prefs.setString("formapscreen", "homescreen");
           Navigator.of(context).pushReplacementNamed(MapScreen.routeName);
           /*Navigator.of(context).pushReplacementNamed(
@@ -3143,15 +3017,7 @@ class _CartScreenState extends State<CartScreen>
                             valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor,),
                           )
                               :
-                          /*prefs.setString('skip', "no");
-                          prefs.setString('prevscreen', "mobilenumber");*/
-                          debugPrint("Login , , , , , , , " + IConstants.currentdeliverylocation.value.toString());
                           _saveFormsignup();
-                          // print("count" + count.toString());
-                          //_saveAddInfoForm();
-                          //_saveFormsignup();
-                          // _dialogforProcessing();
-
                         },
                         child: Container(
                           padding: EdgeInsets.all(10),
@@ -3224,81 +3090,26 @@ class _CartScreenState extends State<CartScreen>
   }
 
   Future<void> Resetpass() async {
-    debugPrint('pwd'+newpasscontroller.text);
-    debugPrint('id'+prefs.getString('userID'));
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'reset-password';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // debugPrint("tokenid"+ prefs.getString('tokenid'));
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "id":prefs.getString('userID'),
         "password": newpasscontroller.text,//prefs.getString('Password'),
-        /* "tokenId": prefs.getString('tokenid'),
-        "password" : prefs.getString('Password') ,*/
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
       // final data = responseJson['data'] as Map<String, dynamic>;
-      debugPrint("response"+responseJson.toString());
       if (responseJson['status'].toString() == "200") {
         Navigator.pop(context);
         Navigator.of(context).pop(true);
         _customToast(responseJson['data'].toString());
-        //Navigator.pop(context);
-        /* Fluttertoast.showToast(msg: responseJson['data'].toString(),
-            backgroundColor: Colors.black87,
-            textColor: Colors.white);*/
-        // Navigator.pop(context);
-        //Navigator.of(context).pop();
-        // Navigator.of(context).pop();
-        /*debugPrint("response"+responseJson.toString());
-        //prefs.setString('Otp', data['otp'].toString());
-        prefs.setString('Otp', responseJson['otp'].toString());
-        prefs.setString('apiKey', data['apiKey'].toString());
-        prefs.setString('userID', data['id'].toString());
-        prefs.setString('FirstName', data['username'].toString());
-        prefs.setString("Email", data['email'].toString());
-        prefs.setString('membership', data['membership'].toString());
-        prefs.setString("mobile", data['mobile'].toString());
-        prefs.setString("latitude", data['latitude'].toString());
-        prefs.setString("longitude", data['longitude'].toString());
-        prefs.setString('apple', data['apple'].toString());
-        prefs.setString('branch', data['branch'].toString());
-        debugPrint("name"+prefs.getString('FirstName'));
-        prefs.setString('LoginStatus', "true");
-        if (prefs.getString('prevscreen') != null) {
-          if (prefs.getString('prevscreen') == 'signingoogle') {
-          } else if (prefs.getString('prevscreen') == 'signinfacebook') {
-          } else {
-            prefs.setString('Name', data['name'].toString());
-            prefs.setString('LastName', "");
-            prefs.setString('Email', data['email'].toString());
-            prefs.setString("photoUrl", "");
-          }
-        }
-        debugPrint("otp"+prefs.getString('Otp'));*/
-
-        //Navigator.of(context).pop();
-        // _resetpass();
-        // Navigator.of(context).pop();
-        //_dialogresetforForgotpass();
-//        Navigator.of(context).pushNamed(
-//          OtpconfirmScreen.routeName,
-//        );
-        /*Navigator.of(context).pushNamed(
-          HomeScreen.routeName,
-        );*/
-
 
       } else if (responseJson['status'].toString() == "400") {
         Navigator.pop(context);
         Navigator.of(context).pop(true);
         _customToast("Something Went Wrong !!");
-        /*Fluttertoast.showToast(msg: "Something Went Wrong !!",
-            backgroundColor: Colors.black87,
-            textColor: Colors.white);
-        // Navigator.pop(context);*/
       }
     } catch (error) {
       Navigator.of(context).pop(true);
@@ -3307,66 +3118,22 @@ class _CartScreenState extends State<CartScreen>
   }
 
   Future<void> Forgotpass() async {
-    debugPrint("email"+emailcontrolleralert.text.toString());
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'forgot-password';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // debugPrint("tokenid"+ prefs.getString('tokenid'));
       final response = await http.post(url, body: {
-        // await keyword is used to wait to this operation is complete.
         "email": emailcontrolleralert.text,//prefs.getString('Email'),
-        /* "tokenId": prefs.getString('tokenid'),
-        "password" : prefs.getString('Password') ,*/
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
       final data = responseJson['data'] as Map<String, dynamic>;
-      debugPrint("response"+responseJson.toString());
       if (responseJson['status'].toString() == "200") {
-        debugPrint("response forgotpass"+responseJson.toString());
-        //prefs.setString('Otp', data['otp'].toString());
         prefs.setString('Otp', responseJson['otp'].toString());
-        //  prefs.setString('apiKey', data['apiKey'].toString());
         prefs.setString('userID', data['id'].toString());
-        /* prefs.setString('FirstName', data['username'].toString());
-        prefs.setString("Email", data['email'].toString());
-        prefs.setString('membership', data['membership'].toString());
-        prefs.setString("mobile", data['mobile'].toString());
-        prefs.setString("latitude", data['latitude'].toString());
-        prefs.setString("longitude", data['longitude'].toString());
-        prefs.setString('apple', data['apple'].toString());
-        prefs.setString('branch', data['branch'].toString());
-        debugPrint("name"+prefs.getString('FirstName'));
-        prefs.setString('LoginStatus', "true");
-        if (prefs.getString('prevscreen') != null) {
-          if (prefs.getString('prevscreen') == 'signingoogle') {
-          } else if (prefs.getString('prevscreen') == 'signinfacebook') {
-          } else {
-            prefs.setString('Name', data['name'].toString());
-            prefs.setString('LastName', "");
-            prefs.setString('Email', data['email'].toString());
-            prefs.setString("photoUrl", "");
-          }
-        }*/
-        debugPrint("otp"+prefs.getString('Otp'));
         Navigator.of(context).pop();
-        //Navigator.of(context).pop();
-        //Navigator.of(context).pop();
         _resetpass();
-        // Navigator.of(context).pop();
-        //_dialogresetforForgotpass();
-//        Navigator.of(context).pushNamed(
-//          OtpconfirmScreen.routeName,
-//        );
-        /*Navigator.of(context).pushNamed(
-          HomeScreen.routeName,
-        );*/
-
-
       } else if (responseJson['status'].toString() == "400") {}
     } catch (error) {
-      // Navigator.of(context).pop();
-
       throw error;
     }
   }
@@ -3576,10 +3343,6 @@ class _CartScreenState extends State<CartScreen>
                       SizedBox(height: 15,),
                       GestureDetector(
                         onTap: () {
-                          print("tapped");
-                          //  _enabled ? _onTap:
-                          // clikform();
-                          //   _dialogforProcessing();
                           setState(() {
                             _isLoading = true;
                             // count + 1;
@@ -3592,7 +3355,6 @@ class _CartScreenState extends State<CartScreen>
                           prefs.setString('prevscreen', "mobilenumber");
                           // Navigator.of(context).pop();
                           _ResetPassword();
-                          // print("count" + count.toString());
                         },
                         child: Container(
                           width: MediaQuery
@@ -3610,13 +3372,6 @@ class _CartScreenState extends State<CartScreen>
                               ),
                               borderRadius: BorderRadius.all(Radius.circular(4))
                           ),
-                          /* decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  border: Border.all(
-                    width: 1.0,
-                    color: ColorCodes.greenColor,
-                  ),
-                ),*/
                           child: Center(
                             child: Text(
                               translate('forconvience.Reset Password'), // "Reset Password",
@@ -3683,7 +3438,6 @@ class _CartScreenState extends State<CartScreen>
     var url = IConstants.API_PATH + 'useremail-login';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // debugPrint("tokenid"+ prefs.getString('tokenid'));
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "email": prefs.getString('Email'),
@@ -3691,21 +3445,8 @@ class _CartScreenState extends State<CartScreen>
         "password" : prefs.getString('Password') ,
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-
-      /* if(responseJson['data'].toString()=="Wrong Email!!!"){
-        Fluttertoast.showToast(msg: "Wrong email id or password.",
-            backgroundColor: Colors.black87,
-            textColor: Colors.white);
-        Navigator.of(context).pop(true);
-      }*/
-      debugPrint("response login"+responseJson.toString());
-      debugPrint(responseJson['data'].toString());
-      debugPrint("response"+responseJson.toString());
       if (responseJson['status'].toString() == "200") {
         final data = responseJson['data'] as Map<String, dynamic>;
-        debugPrint("response"+responseJson.toString());
-        debugPrint("mobl"+data['mobile'].toString());
-        //prefs.setString('Otp', data['otp'].toString());
         prefs.setString('apiKey', data['apiKey'].toString());
         prefs.setString('userID', data['userID'].toString());
         prefs.setString('FirstName', data['name'].toString());
@@ -3718,10 +3459,8 @@ class _CartScreenState extends State<CartScreen>
         prefs.setString('branch', data['branch'].toString());
         prefs.setString('deliverylocation', data['area'].toString());
         IConstants.deliverylocationmain.value=data['area'].toString();
-        debugPrint("name"+prefs.getString('FirstName'));
         prefs.setString('LoginStatus', "true");
 
-        //prefs.setString('LoginStatus', "true");
         setState(() {
           checkSkip = false;
           if (prefs.getString('FirstName') != null) {
@@ -3777,8 +3516,6 @@ class _CartScreenState extends State<CartScreen>
           HomeScreen.routeName,
         );*/
         prefs.setString('skip', "no");
-        debugPrint("Login , , , , , , ,1 " + IConstants.currentdeliverylocation.value.toString());
-        debugPrint("default location available..."+prefs.getString("defaultlocation").toString());
         Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routeName, (route) => false);
 
       } else if (responseJson['status'].toString() == "400") {
@@ -3833,8 +3570,6 @@ class _CartScreenState extends State<CartScreen>
           }
       );
       final responseJson = json.decode(response.body);
-      debugPrint("checkemail ........");
-      debugPrint("responseemailcheck"+responseJson.toString());
       if (responseJson['status'].toString() == "true") {
         if (responseJson['type'].toString() == "old") {
           Navigator.of(context).pop();
@@ -4173,10 +3908,6 @@ class _CartScreenState extends State<CartScreen>
                       SizedBox(height: 15,),
                       GestureDetector(
                         onTap: () {
-                          print("tapped");
-                          //  _enabled ? _onTap:
-                          // clikform();
-                          //   _dialogforProcessing();
                           setState(() {
                             if(navigatpass)
                               _isLoading = true;
@@ -4190,7 +3921,6 @@ class _CartScreenState extends State<CartScreen>
                           prefs.setString('prevscreen', "mobilenumber");
                           //  Navigator.of(context).pop();
                           _ForgotPassword();
-                          // print("count" + count.toString());
                         },
                         child: Container(
                           width: MediaQuery
@@ -5001,7 +4731,6 @@ class _CartScreenState extends State<CartScreen>
                       ),
                       GestureDetector(
                         onTap:(){
-                          print("clicked forgotpas....");
                           _dialogforForgotpass();
                         },
                         child: Container(
@@ -5022,10 +4751,6 @@ class _CartScreenState extends State<CartScreen>
                       ),
                       GestureDetector(
                         onTap: () {
-                          print("tapped");
-                          //  _enabled ? _onTap:
-                          // clikform();
-                          //   _dialogforProcessing();
                           setState(() {
                             _isLoading = true;
                             //count + 1;
@@ -5036,10 +4761,7 @@ class _CartScreenState extends State<CartScreen>
                           )
                               : prefs.setString('skip', "no");
                           prefs.setString('prevscreen', "mobilenumber");
-                          debugPrint("Login , , , , , , , " + IConstants.currentdeliverylocation.value.toString());
-                          // _saveForm();
                           _saveFormSignIn();
-                          //print("count" + count.toString());
                         },
                         child:
                         Container(
@@ -5977,37 +5699,8 @@ class _CartScreenState extends State<CartScreen>
   _verifyOtp() async {
     //var otpval = otp1 + otp2 + otp3 + otp4;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    debugPrint("otp"+prefs.getString('Otp'));
     if (otpvalue == prefs.getString('Otp')) {
       verifynum();
-      /*if (prefs.getString('type') == "old") {
-        prefs.setString('LoginStatus', "true");
-        _getprimarylocation();
-        *//*return Navigator.of(context).pushReplacementNamed(
-          LocationScreen.routeName,);*//*
-        *//*Navigator.of(context).pushReplacementNamed(
-          HomeScreen.routeName,
-        );*//*
-      } else {
-        return SignupUser();
-        *//* if (prefs.getString('prevscreen') == 'signingoogle' ||
-            prefs.getString('prevscreen') == 'signupselectionscreen' ||
-            prefs.getString('prevscreen') == 'signInAppleNoEmail' ||
-            prefs.getString('prevscreen') == 'signInApple' ||
-            prefs.getString('prevscreen') == 'signinfacebook') {
-          return signupUser();
-        } else {
-          prefs.setString('prevscreen', "otpconfirmscreen");
-          Navigator.of(context).pop();
-          return Navigator.of(context).pushNamedAndRemoveUntil(
-              SignupScreen.routeName,
-              ModalRoute.withName(CartScreen.routeName));
-          *//**//*Navigator.of(context).pushReplacementNamed(
-            SignupScreen.routeName,
-          );*//**//*
-        }*//*
-//        return signupUser();
-      }*/
     } else {
       Navigator.of(context).pop();
       // Navigator.of(context).pop();
@@ -6018,7 +5711,6 @@ class _CartScreenState extends State<CartScreen>
   }
   Future<void> verifynum() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    debugPrint("id"+prefs.getString('userID')) ;
     var url = IConstants.API_PATH + 'update-mobile-number';
     try {
       final response = await http.post(url, body: {
@@ -6028,7 +5720,6 @@ class _CartScreenState extends State<CartScreen>
 
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("response"+responseJson.toString());
       if (responseJson['status'].toString() == "200") {
         prefs.setString('mobile',prefs.getString('Mobilenum'));
 
@@ -6066,41 +5757,7 @@ class _CartScreenState extends State<CartScreen>
         } else {
           Navigator.of(context).pop(context);
           Navigator.of(context).pop();
-          /* debugPrint("prev screen "+prefs.getString("frommultiple").toString());
-          if (prefs.getString('frommultiple').toString() ==
-              "multipleimagepicker") {
-            Navigator.of(
-                context)
-                .pushReplacementNamed(
-                MultipleImagePicker
-                    .routeName, arguments: {
-              'subject': "Click & Send",
-              'type': "click",
-            }
-            );
-          }
-          else {
-            // Navigator.of(context).pop();
-            // Navigator.of(context).pop();
-            prefs.setString("fromcart", "cart_screen");
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                ExampleScreen.routeName,
-                ModalRoute.withName(CartScreen.routeName), arguments: {
-              'addresstype': "new",
-              'addressid': "",
-              'delieveryLocation': "",
-              'latitude': "",
-              'longitude': "",
-              'branch': ""
-            });
-            //  }
-          }*/
         }
-        /*return  Navigator.of(context).pushReplacementNamed(
-           ConfirmorderScreen.routeName,
-           arguments: {
-             "prev": "address_screen",
-           });*/
 
       }
       else{
@@ -7132,46 +6789,17 @@ class _CartScreenState extends State<CartScreen>
                         // Navigator.of(context).pop();
                         Navigator.of(context).pushNamed(
                             SignupSelectionScreen.routeName);
-                      } /*else {
-                              if (_groupValue == 2) {
-                                Navigator.of(context)
-                                    .pushNamed(PickupScreen.routeName);
-                              }*/ else {
-                        debugPrint("address"+prefs.getString('mobile').toString());
+                      } else {
                         if(prefs.getString('mobile').toString() != "null" && prefs.getString('mobile').toString() != "") {
-                          debugPrint("present");
                           prefs.setString("isPickup", "no");
-                          debugPrint("cartscreen");
-                          // if (addressitemsData.items.length > 0) {
-                          //Navigator.of(context).pop();
                           Navigator.of(context).pushNamed(
                               ConfirmorderScreen.routeName,
                               arguments: {"prev": "cart_screen"});
-                          /* } else {
-                                  Navigator.of(context).pushNamed(
-                                      ExampleScreen.routeName,
-                                      arguments: {
-                                        'addresstype': "new",
-                                        'addressid': "",
-                                        'delieveryLocation': "",
-                                        'latitude': "",
-                                        'longitude': "",
-                                        'branch': ""
-                                      });
-                                }*/
-
                         }
                         else{
-                          debugPrint(" not present");
-                          debugPrint("mobile" +"if");
-                          //Navigator.of(context).pop();
-                          //prefs.setString('prevscreen', "confirmorder");
                           Navigator.of(context)
                               .pushNamed(MobileAuthScreen.routeName,);
                         }
-
-                        //prefs.setString('totalamount', totalAmount);
-
                       }
 
                     })
@@ -7284,7 +6912,6 @@ class _CartScreenState extends State<CartScreen>
                 builder: (context, Box<Product> box, index) {
                   List taskList =  Hive.box<Product>(productBoxName).values.toList().cast<Product>();
                   taskList.sort((a,b)=>a.itemName.compareTo(b.itemName));
-                  debugPrint("sort data"+taskList.elementAt(0).itemName);
                   return Container(
 
                     // padding: EdgeInsets.all(5),
@@ -7292,30 +6919,8 @@ class _CartScreenState extends State<CartScreen>
                     (_isWeb && !ResponsiveLayout.isSmallScreen(context))
                         ? MediaQuery.of(context).size.width * 0.40
                         : MediaQuery.of(context).size.width*0.95,
-                    // decoration: new BoxDecoration(
-                    //   borderRadius: BorderRadius.circular(6),
-                    //   border: Border.all(color: ColorCodes.greyColor),
-                    /*boxShadow: [
-                            //background color of box
-                            BoxShadow(
-                              color: Color(0xffe8e8e8),
-                              blurRadius: 25.0, // soften the shadow
-                              spreadRadius: 5.0, //extend the shadow
-                              offset: Offset(
-                                15.0, // Move to right 10  horizontally
-                                15.0, // Move to bottom 10 Vertically
-                              ),
-                            )
-                          ],*/
-                    //  ),
                     child: new ListView.builder(
 
-                      /*separatorBuilder: (_, i) => SizedBox(
-                            child: Container(
-                              height: 10,
-                              color: Color(0xffe8e8e8),
-                            ),
-                          ),*/
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
@@ -7338,22 +6943,6 @@ class _CartScreenState extends State<CartScreen>
                               taskList.elementAt(i).varMrp.toString(),
                               taskList.elementAt(i).membershipPrice,
                               taskList.elementAt(i).mode,
-
-
-
-                              /*productBox.values.elementAt(i).itemId.toString(),
-                                  productBox.values.elementAt(i).varId.toString(),
-                                  productBox.values.elementAt(i).itemName,
-                                  productBox.values.elementAt(i).itemImage,
-                                  productBox.values.elementAt(i).varName,
-                                  productBox.values.elementAt(i).itemPrice.toString(),
-                                  productBox.values.elementAt(i).itemQty,
-                                  productBox.values.elementAt(i).varMinItem.toString(),
-                                  productBox.values.elementAt(i).varMaxItem.toString(),
-                                  productBox.values.elementAt(i).varStock.toString(),
-                                  productBox.values.elementAt(i).varMrp.toString(),
-                                  productBox.values.elementAt(i).membershipPrice,
-                                  productBox.values.elementAt(i).mode,*/
                             );
 
                           return CartitemsDisplay(
@@ -7370,19 +6959,6 @@ class _CartScreenState extends State<CartScreen>
                             taskList.elementAt(i).varMrp.toString(),
                             taskList.elementAt(i).membershipPrice,
                             taskList.elementAt(i).mode,
-                            /*productBox.values.elementAt(i).itemId.toString(),
-                                productBox.values.elementAt(i).varId.toString(),
-                                productBox.values.elementAt(i).itemName,
-                                productBox.values.elementAt(i).itemImage,
-                                productBox.values.elementAt(i).varName,
-                                productBox.values.elementAt(i).itemPrice.toString(),
-                                productBox.values.elementAt(i).itemQty,
-                                productBox.values.elementAt(i).varMinItem.toString(),
-                                productBox.values.elementAt(i).varMaxItem.toString(),
-                                productBox.values.elementAt(i).varStock.toString(),
-                                productBox.values.elementAt(i).varMrp.toString(),
-                                productBox.values.elementAt(i).membershipPrice,
-                                productBox.values.elementAt(i).mode,*/
                           );
                         },
                       ),
@@ -7438,332 +7014,7 @@ class _CartScreenState extends State<CartScreen>
                 ],
               ),
             ),
-            /* Container(
-                    color: Colors.white,
-                    child: Column(children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        width:
-                            (_isWeb && !ResponsiveLayout.isSmallScreen(context))
-                                ? MediaQuery.of(context).size.width * 0.40
-                                : MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(left: 8.0),
-                        color: Color(0xffe8e8e8),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  Text(
-                                    'Select Delivery Type',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                  ),
-                                ]),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  Text(
-                                    'Tap to select one of the delivery modes',
-                                    style: TextStyle(
-                                        color: Color(0xff949292),
-                                        //color: ColorCodes.greyColor,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16),
-                                  )
-                                ]),
-                            SizedBox(
-                              height: 10,
-                            )
-                          ],
-                        ),
-                      )
-                    ])),*/
 
-            /*if (!_isLoading)
-                  if (prefs.getBool("isPickupMode"))
-                    Card(
-                      color: Colors.white,
-                      margin: EdgeInsets.all(5),
-                      child: Container(
-                        width:
-                            (_isWeb && !ResponsiveLayout.isSmallScreen(context))
-                                ? MediaQuery.of(context).size.width * 0.40
-                                : MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.all(5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            *//* Text(
-                            "Select delivery method",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                          ),*//*
-
-                            MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () {
-                                  setState(() {
-                                    _groupValue = 1;
-                                  });
-                                },
-                                child: ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.all(0.0),
-                                  title: Row(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'HOME DELIVERY',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                  'You can also get your orders delivered to an',
-                                                  style: TextStyle(
-                                                      color: Color(0xffB9B9B9),
-                                                      //color: Color(0xff838383),
-                                                      //color: ColorCodes.lightGreyColor,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 15))
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 3,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text('address of your choice',
-                                                  style: TextStyle(
-                                                    color: Color(0xffB9B9B9),
-                                                    //color: ColorCodes.lightGreyColor,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 15,
-                                                  ))
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text('DELIVERY CHARGES EXTRA',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13,
-                                                      color: Colors.green))
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          )
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Flexible(
-                                        child: Column(children: [
-                                          Center(
-                                            child: Container(
-                                              child: _myRadioButton(
-                                                value: 1,
-                                                onChanged: (newValue) {
-                                                  setState(() {
-                                                    _groupValue = newValue;
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          )
-                                        ]),
-                                      ),
-                                      SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      // Text(" Pickup from Store", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12.0),),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () {
-                                  setState(() {
-                                    _groupValue = 2;
-                                  });
-                                },
-                                child: ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.all(0.0),
-                                  title: Row(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'SELF PICK UP',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  'Select a self pick-up point near you and pick ',
-                                                  style: TextStyle(
-                                                      color: Color(0xffB9B9B9),
-                                                      //color: ColorCodes.lightGreyColor,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 15))
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 3,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  'your order at your convenient',
-                                                  style: TextStyle(
-                                                      color: Color(0xffB9B9B9),
-                                                      //color: ColorCodes.lightGreyColor,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 15))
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text('DELIVERY FREE',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13,
-                                                      color: Colors.green))
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          )
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Flexible(
-                                        child: Column(children: [
-                                          Center(
-                                            child: Container(
-                                              child: _myRadioButton(
-                                                value: 2,
-                                                onChanged: (newValue) {
-                                                  setState(() {
-                                                    _groupValue = newValue;
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          )
-                                        ]),
-                                      ),
-
-                                      SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      // Text(" Home Delivery", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12.0),),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),*/
             (_isWeb && ResponsiveLayout.isSmallScreen(context))
                 ? Container(
               width: MediaQuery.of(context).size.width,
@@ -7819,7 +7070,6 @@ class _CartScreenState extends State<CartScreen>
                           //prefs.setString('totalamount', totalAmount);
                           /*  if (addressitemsData.items.length >
                                                 0) {*/
-                          debugPrint("cartscreen");
                           Navigator.of(context).pushNamed(
                               ConfirmorderScreen.routeName,
                               arguments: {
@@ -8513,10 +7763,6 @@ class _CartScreenState extends State<CartScreen>
 
                     GestureDetector(
                       onTap: (){
-                        print("cart screen add adress...........");
-
-                        /* _loading = false,
-                                _isLoading = false,*/
                         //Navigator.of(context).pop(),
                         Navigator.of(context).pushNamed(
                             ExampleScreen.routeName,
@@ -8579,37 +7825,6 @@ class _CartScreenState extends State<CartScreen>
                         ),
                       ),
                     ),
-
-
-                    /*   FlatButton(
-
-                              color: Theme.of(context).primaryColor,
-                              textColor: Theme.of(context).buttonColor,
-                              shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(3.0),
-                              ),
-                              onPressed: () => {
-                                print("cart screen add adress..........."),
-
-                              *//* _loading = false,
-                                _isLoading = false,*//*
-                               //Navigator.of(context).pop(),
-                                Navigator.of(context).pushNamed(
-                                    ExampleScreen.routeName,
-                                    arguments: {
-                                      'addresstype': "new",
-                                      'addressid': "",
-                                      'delieveryLocation': "",
-                                      'latitude': "",
-                                      'longitude': "",
-                                      'branch': ""
-                                    })
-                              },
-                              child: Text(
-                                translate('forconvience.Add Address'),//'Add Address',
-                                style: TextStyle(fontSize: 12.0),
-                              ),
-                            ),*/
                     SizedBox(
                       width: 5.0,
                     ),
@@ -8856,7 +8071,6 @@ class _CartScreenState extends State<CartScreen>
                               itemBuilder:(ctx, i){
                                 return GestureDetector(
                                   onTap: (){
-                                    print('hello');
                                     setState(() {
                                       prefs.setString("fixdate", deliveryslotData.items[i].dateformat);
                                       day = deliveryslotData.items[i].day;
@@ -8885,9 +8099,6 @@ class _CartScreenState extends State<CartScreen>
                                         }
                                       }
                                       for(int j=0;j<timeslotsData.length; j++){
-                                        debugPrint("dellength"+deliveryslotData.items.length.toString());
-                                        debugPrint("timlength"+timeslotsData.length.toString());
-                                        debugPrint("i"+i.toString()+"j"+(j-1).toString());
                                         setState((){
                                           if(j == 0){
 
@@ -8961,8 +8172,6 @@ class _CartScreenState extends State<CartScreen>
                                   itemBuilder:(ctx, i){
                                     return GestureDetector(
                                       onTap: (){
-                                        debugPrint("i clicl"+i.toString());
-                                        debugPrint("fixtimei"+timeslotsData[i].time);
                                         setState(() {
                                           prefs.setString('fixtime', timeslotsData[i].time);
                                           for(int j = 0; j< timeslotsData.length; j++) {
@@ -9120,12 +8329,8 @@ class _CartScreenState extends State<CartScreen>
                               msg: "Please provide a address");
                         } else {
 
-                          debugPrint("address"+prefs.getString('mobile').toString());
                           if(prefs.getString('mobile').toString() != "null" && prefs.getString('mobile').toString() != "") {
-                            debugPrint("present");
                             prefs.setString("isPickup", "no");
-                            debugPrint("cartscreen");
-                            // if (addressitemsData.items.length > 0) {
                             prefs.setString("isPickup", "no");
                             Navigator.of(context).pushNamed(
                                 PaymentScreen.routeName,
@@ -9151,13 +8356,7 @@ class _CartScreenState extends State<CartScreen>
 
                           }
                           else{
-                            debugPrint(" not present");
-                            debugPrint("mobile" +"if");
                             aler_dialofortmobile(context);
-                            //Navigator.of(context).pop();
-                            //prefs.setString('prevscreen', "confirmorder");
-                            /* Navigator.of(context)
-                                        .pushNamed(MobileAuthScreen.routeName,);*/
                           }
 
 
@@ -10078,10 +9277,8 @@ class _CartScreenState extends State<CartScreen>
 
     void launchWhatsApp() async {
       String phone = /*"+212652-655363"*/prefs.getString("secondary_mobile");
-      debugPrint("Whatsapp . .. . . .. . .");
       String url() {
         if (Platform.isIOS) {
-          debugPrint("Whatsapp1 . .. . . .. . .");
           return "whatsapp://wa.me/$phone/?text=${Uri.parse(translate('forconvience.hello'))}";
         } else {
           return "whatsapp://send?phone=$phone&text=${Uri.parse(translate('forconvience.hello'))}";
@@ -10372,7 +9569,6 @@ class _CartScreenState extends State<CartScreen>
             icon: Icon(Icons.arrow_back_ios_outlined,size: 20, color: ColorCodes.backbutton),
             onPressed: () {
               try {
-                debugPrint("Moving to home");
 
                 (_isWeb && !ResponsiveLayout.isSmallScreen(context)) ?
 
@@ -10381,14 +9577,8 @@ class _CartScreenState extends State<CartScreen>
 
 
                 Navigator.of(context).pop();
-
-                //Navigator.of(context).pop();
               }catch(e){
-                debugPrint("Printing Error");
-                debugPrint(e.toString());
               }
-              // return Future.value(false);
-              // Navigator.popUntil(context, (route) => route.isFirst);
             }
         ),
 

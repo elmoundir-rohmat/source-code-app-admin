@@ -26,7 +26,6 @@ class MyorderList with ChangeNotifier {
       });
 
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("order"+responseJson.toString());
       if (responseJson['status'].toString() == 'true') {
         if (responseJson['data'].toString() != "[]") {
           final dataJson =
@@ -190,7 +189,6 @@ class MyorderList with ChangeNotifier {
 
   Future<void> Getorders() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    debugPrint("apikey"+prefs.getString('apiKey'));
     var url =
         IConstants.API_PATH + 'get-customer-order/' +prefs.getString('apiKey');
     try {
@@ -201,7 +199,6 @@ class MyorderList with ChangeNotifier {
       );
 
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("getorder"+responseJson.toString());
       if (responseJson.toString() == "[]") {
       } else {
         final itemJson =
@@ -237,10 +234,6 @@ class MyorderList with ChangeNotifier {
             }
             isdeltime = true;
           }
-          debugPrint("getorder total discout"+ data[i]['totalDiscount'].toString());
-          debugPrint("get order wallet"+ data[i]['wallet'].toString());
-
-          debugPrint("get order wallet"+ data[i][' totalDiscount'].toString());
           _items.add(MyordersFields(
             id: data[i]['id'].toString(),
             oid: data[i]['order_d'].toString(),
@@ -300,7 +293,6 @@ class MyorderList with ChangeNotifier {
         // await keyword is used to wait to this operation is complete.
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("order view"+responseJson.toString());
       if (responseJson.toString() == "[]") {
       } else {
         var delivery = "";
@@ -360,7 +352,6 @@ class MyorderList with ChangeNotifier {
           itemodelcharge: responseJson['deliveryCharge'].toString(),
           itemsCount: responseJson['itemsCount'].toString(),
         ));
-debugPrint("wallet"+items[0].wallet.toString());
 
         final itemJson = json.encode(responseJson['items']);
         final itemJsondecode = json.decode(itemJson);

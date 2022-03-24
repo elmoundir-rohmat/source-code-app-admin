@@ -92,7 +92,6 @@ class _WebsiteSliderState extends State<WebsiteSlider> {
                           }
                       );
                     } else if (bannerData.websiteItems[i].bannerFor == "2") {
-                      debugPrint('clicked 2nd banner');
                       //Category
 
                      /* final categoriesData = Provider.of<CategoriesItemsList>(context, listen: false);

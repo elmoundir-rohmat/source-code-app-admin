@@ -144,9 +144,6 @@ class _SingleproductScreenState extends State<SingleproductScreen>
       });
       final routeArgs = ModalRoute.of(context).settings.arguments as Map<String, String>;
       _deliverlocation = prefs.getString("deliverylocation");
-      debugPrint('itemID print');
-      debugPrint(routeArgs['itemid'].toString());
-      debugPrint('thats the item ID');
       final itemid = routeArgs['itemid'];
       await Provider.of<ItemsList>(context,listen: false).fetchSingleItems(itemid).then((_) {
         setState(() {
@@ -813,9 +810,6 @@ class _SingleproductScreenState extends State<SingleproductScreen>
     } else {
       _similarProduct = true;
     }
-
-    debugPrint("_isDescription . . . . .  . ." + _isdescription.toString() + "   " + tabList.length.toString());
-
     addToCart(int _itemCount) async {
       Product products = Product(
           itemId: int.parse(itemid),
@@ -1034,7 +1028,6 @@ class _SingleproductScreenState extends State<SingleproductScreen>
     }
 
     Widget _appBar() {
-      //debugPrint('appbar called');
       return GradientAppBar(
         gradient: LinearGradient(
           begin: Alignment.topRight,
@@ -1275,7 +1268,6 @@ class _SingleproductScreenState extends State<SingleproductScreen>
                 color: ColorCodes.backbutton,
               ),
               onTap: () {
-                debugPrint('ontap back button');
                 Navigator.of(context).popUntil(
                     ModalRoute.withName(HomeScreen.routeName,));
               },
@@ -1388,7 +1380,6 @@ class _SingleproductScreenState extends State<SingleproductScreen>
       if (ResponsiveLayout.isSmallScreen(context)) {
         return createHeaderForMobile();
       } else {
-        debugPrint('entered appbar');
         return Header(false);
       }
     }
@@ -5375,68 +5366,6 @@ class _SingleproductScreenState extends State<SingleproductScreen>
         )
             : Column(
           children: [
-            //ResponsiveLayout.isLargeScreen(context) ? _appBar() : Header(),
-            // _responsiveAppBar(),
-            //Header(),
-            /* if (ResponsiveLayout.isSmallScreen(context))
-                    Container(
-                        decoration: BoxDecoration(
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.black54,
-                                blurRadius: 15.0,
-                                offset: Offset(0.0, 0.75))
-                          ],
-                          color: Theme.of(context).buttonColor,
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.all(1.0),
-                        margin: EdgeInsets.only(
-                            left: 0.0, top: 0.0, right: 0.0, bottom: 0.0),
-                        height: 36,
-                        child: Row(children: [
-                          // IconButton(icon: Icon(Icons.location_on,size:18,color: Colors.black,)),
-                          SizedBox(
-                            width: 6,
-                          ),
-                          CircleAvatar(
-                              radius: 12.0,
-                              backgroundColor: Colors.transparent,
-                              child: Icon(Icons.location_on,
-                                  color:  ColorCodes.blackColor,
-                                  size: (18))),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Text(
-                              _deliverlocation,
-                              style: TextStyle(
-                                  color: ColorCodes.blackColor,
-                                  fontSize: 16.0),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          GestureDetector(
-                              onTap: () async {
-                                debugPrint('map screen click');
-                                prefs.setString("formapscreen", "homescreen");
-                                Navigator.of(context)
-                                    .pushNamed(MapScreen.routeName);
-                              },
-                              child: Text(
-                                "CHANGE",
-                                style: TextStyle(
-                                    color: ColorCodes.blackColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                          SizedBox(
-                            width: 10,
-                          )
-                        ])),*/
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -7614,7 +7543,6 @@ class _SingleproductScreenState extends State<SingleproductScreen>
             if (box.values.isEmpty)
               return GestureDetector(
                 onTap: () {
-                  debugPrint("onTap ........");
                    Navigator.of(context).pushNamed(CartScreen.routeName);
                 },
                 child:

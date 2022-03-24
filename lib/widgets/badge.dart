@@ -37,7 +37,6 @@ class _BadgeState extends State<Badge> {
       }
     } catch (e) {
       setState(() {
-        debugPrint('entererd catch init');
         _isWeb = true;
       });
     }

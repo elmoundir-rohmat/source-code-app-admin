@@ -291,10 +291,6 @@ class _MobileAuthScreenState extends State<MobileAuthScreen> {
                 child:
                 GestureDetector(
                   onTap: (){
-                    print("tapped");
-                    //  _enabled ? _onTap:
-                    // clikform();
-                    //   _dialogforProcessing();
                     setState(() {
                       _isLoading = true;
                       count + 1;
@@ -307,7 +303,6 @@ class _MobileAuthScreenState extends State<MobileAuthScreen> {
                     prefs.setString('prevscreen', "mobilenumber");
                     FocusScope.of(context).unfocus();
                     _saveForm();
-                    print("count" + count.toString());
                   },
 
                   child: Container(
@@ -387,7 +382,6 @@ class _MobileAuthScreenState extends State<MobileAuthScreen> {
           }
       );
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-debugPrint("response otp"+responseJson.toString());
       if (responseJson['status'].toString() == "true") {
         if (responseJson['type'].toString() == "old") {
           Navigator.of(context).pop();

@@ -109,10 +109,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     void launchWhatsApp() async {
       String phone = /*"+212652-655363"*/prefs.getString("secondary_mobile");
-      debugPrint("Whatsapp . .. . . .. . .");
       String url() {
         if (Platform.isIOS) {
-          debugPrint("Whatsapp1 . .. . . .. . .");
           return "whatsapp://wa.me/$phone/?text=${Uri.parse(translate('forconvience.hello'))}";
         } else {
           return "whatsapp://send?phone=$phone&text=${Uri.parse(translate('forconvience.hello'))}";

@@ -143,11 +143,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
               note = routeArgs['note'];
             }
           }
-          debugPrint("del . . . . . ." + deliverycharge.toString());
 
           walletbalance = prefs.getString("wallet_balance"); //user wallet balance
           loyaltyPoints = double.parse(prefs.getString("loyalty_balance")).toStringAsFixed(2); // user loyalty points
-          print("loyalty points...."+loyaltyPoints.toString());
           if (prefs.getString("membership") == "1") {
             cartTotal = Calculations.totalMember;
           } else {
@@ -200,7 +198,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
               _isLoayalty = false;
             });
           }
-          print("isloyalty....." + _isLoayalty.toString());
           if (_isLoayalty) {
             await Provider.of<BrandItemsList>(context, listen: false)
                 .checkLoyalty(totalAmount.toString())
@@ -233,7 +230,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     loyaltyPointsUser = double.parse(loyaltyPoints);
                     loyaltyAmount = ((loyaltyPointsUser * 1) /
                         int.parse(loyaltyData.itemsLoyalty[0].points));
-                    print("loyalty usersssss..."+loyaltyPointsUser.toString());
                     if (loyaltyAmount.toString() == "NaN") {
                       loyaltyAmount = 0.0;
                     }
@@ -258,33 +254,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
             !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
 
             if (double.parse(walletbalance) <= 0
-            /*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*/) {
-              debugPrint("wallet less than or equal 0");
+           ) {
               _isRemainingAmount = false;
               _ischeckboxshow = false;
               _ischeckbox = false;
             } else if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-              debugPrint("wallet greater total");
               _isRemainingAmount = false;
               _groupValue = -1;
               prefs.setString("payment_type", "wallet");
               walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
             } else if (_isSwitch ? totalAmount > (double.parse(walletbalance) + loyaltyAmount) : totalAmount > double.parse(walletbalance)) {
-              debugPrint("wallet less than total");
 
               for(int i = 0; i < paymentData.itemspayment.length; i++) {
                 if(paymentData.itemspayment[i].paymentMode == "1") {
-                  debugPrint("online wallet");
                   _groupValue = i;
                   _isOnline = true;
                   break;
                 } else if(paymentData.itemspayment[i].paymentMode == "0") {
-                  debugPrint("sod wallet");
                   _groupValue = i;
                   _isSod = true;
                   break;
                 }else if(paymentData.itemspayment[i].paymentMode == "6") {
-                  debugPrint("csh wallet");
                   _groupValue = i;
                   _isCOD = true;
                   break;
@@ -306,56 +296,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 }
               }
             }
-            debugPrint("remamountinit"+remainingAmount.toString());
           } else {
             _ischeckbox = false;
           }
-          /* if(_isWallet) {
-            double totalAmount = 0.0;
-            !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-
-            if (int.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-              _isRemainingAmount = false;
-              _ischeckboxshow = false;
-              _ischeckbox = false;
-            } else if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-              debugPrint("iswallet online");
-              _isRemainingAmount = false;
-              _groupValue = -1;
-              prefs.setString("payment_type", "wallet");
-              walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-            } else if (_isSwitch ? totalAmount > (int.parse(walletbalance) + loyaltyAmount) : totalAmount > int.parse(walletbalance)) {
-              bool _isOnline = false;
-              debugPrint("iswallet online.....1");
-              debugPrint("paymentlength"+paymentData.itemspayment.length.toString());
-              for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                if(paymentData.itemspayment[i].paymentMode == "1"||paymentData.itemspayment[i].paymentMode == "6") {
-                  _groupValue = i;
-                  _isOnline = true;
-                  break;
-                }
-
-              }
-              if(_isOnline) {
-                _groupValue = -1;
-                _isRemainingAmount = true;
-                walletAmount = double.parse(walletbalance);
-                remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - int.parse(walletbalance));
-              } else {
-                _isWallet = false;
-                _ischeckbox = false;
-              }
-              for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                if(paymentData.itemspayment[i].paymentMode == "1") {
-                  _groupValue = i;
-                  break;
-                }
-              }
-            }
-          } else {
-            _ischeckbox = false;
-          }
-*/
 
           //if both wallet is not there in payment method
           if(!_isWallet) {
@@ -471,7 +414,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     try {
       final loyaltyData = Provider.of<BrandItemsList>(context,listen: false);
-      debugPrint("wallettype"+prefs.getString("wallet_type"));
       var resBody = {};
       resBody["userId"] = prefs.getString('userID');
       resBody["walletType"] = prefs.getString("wallet_type");
@@ -496,7 +438,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       resBody["loyalty_points"] = loyaltyPointsUser./*roundToDouble().*/toStringAsFixed(2);
       resBody["point"] = (loyaltyData.itemsLoyalty.length > 0) ? loyaltyData.itemsLoyalty[0].points.toString() : "0";
       resBody["version"] = _isWeb ? "web 1.0.0" : packageInfo.version + "+" + packageInfo.buildNumber;
-      debugPrint("respay"+resBody.toString());
       for (int i = 0; i < productBox.length; i++) {
         if (index != "") {
           if (int.parse(index) == i) {
@@ -518,13 +459,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
         }
       }
 
-      debugPrint("orderresponse"+resBody.toString());
       final response = await http.post(
         url,
         body: resBody,
       );
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("respay"+responseJson.toString());
       _isorder = true;
       if (responseJson['status'].toString() == "true") {
         if (prefs.getString('payment_type') == "paytm") {
@@ -535,9 +474,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           String deliverycharge=orderdecode['deliveryCharge'].toString();
           String actualamount=orderdecode['actualAmount'].toString();
           String totaldiscount=orderdecode['totalDiscount'].toString();
-          debugPrint("wallet"+wallet + " del charge"+deliverycharge+"act amt"+actualamount.toString());
           double total;
-          debugPrint("itemmodelcharge"+deliverycharge.toString());
           if(deliverycharge !=0){
             total= double.parse(actualamount) +
                 double.parse(deliverycharge) -double.parse(wallet)
@@ -547,7 +484,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
             total= double.parse(orderAmount)-double.parse(wallet)
                 - double.parse(totaldiscount);
           }
-          debugPrint("total payment"+total.toString());
           prefs.setString("orderId", orderdecode['id'].toString());
 
           final routeArgs = ModalRoute.of(context).settings.arguments as Map<String, String>;
@@ -589,7 +525,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         });
       }
     } catch (error) {
-      debugPrint("eror"+error);
       throw error;
     }
   }
@@ -647,11 +582,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         setState(() {
           _promocode = myController.text;
         });
-        print("cart total promo"+cartTotal.toString());
-        print("art totla prpmocode"+myController.text.toString());
-        print("items"+item.toString());
-        print("user"+prefs.getString('userID').toString());
-        print("adelivery"+deliveryamount.toString());
         final response = await http.post(url, body: {
           // await keyword is used to wait to this operation is complete.
           "promocode": myController.text,
@@ -677,16 +607,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
               walletAmount = double.parse(walletbalance);
               remainingAmount = double.parse(_promoamount) - double.parse(walletbalance);
-              debugPrint("remamountcheckpromo"+remainingAmount.toString());
-              //promocashbackmsg = responseJson['msg'].toString();
-              //promomessage = responseJson['prmocodeType'].toString();
             });
           else
             setState(() {
               _checkpromo = false;
               _displaypromo = true;
               _savedamount = responseJson['amount'].toString();
-              debugPrint('promo..'+responseJson['amount'].toString());
               if (_isPickup)
                 _promoamount = (cartTotal -
                     double.parse(responseJson['amount'].toString()))
@@ -699,23 +625,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
               _promocode = myController.text;
 
               walletAmount = double.parse(walletbalance);
-              debugPrint("wallet amount"+walletAmount.toString());
-              debugPrint("wallet amount + delivery charge"+(cartTotal+deliverycharge).toString());
               if(walletAmount >= (cartTotal + deliveryamount)){
-                debugPrint("greater");
-                debugPrint((double.parse(walletbalance) - double.parse(_promoamount)).toString());
-                debugPrint("promo acmount"+_promoamount.toString());
                 walletAmount= double.parse(walletbalance) + ( double.parse(_promoamount) - double.parse(walletbalance));
-                debugPrint("walt acmount"+walletAmount.toString());
               }
               else {
-                debugPrint("lesser");
                 remainingAmount =
                     double.parse(_promoamount) - double.parse(walletbalance);
                 if(remainingAmount < 0){
-                  debugPrint("negative  remaining amount");
                   walletAmount= double.parse(walletbalance) + ( double.parse(_promoamount) - double.parse(walletbalance));
-                  debugPrint("walt acmount less"+walletAmount.toString());
                   remainingAmount =
                       walletAmount - double.parse(_promoamount);
                   setState(() {
@@ -728,7 +645,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
                       if (double.parse(walletbalance) <= 0
                       /*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*/) {
-                        debugPrint("wallet less than or equal 0");
                         _isRemainingAmount = false;
                         _ischeckboxshow = false;
                         _ischeckbox = false;
@@ -736,7 +652,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ? totalAmount <=
                           (double.parse(walletbalance) /*+ loyaltyAmount*/)
                           : totalAmount <= (double.parse(walletbalance))) {
-                        debugPrint("wallet greater total");
                         _isRemainingAmount = false;
                         _groupValue = -1;
                         prefs.setString("payment_type", "wallet");
@@ -746,24 +661,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ? totalAmount >
                           (double.parse(walletbalance) /*+ loyaltyAmount*/)
                           : totalAmount > double.parse(walletbalance)) {
-                        debugPrint("wallet less than total");
 
                         for (int i = 0; i < paymentData.itemspayment
                             .length; i++) {
                           if (paymentData.itemspayment[i].paymentMode == "1") {
-                            debugPrint("online wallet");
                             _groupValue = i;
                             _isOnline = true;
                             break;
                           } else if (paymentData.itemspayment[i].paymentMode ==
                               "0") {
-                            debugPrint("sod wallet");
                             _groupValue = i;
                             _isSod = true;
                             break;
                           } else if (paymentData.itemspayment[i].paymentMode ==
                               "6") {
-                            debugPrint("csh wallet");
                             _groupValue = i;
                             _isCOD = true;
                             break;
@@ -792,19 +703,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           }
                         }
                       }
-                      debugPrint("remamountinit" + remainingAmount.toString());
                     } else {
                       _ischeckbox = false;
                     }
                   });
                 }
                 else{
-                  debugPrint("positive   remaining amount");
                   remainingAmount =
                       double.parse(_promoamount) - double.parse(walletbalance);
                 }
               }
-              debugPrint("remamountcheckelse"+remainingAmount.toString());
               promocashbackmsg = responseJson['msg'].toString();
               promomessage = responseJson['prmocodeType'].toString();
             });
@@ -862,7 +770,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
                   if (double.parse(walletbalance) <=
                       0 /*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*/) {
-                    debugPrint("wallet zerom or equal");
                     _isRemainingAmount = false;
                     _ischeckboxshow = false;
                     _ischeckbox = false;
@@ -874,7 +781,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ? totalAmount <=
                       (double.parse(walletbalance) + loyaltyAmount)
                       : totalAmount <= (double.parse(walletbalance))) {
-                    debugPrint("wallet greater or equal");
                     _isRemainingAmount = false;
                     _groupValue = -1;
                     prefs.setString("payment_type", "wallet");
@@ -890,7 +796,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       (double.parse(loyaltyPoints) > 0)
                       ? totalAmount > (double.parse(walletbalance) /*+ loyaltyAmount*/)
                       : totalAmount > double.parse(walletbalance)) {
-                    debugPrint("wallet less ");
                     bool _isOnline = false;
                     bool _isSod = false;
                     for (int i = 0; i < paymentData.itemspayment.length; i++) {
@@ -933,7 +838,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       }
                     }
                   }
-                  debugPrint("remamountpromoelser"+remainingAmount.toString());
                 } else {
                   _ischeckbox = false;
                 }
@@ -942,7 +846,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
               });
             });
             _isSwitch = false;
-            print("swicth value....promo...."+_isSwitch.toString());
           } else {
             //  Navigator.of(context).pop();
           }
@@ -955,16 +858,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
             _promocode = "";
             _isSwitch = false;
           });
-          // Navigator.of(context).pop();
-          debugPrint("message promo"+responseJson['msg'].toString());
-         // if(responseJson['msg'].toString() == "Minimum amount should be 100")
           if(_isWeb && !ResponsiveLayout.isSmallScreen(context)) {
             Navigator.of(context).pop();
-           // _customToast(responseJson['msg'].toString());
           }else {
             return Fluttertoast.showToast(msg: responseJson['msg'].toString());
           }
-          //return Fluttertoast.showToast(msg: translate('forconvience.invalidpromo'));
         }
       } catch (error) {
         throw error;
@@ -997,14 +895,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
 
     String deliverychargetext;
-    debugPrint("deliverycharge . . . .. . . " + deliverycharge.toString());
-    debugPrint(_checkmembership.toString() + "   " + Calculations.totalMember.toString());
-    debugPrint(minorderamount.toString() + "    " + Calculations.total.toString());
-
     if (!_isLoading) if (_checkmembership
         ? (Calculations.totalMember < minorderamount)
         : (Calculations.total < minorderamount)) {
-      debugPrint(",,,,," + (deliverycharge <= 0).toString());
       if (deliverycharge <= 0) {
         deliverychargetext =  translate('forconvience.FREE');//"FREE";
       } else {
@@ -1015,7 +908,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       deliverychargetext =  translate('forconvience.FREE');//"FREE";
     }
     void _handleRadioValueChange1(int value) {
-      debugPrint("radio click....");
       setState(() {
         _groupValue = value;
         _ischeckbox = false;
@@ -1156,7 +1048,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
 
     _buildBottomNavigationBar() {
-      debugPrint("remamount botton"+remainingAmount.toStringAsFixed(2)+ _currencyFormat ,);
       return SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -1406,46 +1297,32 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     }
                   } else {
                     if (_ischeckbox && _isRemainingAmount && _isOnline) {
-                      debugPrint("onlinepay");
                       prefs.setString("payment_type", "paytm");
-                      //prefs.setString("amount", walletbalance);
                       prefs.setString(
                           "amount", walletAmount.toStringAsFixed(2));
                       prefs.setString("wallet_type", "0");
                     }
                     else if(_ischeckbox && _isRemainingAmount && _isSod){
-                      debugPrint("sod");
                       prefs.setString("payment_type", "sod");
-                      //prefs.setString("amount", walletbalance);
                       prefs.setString(
                           "amount", walletAmount.toStringAsFixed(2));
                       prefs.setString("wallet_type", "0");
                     }
 
                     else if(_ischeckbox && _isRemainingAmount && _isCOD){
-                      debugPrint("cod");
                       prefs.setString("payment_type", "cod");
-                      //prefs.setString("amount", walletbalance);
                       prefs.setString(
                           "amount", walletAmount.toStringAsFixed(2));
                       prefs.setString("wallet_type", "0");
                     }
                     else if (_ischeckbox) {
                       prefs.setString("payment_type", "wallet");
-                      //prefs.setString("amount", (cartTotal + deliveryamount).toStringAsFixed(2));
                       prefs.setString(
                           "amount", walletAmount.toStringAsFixed(2));
                       prefs.setString("wallet_type", "0");
                     }
                     _dialogforOrdering(context);
                     Orderfood();
-                    /*if(prefs.containsKey("orderId")) {
-                            _cancelOrder().then((value) async {
-                              Orderfood();
-                            });
-                          } else {
-                            Orderfood();
-                          }*/
                   }
                 },
                 child: Container(
@@ -1693,100 +1570,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     behavior: HitTestBehavior.translucent,
                                     onTap: () {
                                       setState(() {
-                                        /* _ischeckbox = !_ischeckbox;
-                                        double totalAmount = 0.0;
-                                        !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));*/
-                                        /* if(_isWallet) {
-                                          if (int.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-                                            _isRemainingAmount = false;
-                                            _ischeckboxshow = false;
-                                            _ischeckbox = false;
-                                          } else if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                            _isRemainingAmount = false;
-                                            _groupValue = -1;
-                                            prefs.setString("payment_type", "wallet");
-                                            walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                          } else if (_isSwitch ? totalAmount > (int.parse(walletbalance) + loyaltyAmount) : totalAmount > int.parse(walletbalance)) {
-                                            for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                              if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                _groupValue = i;
-                                                _isOnline = true;
-                                                break;
-                                              } else if(paymentData.itemspayment[i].paymentMode == "6") {
-                                                _groupValue = i;
-                                                _isCOD = true;
-                                                break;
-                                              }
-                                            }
-                                            if(_isOnline || _isCOD) {
-                                              _groupValue = -1;
-                                              _isRemainingAmount = true;
-                                              walletAmount = double.parse(walletbalance);
-                                              setState(() {
-                                                remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - int.parse(walletbalance));
-                                              });
-
-                                            } else {
-                                              _isWallet = false;
-                                              _ischeckbox = false;
-                                            }
-                                            for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                              if(paymentData.itemspayment[i].paymentMode == "1" || paymentData.itemspayment[i].paymentMode == "6") {
-                                                _groupValue = i;
-                                                break;
-                                              }
-                                            }
-
-                                          }
-                                        } else {
-                                          _ischeckbox = false;
-                                        }*/
-
-                                        /* if(_isWallet) {
-                                          double totalAmount = 0.0;
-                                          !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-
-                                          if (int.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-                                            _isRemainingAmount = false;
-                                            _ischeckboxshow = false;
-                                            _ischeckbox = false;
-                                          } else if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                            _isRemainingAmount = false;
-                                            _groupValue = -1;
-                                            prefs.setString("payment_type", "wallet");
-                                            walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                          } else if (_isSwitch ? totalAmount > (int.parse(walletbalance) + loyaltyAmount) : totalAmount > int.parse(walletbalance)) {
-                                            for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                              if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                _groupValue = i;
-                                                _isOnline = true;
-                                                break;
-                                              } else if(paymentData.itemspayment[i].paymentMode == "6") {
-                                                _groupValue = i;
-                                                _isCOD = true;
-                                                break;
-                                              }
-                                            }
-                                            if(_isOnline || _isCOD) {
-                                              _groupValue = -1;
-                                              _isRemainingAmount = true;
-                                              walletAmount = double.parse(walletbalance);
-                                              remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - int.parse(walletbalance));
-                                            } else {
-                                              _isWallet = false;
-                                              _ischeckbox = false;
-                                            }
-                                            for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                              if(paymentData.itemspayment[i].paymentMode == "1" || paymentData.itemspayment[i].paymentMode == "6") {
-                                                _groupValue = i;
-                                                break;
-                                              }
-                                            }
-                                          }
-                                          debugPrint("remamountinit"+remainingAmount.toString());
-                                        } else {
-                                          _ischeckbox = false;
-                                        }*/
                                       });
                                     },
                                     child: Container(
@@ -1803,104 +1586,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             behavior: HitTestBehavior.translucent,
                                             onTap: () {
                                               setState(() {
-                                                /* _ischeckbox = !_ischeckbox;
-                                                double totalAmount = 0.0;
-                                                !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));*/
-                                                /*if(_isWallet) {
-                                                  if (int.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-                                                    _isRemainingAmount = false;
-                                                    _ischeckboxshow = false;
-                                                    _ischeckbox = false;
-                                                  } else if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                                    _isRemainingAmount = false;
-                                                    _groupValue = -1;
-                                                    prefs.setString("payment_type", "wallet");
-                                                    walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                                  } else if (_isSwitch ? totalAmount > (int.parse(walletbalance) + loyaltyAmount) : totalAmount > int.parse(walletbalance)) {
-                                                    bool _isOnline = false;
-                                                    for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                                      *//*if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                        _isOnline = true;
-                                                        break;
-                                                      }*//*
-                                                      if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                        _groupValue = i;
-                                                        _isOnline = true;
-                                                        break;
-                                                      } else if(paymentData.itemspayment[i].paymentMode == "6") {
-                                                        _groupValue = i;
-                                                        _isCOD = true;
-                                                        break;
-                                                      }
-                                                    }
-                                                    if(_isOnline || _isCOD) {
-                                                      _groupValue = -1;
-                                                      _isRemainingAmount = true;
-                                                      walletAmount = double.parse(walletbalance);
-                                                      setState(() {
-                                                        remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - int.parse(walletbalance));
-                                                      });
-
-                                                    } else {
-                                                      _isWallet = false;
-                                                      _ischeckbox = false;
-                                                    }
-                                                    for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                                      if(paymentData.itemspayment[i].paymentMode == "1" || paymentData.itemspayment[i].paymentMode == "6") {
-                                                        _groupValue = i;
-                                                        break;
-                                                      }
-                                                    }
-
-                                                  }
-                                                } else {
-                                                  _ischeckbox = false;
-                                                }*/
-                                                /* if(_isWallet) {
-                                                  double totalAmount = 0.0;
-                                                  !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-
-                                                  if (int.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-                                                    _isRemainingAmount = false;
-                                                    _ischeckboxshow = false;
-                                                    _ischeckbox = false;
-                                                  } else if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                                    _isRemainingAmount = false;
-                                                    _groupValue = -1;
-                                                    prefs.setString("payment_type", "wallet");
-                                                    walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                                  } else if (_isSwitch ? totalAmount > (int.parse(walletbalance) + loyaltyAmount) : totalAmount > int.parse(walletbalance)) {
-                                                    for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                                      if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                        _groupValue = i;
-                                                        _isOnline = true;
-                                                        break;
-                                                      } else if(paymentData.itemspayment[i].paymentMode == "6") {
-                                                        _groupValue = i;
-                                                        _isCOD = true;
-                                                        break;
-                                                      }
-                                                    }
-                                                    if(_isOnline || _isCOD) {
-                                                      _groupValue = -1;
-                                                      _isRemainingAmount = true;
-                                                      walletAmount = double.parse(walletbalance);
-                                                      remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - int.parse(walletbalance));
-                                                    } else {
-                                                      _isWallet = false;
-                                                      _ischeckbox = false;
-                                                    }
-                                                    for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                                      if(paymentData.itemspayment[i].paymentMode == "1" || paymentData.itemspayment[i].paymentMode == "6") {
-                                                        _groupValue = i;
-                                                        break;
-                                                      }
-                                                    }
-                                                  }
-                                                  debugPrint("remamountinit"+remainingAmount.toString());
-                                                } else {
-                                                  _ischeckbox = false;
-                                                }*/
                                               });
                                             },
                                             child: Row(
@@ -2489,193 +2174,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 thickness: 2.5,
               ),
             if (_isPaymentMethod)
-              /*if (_isWallet)
-                _ischeckboxshow
-                    ? Container(
-                  width: MediaQuery.of(context).size.width * 0.40,
-                  color: ColorCodes.whiteColor,
-                  padding: EdgeInsets.only(
-                      top: 20.0, left: 10.0, right: 10.0, bottom: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            IConstants.APP_NAME + " Wallet",
-                            style: TextStyle(
-                                color: ColorCodes.blackColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Balance:  ",
-                                style: TextStyle(
-                                    color: ColorCodes.blackColor,
-                                    fontSize: 10.0),
-                              ),
-                              Image.asset(Images.walletImg,
-                                  height: 13.0,
-                                  width: 16.0,
-                                  color: ColorCodes.darkBlueColor),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                " " + walletbalance+ _currencyFormat ,
-                                style: TextStyle(
-                                    color: ColorCodes.blackColor,
-                                    fontSize: 10.0),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          setState(() {
-                            _ischeckbox = !_ischeckbox;
-                            double totalAmount = 0.0;
-                            !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-                            if(_isWallet) {
-                              if (double.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-                                _isRemainingAmount = false;
-                                _ischeckboxshow = false;
-                                _ischeckbox = false;
-                              } else if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                _isRemainingAmount = false;
-                                _groupValue = -1;
-                                prefs.setString("payment_type", "wallet");
-                                walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                              } else if (_isSwitch ? totalAmount > (double.parse(walletbalance) + loyaltyAmount) : totalAmount > double.parse(walletbalance)) {
-                                bool _isOnline = false;
-                                bool _isSod = false;
-                                for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                  if(paymentData.itemspayment[i].paymentMode == "1") {
-                                    _isOnline = true;
-                                    break;
-                                  }
-                                  else  if(paymentData.itemspayment[i].paymentMode == "0") {
-                                    _isSod = true;
-                                    break;
-                                  }
-                                }
-                                if(_isOnline || _isSod) {
-                                  _groupValue = -1;
-                                  _isRemainingAmount = true;
-                                  walletAmount = double.parse(walletbalance);
-                                  remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - double.parse(walletbalance));
-                                  debugPrint("remamountsssss"+remainingAmount.toString());
-                                } else {
-                                  _isWallet = false;
-                                  _ischeckbox = false;
-                                }
-                                for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                  if(paymentData.itemspayment[i].paymentMode == "1") {
-                                    _groupValue = i;
-                                    break;
-                                  }
-                                }
-
-                              }
-                            } else {
-                              _ischeckbox = false;
-                            }
-                          });
-                        },
-                        child: Row(
-                          children: [
-                            if (_ischeckboxshow && _ischeckbox)
-                              Image.asset(Images.walletImg,
-                                  height: 15.0,
-                                  width: 18.0,
-                                  color: ColorCodes.darkBlueColor),
-                            if (_ischeckboxshow && _ischeckbox)
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                            if (_ischeckboxshow && _ischeckbox)
-                              Text(
-
-                                " " +
-                                    walletAmount.toStringAsFixed(2)+ _currencyFormat ,
-                                style: TextStyle(
-                                    color: ColorCodes.blackColor,
-                                    fontSize: 12.0),
-                              ),
-                            SizedBox(width: 20.0),
-                            _ischeckbox
-                                ? Icon(
-                              Icons.radio_button_checked,
-                              size: 20.0,
-                              color: ColorCodes.mediumBlueColor,
-                            )
-                                : Icon(
-                              Icons.radio_button_off,
-                              size: 20.0,
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-                    : Container(
-                  width: MediaQuery.of(context).size.width * 0.40,
-                  padding: EdgeInsets.only(
-                      top: 20.0, left: 10.0, right: 10.0, bottom: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            IConstants.APP_NAME + " Wallet",
-                            style: TextStyle(
-                                color: ColorCodes.greyColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Balance:  ",
-                                style: TextStyle(
-                                    color: ColorCodes.greyColor,
-                                    fontSize: 10.0),
-                              ),
-                              SizedBox(
-                                height: 2.0,
-                              ),
-                              Image.asset(Images.walletImg,
-                                  height: 13.0,
-                                  width: 16.0,
-                                  color: ColorCodes.darkBlueColor),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                " " + walletbalance+ _currencyFormat ,
-                                style: TextStyle(
-                                    color: ColorCodes.greyColor,
-                                    fontSize: 10.0),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.radio_button_off,
-                              size: 20.0, color: ColorCodes.greyColor)
-                        ],
-                      ),
-                    ],
-                  ),
-                ),*/
             if (_isPaymentMethod)
               if (_isWallet)
                 Divider(
@@ -2722,14 +2220,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             behavior: HitTestBehavior.translucent,
                             onTap: (){
                               double totalAmount = 0.0;
-                              debugPrint("onpay");
                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                               if (_isWallet && _ischeckboxshow) {
                                 _isOnline = true;
                                 _isSod = false;
                                 _isCOD = false;
                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                  debugPrint("wallet greater total");
                                   _isRemainingAmount = false;
                                   _groupValue = -1;
                                   prefs.setString("payment_type", "wallet");
@@ -2759,7 +2255,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   }
                                   setState(() {
-                                    debugPrint("iiiiii" + i.toString());
                                     _groupValue = i;
                                   });
                                 }
@@ -2815,18 +2310,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           value: i,
                                           onChanged: (newValue) {
                                             setState(() {
-                                              debugPrint("clicked radio");
                                               //  _groupValue = newValue;
                                               //_ischeckbox = false;
                                               double totalAmount = 0.0;
-                                              debugPrint("onpay");
                                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                               if (_isWallet && _ischeckboxshow) {
                                                 _isOnline = true;
                                                 _isSod = false;
                                                 _isCOD = false;
                                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                                  debugPrint("wallet greater total");
                                                   _isRemainingAmount = false;
                                                   _groupValue = -1;
                                                   prefs.setString("payment_type", "wallet");
@@ -2861,8 +2353,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                     });
                                                   }
                                                   setState(() {
-                                                    debugPrint("iiiiii" +
-                                                        i.toString());
                                                     _groupValue = i;
                                                   });
                                                 }
@@ -2885,13 +2375,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               double totalAmount = 0.0;
                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                               if (_isWallet && _ischeckboxshow) {
-                                debugPrint("Coming . . . . . .");
                                 _isOnline = true;
                                 _isCOD = false;
                                 _isSod = false;
 
                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                  debugPrint("wallet greater total");
                                   _isRemainingAmount = false;
                                   _groupValue = -1;
                                   prefs.setString("payment_type", "wallet");
@@ -2899,7 +2387,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 }else {
                                   if (_isOnline || _isCOD || _isSod) {
                                     setState(() {
-                                      debugPrint("Coming1 . . . . . .");
                                       _groupValue = -1;
                                       _isRemainingAmount = true;
                                       walletAmount =
@@ -2916,7 +2403,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   } else {
                                     setState(() {
-                                      debugPrint("Coming2 . . . . . .");
                                       _isWallet = false;
                                       _ischeckbox = false;
                                     });
@@ -2926,7 +2412,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   });
                                 }
                               } else {
-                                debugPrint("Coming3 . . . . . .");
                                 _handleRadioValueChange1(i);
                               }
                             },
@@ -2964,20 +2449,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       value: i,
                                       onChanged: (newValue) {
                                         setState(() {
-                                          debugPrint("clicked radio");
                                           //  _groupValue = newValue;
                                           //   _ischeckbox = false;
 
                                           double totalAmount = 0.0;
                                           !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                           if (_isWallet && _ischeckboxshow) {
-                                            debugPrint("Coming . . . . . .");
                                             _isOnline = true;
                                             _isSod = false;
                                             _isCOD = false;
 
                                             if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                              debugPrint("wallet greater total");
                                               _isRemainingAmount = false;
                                               _groupValue = -1;
                                               prefs.setString("payment_type", "wallet");
@@ -2985,8 +2467,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             }else {
                                               if (_isOnline || _isCOD || _isSod) {
                                                 setState(() {
-                                                  debugPrint(
-                                                      "Coming1 . . . . . .");
                                                   _groupValue = -1;
                                                   _isRemainingAmount = true;
                                                   walletAmount = double.parse(
@@ -3006,8 +2486,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 });
                                               } else {
                                                 setState(() {
-                                                  debugPrint(
-                                                      "Coming2 . . . . . .");
                                                   _isWallet = false;
                                                   _ischeckbox = false;
                                                 });
@@ -3017,7 +2495,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               });
                                             }
                                           } else {
-                                            debugPrint("Coming3 . . . . . .");
                                             _handleRadioValueChange1(i);
                                           }
                                         });
@@ -3038,14 +2515,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             behavior: HitTestBehavior.translucent,
                             onTap: (){
                               double totalAmount = 0.0;
-                              debugPrint("onpay");
                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                               if (_isWallet && _ischeckboxshow) {
                                 _isOnline = false;
                                 _isSod = true;
                                 _isCOD = false;
                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                  debugPrint("wallet greater total");
                                   _isRemainingAmount = false;
                                   _groupValue = -1;
                                   prefs.setString("payment_type", "wallet");
@@ -3075,7 +2550,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   }
                                   setState(() {
-                                    debugPrint("iiiiii" + i.toString());
                                     _groupValue = i;
                                   });
                                 }
@@ -3145,18 +2619,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           value: i,
                                           onChanged: (newValue) {
                                             setState(() {
-                                              debugPrint("clicked radio");
                                               //  _groupValue = newValue;
                                               //_ischeckbox = false;
                                               double totalAmount = 0.0;
-                                              debugPrint("onpay");
                                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                               if (_isWallet && _ischeckboxshow) {
                                                 _isOnline = false;
                                                 _isSod = true;
                                                 _isCOD = false;
                                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                                  debugPrint("wallet greater total");
                                                   _isRemainingAmount = false;
                                                   _groupValue = -1;
                                                   prefs.setString("payment_type", "wallet");
@@ -3191,8 +2662,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                     });
                                                   }
                                                   setState(() {
-                                                    debugPrint("iiiiii" +
-                                                        i.toString());
                                                     _groupValue = i;
                                                   });
                                                 }
@@ -3215,13 +2684,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               double totalAmount = 0.0;
                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                               if (_isWallet && _ischeckboxshow) {
-                                debugPrint("Coming . . . . . .");
                                 _isOnline = false;
                                 _isCOD = false;
                                 _isSod = true;
 
                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                  debugPrint("wallet greater total");
                                   _isRemainingAmount = false;
                                   _groupValue = -1;
                                   prefs.setString("payment_type", "wallet");
@@ -3229,7 +2696,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 }else {
                                   if (_isOnline || _isCOD || _isSod) {
                                     setState(() {
-                                      debugPrint("Coming1 . . . . . .");
                                       _groupValue = -1;
                                       _isRemainingAmount = true;
                                       walletAmount =
@@ -3246,7 +2712,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   } else {
                                     setState(() {
-                                      debugPrint("Coming2 . . . . . .");
                                       _isWallet = false;
                                       _ischeckbox = false;
                                     });
@@ -3256,7 +2721,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   });
                                 }
                               } else {
-                                debugPrint("Coming3 . . . . . .");
                                 _handleRadioValueChange1(i);
                               }
                             },
@@ -3307,20 +2771,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       value: i,
                                       onChanged: (newValue) {
                                         setState(() {
-                                          debugPrint("clicked radio");
-                                          //  _groupValue = newValue;
-                                          //   _ischeckbox = false;
-
                                           double totalAmount = 0.0;
                                           !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                           if (_isWallet && _ischeckboxshow) {
-                                            debugPrint("Coming . . . . . .");
                                             _isOnline = false;
                                             _isSod = true;
                                             _isCOD = false;
 
                                             if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                              debugPrint("wallet greater total");
                                               _isRemainingAmount = false;
                                               _groupValue = -1;
                                               prefs.setString("payment_type", "wallet");
@@ -3328,8 +2786,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             }else {
                                               if (_isOnline || _isCOD || _isSod) {
                                                 setState(() {
-                                                  debugPrint(
-                                                      "Coming1 . . . . . .");
                                                   _groupValue = -1;
                                                   _isRemainingAmount = true;
                                                   walletAmount = double.parse(
@@ -3349,8 +2805,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 });
                                               } else {
                                                 setState(() {
-                                                  debugPrint(
-                                                      "Coming2 . . . . . .");
                                                   _isWallet = false;
                                                   _ischeckbox = false;
                                                 });
@@ -3360,7 +2814,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               });
                                             }
                                           } else {
-                                            debugPrint("Coming3 . . . . . .");
                                             _handleRadioValueChange1(i);
                                           }
                                         });
@@ -3588,8 +3041,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: (){
-                                debugPrint("cadh");
-                                debugPrint("wallet +cash");
                                 double totalAmount = 0.0;
                                 !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                 if (_isWallet && _ischeckboxshow) {
@@ -3597,7 +3048,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   _isCOD = true;
                                   _isSod = false;
                                   if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                    debugPrint("wallet greater total");
                                     _isRemainingAmount = false;
                                     _groupValue = -1;
                                     prefs.setString("payment_type", "wallet");
@@ -3606,7 +3056,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   else {
                                     if (_isOnline || _isCOD || _isSod) {
                                       setState(() {
-                                        debugPrint("cash....");
                                         _groupValue = -1;
                                         _isRemainingAmount = true;
                                         walletAmount =
@@ -3623,7 +3072,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       });
                                     } else {
                                       setState(() {
-                                        debugPrint("cash....else");
                                         _isWallet = false;
                                         _ischeckbox = false;
                                       });
@@ -3633,7 +3081,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   }
                                 } else {
-                                  debugPrint("cash...click.");
                                   _handleRadioValueChange1(i);
                                 }
                               },
@@ -3713,11 +3160,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                   value: i,
                                                   onChanged: (newValue) {
                                                     setState(() {
-
-                                                      /* debugPrint("clicked radio");
-                                            _groupValue = newValue;
-                                            _ischeckbox = false;*/
-
                                                       double totalAmount = 0.0;
                                                       !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                                       if (_isWallet && _ischeckboxshow) {
@@ -3725,7 +3167,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         _isCOD = true;
                                                         _isSod = false;
                                                         if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                                          debugPrint("wallet greater total");
                                                           _isRemainingAmount = false;
                                                           _groupValue = -1;
                                                           prefs.setString("payment_type", "wallet");
@@ -3733,8 +3174,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         }
                                                         else {
                                                           if (_isOnline || _isCOD || _isSod) {
-                                                            debugPrint(
-                                                                "cash..........................");
                                                             setState(() {
                                                               _groupValue = -1;
                                                               _isRemainingAmount = true;
@@ -3771,244 +3210,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                   },
                                                 ),
                                               )
-                                              /*SizedBox(
-                                                        height: 10.0,
-                                                      ),*/
-                                              /* Row(
-                                                        children: [
-                                                          *//*Image.asset(
-                                                            Images.cashImg,
-                                                            width: 26.0,
-                                                            height: 26.0,
-                                                          ),*//*
-                                                          SizedBox(width: 10.0),
-                                                          Expanded(
-                                                              child: Text(
-                                                            "Tip: To ensure a contactless delivery, we recommend you use an online payment method.",
-                                                            style: TextStyle(
-                                                                fontSize: 12.0,
-                                                                color: ColorCodes
-                                                                    .greyColor),
-                                                          )),
-                                                          SizedBox(width: 50.0),
-                                                        ],
-                                                      ),*/
                                             ],
                                           ),
                                         ),
                                       ),
                                     ),
-                                    /*Expanded(
-                                      child: Center(
-                                        child: Container(
-                                          width:
-                                          MediaQuery.of(context).size.width,
-                                          padding: EdgeInsets.only(
-                                            //top: 20.0,
-                                            //left: 10.0,
-                                             // right: 10.0,
-                                              bottom: 20.0),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Image.asset(
-                                                Images.cashImg,
-                                                width: 26.0,
-                                                height: 26.0,
-                                              ),
-                                              Center(
-                                                child: Text(
-                                                 translate('forconvience.Cash on Delivery'),
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color:
-                                                      ColorCodes.blackColor,fontWeight: FontWeight.bold),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5.0,
-                                              ),
-
-                                              *//*SizedBox(
-                                                        height: 10.0,
-                                                      ),*//*
-                                              *//* Row(
-                                                        children: [
-                                                          *//**//*Image.asset(
-                                                            Images.cashImg,
-                                                            width: 26.0,
-                                                            height: 26.0,
-                                                          ),*//**//*
-                                                          SizedBox(width: 10.0),
-                                                          Expanded(
-                                                              child: Text(
-                                                            "Tip: To ensure a contactless delivery, we recommend you use an online payment method.",
-                                                            style: TextStyle(
-                                                                fontSize: 12.0,
-                                                                color: ColorCodes
-                                                                    .greyColor),
-                                                          )),
-                                                          SizedBox(width: 50.0),
-                                                        ],
-                                                      ),*//*
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),*/
-                                    /*Expanded(
-                                      child: Container(
-                                        width:
-                                        MediaQuery.of(context).size.width,
-                                        padding: EdgeInsets.only(
-                                          //top: 20.0,
-                                          // left: 10.0,
-                                            right: 10.0,
-                                            bottom: 20.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              translate('forconvience.Cash on Delivery'),
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  color:
-                                                  ColorCodes.blackColor,fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            Image.asset(
-                                              Images.cashImg,
-                                              width: 26.0,
-                                              height: 26.0,
-                                            ),
-                                            *//*SizedBox(
-                                                      height: 10.0,
-                                                    ),*//*
-                                            *//* Row(
-                                                      children: [
-                                                        *//**//*Image.asset(
-                                                          Images.cashImg,
-                                                          width: 26.0,
-                                                          height: 26.0,
-                                                        ),*//**//*
-                                                        SizedBox(width: 10.0),
-                                                        Expanded(
-                                                            child: Text(
-                                                          "Tip: To ensure a contactless delivery, we recommend you use an online payment method.",
-                                                          style: TextStyle(
-                                                              fontSize: 12.0,
-                                                              color: ColorCodes
-                                                                  .greyColor),
-                                                        )),
-                                                        SizedBox(width: 50.0),
-                                                      ],
-                                                    ),*//*
-                                          ],
-                                        ),
-                                      ),
-                                    ),*/
-                                    //SizedBox(width: 50.0),
-                                    /*if(remainingAmount>0)
-                                      Text(
-                                          remainingAmount
-                                              .toStringAsFixed(2) +
-                                              " " +_currencyFormat
-                                          ,
-                                          style: TextStyle(
-                                              color: ColorCodes
-                                                  .blackColor,
-                                              fontSize: 12.0)),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    SizedBox(
-                                      width: 20.0,
-                                      child: _myRadioButton(
-                                        title: "",
-                                        value: i,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            //  _groupValue = newValue;
-                                            //  _ischeckbox = false;
-
-                                            debugPrint("cadh");
-                                            double totalAmount = 0.0;
-                                            !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-                                            if (_isWallet && _ischeckboxshow) {
-                                              _isOnline = false;
-                                              _isCOD = true;
-                                              _isSod = false;
-
-
-                                              if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                                debugPrint("wallet greater total");
-                                                _isRemainingAmount = false;
-                                                _groupValue = -1;
-                                                prefs.setString("payment_type", "wallet");
-                                                walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                              }
-                                              else {
-                                                debugPrint("wallet less total");
-                                                if (_isOnline || _isCOD || _isSod) {
-                                                  setState(() {
-                                                    debugPrint("cash....");
-                                                    _groupValue = -1;
-                                                    _isRemainingAmount = true;
-                                                    walletAmount = double.parse(
-                                                        walletbalance);
-                                                    remainingAmount =
-                                                    _isSwitch &&
-                                                        !_isLoyaltyToast &&
-                                                        _isLoayalty &&
-                                                        (double.parse(
-                                                            loyaltyPoints) > 0)
-                                                        ? totalAmount -
-                                                        double.parse(
-                                                            walletbalance) -
-                                                        loyaltyAmount
-                                                        : (totalAmount -
-                                                        int.parse(
-                                                            walletbalance));
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    debugPrint("cash....else");
-                                                    _isWallet = false;
-                                                    _ischeckbox = false;
-                                                  });
-                                                }
-
-                                                setState(() {
-                                                  _groupValue = i;
-                                                });
-                                              }
-                                            } else {
-                                              debugPrint("cash...click.");
-                                              _handleRadioValueChange1(i);
-                                            }
-                                          });
-                                        },
-                                      ),
-                                    )*/
-                                    /* SizedBox(
-                                      width: 20.0,
-                                      child: _myRadioButton(
-                                        title: "",
-                                        value: i,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            _groupValue = newValue;
-                                            _ischeckbox = false;
-                                          });
-                                        },
-                                      ),
-                                    )*/
                                   ],
                                 ),
                               ),
@@ -4025,15 +3231,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   _isSod = false;
 
                                   if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                    debugPrint("wallet greater total");
                                     _isRemainingAmount = false;
                                     _groupValue = -1;
                                     prefs.setString("payment_type", "wallet");
                                     walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
                                   }else {
                                     if (_isOnline || _isCOD || _isSod) {
-                                      debugPrint(
-                                          "cash..........................");
                                       setState(() {
                                         _groupValue = -1;
                                         _isRemainingAmount = true;
@@ -4124,10 +3327,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                   onChanged: (newValue) {
                                                     setState(() {
 
-                                                      /* debugPrint("clicked radio");
-                                            _groupValue = newValue;
-                                            _ischeckbox = false;*/
-
                                                       double totalAmount = 0.0;
                                                       !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                                       if (_isWallet && _ischeckboxshow) {
@@ -4135,7 +3334,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         _isCOD = true;
                                                         _isSod = false;
                                                         if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                                          debugPrint("wallet greater total");
                                                           _isRemainingAmount = false;
                                                           _groupValue = -1;
                                                           prefs.setString("payment_type", "wallet");
@@ -4143,8 +3341,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         }
                                                         else {
                                                           if (_isOnline || _isCOD || _isSod) {
-                                                            debugPrint(
-                                                                "cash..........................");
                                                             setState(() {
                                                               _groupValue = -1;
                                                               _isRemainingAmount = true;
@@ -4258,1116 +3454,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                   ),
                 ),
-               /* _isWeb
-                    ? !_isPaymentMethod
-                    ? GestureDetector(
-                  onTap: () {
-                    Fluttertoast.showToast(
-                        msg:
-                        "currently there are no payment methods available");
-                  },
-                  child: Container(
-                    padding:
-                    EdgeInsets.symmetric(horizontal: 10),
-                    color: Theme.of(context).primaryColor,
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        translate('forconvience.PROCEED TO PAY'),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                )
-                    : GestureDetector(
-                  onTap: () {
-                    if (!_ischeckbox && _groupValue == -1) {
-                      Fluttertoast.showToast(
-                          msg:
-                          translate('forconvience.select payment')//"Please select a payment method!!!"
-                      );
-                    } else {
-                      if (_ischeckbox && _isRemainingAmount && _isOnline) {
-                        prefs.setString(
-                            "payment_type", "paytm");
-                        //prefs.setString("amount", walletbalance);
-                        prefs.setString("amount",
-                            walletAmount.toStringAsFixed(2));
-                        prefs.setString("wallet_type", "0");
-                      }
-                      else if(_ischeckbox && _isRemainingAmount && _isCOD){
-                        prefs.setString("payment_type", "cod");
-                        //prefs.setString("amount", walletbalance);
-                        prefs.setString(
-                            "amount", walletAmount.toStringAsFixed(2));
-                        prefs.setString("wallet_type", "0");
-                      }
-
-                      else if (_ischeckbox) {
-                        prefs.setString(
-                            "payment_type", "wallet");
-                        //prefs.setString("amount", (cartTotal + deliveryamount).toStringAsFixed(2));
-                        prefs.setString("amount",
-                            walletAmount.toStringAsFixed(2));
-                        prefs.setString("wallet_type", "0");
-                      }
-                      _dialogforOrdering(context);
-                      Orderfood();
-                      *//*if(prefs.containsKey("orderId")) {
-                                          _cancelOrder().then((value) async {
-                                            Orderfood();
-                                          });
-                                        } else {
-                                          Orderfood();
-                                        }*//*
-                    }
-                  },
-                  child: Container(
-                    color: Theme.of(context).primaryColor,
-                    padding:
-                    EdgeInsets.symmetric(horizontal: 10),
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        translate('forconvience.PROCEED TO PAY'),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                )
-                    : SizedBox.shrink(),
-                SizedBox(
-                  height: 20,
-                ),*/
               ],
             )
-          /*  Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: MediaQuery.of(context).size.width * 0.40,
-                    padding: EdgeInsets.only(
-                        top: 10.0, left: 70.0, right: 10.0, bottom: 10.0),
-                    child: Text(
-                      translate('forconvience.Payment Methods'),// "Payment Method",
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          color: ColorCodes.blackColor,
-                          fontWeight: FontWeight.bold),
-                    )),
-                SizedBox(
-                  child:
-                  new ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: paymentData.itemspayment.length,
-                    itemBuilder: (_, i) => Column(
-                      children: [
-                        if (paymentData.itemspayment[i].paymentMode == "1")
-
-                          _isRemainingAmount && !_isCOD && !_isSod
-                              ? GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-                              double totalAmount = 0.0;
-                              debugPrint("onpay");
-                              !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-                              if (_isWallet && _ischeckboxshow) {
-                                _isOnline = true;
-                                _isCOD = false;
-                                _isSod =false;
-                                if (_isOnline || _isCOD || _isSod) {
-                                  setState(() {
-                                    _groupValue = -1;
-                                    _isRemainingAmount = true;
-                                    walletAmount = double.parse(walletbalance);
-                                    remainingAmount =
-                                    _isSwitch && !_isLoyaltyToast && _isLoayalty &&
-                                        (double.parse(loyaltyPoints) > 0)
-                                        ? totalAmount -
-                                        double.parse(walletbalance) - loyaltyAmount
-                                        : (totalAmount - double.parse(walletbalance));
-                                    debugPrint("remamountinitdfddfdfdf"+remainingAmount.toString());
-                                  });
-
-                                } else {
-                                  setState(() {
-                                    _isWallet = false;
-                                    _ischeckbox = false;
-                                  });
-
-                                }
-                                setState(() {
-                                  debugPrint("iiiiii"+i.toString());
-                                  _groupValue = i;
-                                });
-                              } else {
-                                _handleRadioValueChange1(i);
-                              }
-                            },
-                            child: Container(
-                              width:
-                              MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                  bottom: 20.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        paymentData.itemspayment[i]
-                                            .paymentName,
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: ColorCodes
-                                                .blackColor),
-                                      ),
-                                      Image.asset(Images.onlineImg),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                          _currencyFormat +
-                                              " " +
-                                              remainingAmount
-                                                  .toStringAsFixed(2),
-                                          style: TextStyle(
-                                              color: ColorCodes
-                                                  .blackColor,
-                                              fontSize: 12.0)),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      SizedBox(
-                                        width: 20.0,
-                                        child: _myRadioButton(
-                                          title: "",
-                                          value: i,
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              debugPrint("clicked radio");
-                                              _groupValue = newValue;
-                                              _ischeckbox = false;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                              : GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-                              double totalAmount = 0.0;
-                              !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-                              if (_isWallet && _ischeckboxshow) {
-                                debugPrint("Coming . . . . . .");
-                                _isOnline = true;
-                                _isCOD = false;
-                                _isSod = false;
-                                if (_isOnline || _isCOD || _isSod) {
-                                  setState(() {
-                                    debugPrint("Coming1 . . . . . .");
-                                    _groupValue = -1;
-                                    _isRemainingAmount = true;
-                                    walletAmount = double.parse(walletbalance);
-                                    remainingAmount =
-                                    _isSwitch && !_isLoyaltyToast && _isLoayalty &&
-                                        (double.parse(loyaltyPoints) > 0)
-                                        ? totalAmount -
-                                        double.parse(walletbalance) - loyaltyAmount
-                                        : (totalAmount - double.parse(walletbalance));
-                                    debugPrint("remamountwhagehgea"+remainingAmount.toString());
-                                  });
-
-                                } else {
-                                  setState(() {
-                                    debugPrint("Coming2 . . . . . .");
-                                    _isWallet = false;
-                                    _ischeckbox = false;
-                                  });
-
-                                }
-                                setState(() {
-                                  _groupValue = i;
-                                });
-                              } else {
-                                debugPrint("Coming3 . . . . . .");
-                                _handleRadioValueChange1(i);
-                              }
-                            },
-                            child: Container(
-                              width:
-                              MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                  bottom: 20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        paymentData.itemspayment[i]
-                                            .paymentName,
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: ColorCodes
-                                                .blackColor),
-                                      ),
-                                      Image.asset(Images.onlineImg),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 20.0,
-                                    child: _myRadioButton(
-                                      title: "",
-                                      value: i,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          debugPrint("clicked radio");
-                                          _groupValue = newValue;
-                                          _ischeckbox = false;
-                                        });
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-
-
-
-
-                        if (paymentData.itemspayment[i].paymentMode == "0")
-                          GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-                              debugPrint("sod");
-                              _handleRadioValueChange1(i);
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(
-                                  top: 20.0,
-                                  left: 10.0,
-                                  right: 10.0,
-                                  bottom: 20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          paymentData
-                                              .itemspayment[i].paymentName,
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: ColorCodes.blackColor),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                                Images.cardMachineImg),
-                                            SizedBox(width: 10.0),
-                                            Expanded(
-                                                child: Text(
-                                                  "Our delivery personnel will carry a swipe machine & orders can be paid via Debit/Credit card at the time of delivery.",
-                                                  style: TextStyle(
-                                                      fontSize: 12.0,
-                                                      color:
-                                                      ColorCodes.greyColor),
-                                                )),
-                                            SizedBox(width: 50.0),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20.0,
-                                    child: _myRadioButton(
-                                      title: "",
-                                      value: i,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          debugPrint("clicked radio");
-                                          _groupValue = newValue;
-                                          _ischeckbox = false;
-                                        });
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  *//*new ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: paymentData.itemspayment.length,
-                    itemBuilder: (_, i) => Column(
-                      children: [
-                        if (paymentData.itemspayment[i].paymentMode ==
-                            "1")
-                          _isRemainingAmount
-                              ? Container(
-                            width:
-                            MediaQuery.of(context).size.width *
-                                0.40,
-                            padding: EdgeInsets.only(
-                              // left: 10.0,
-                                right: 10.0,
-                                bottom: 20.0),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      paymentData.itemspayment[i]
-                                          .paymentName,
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: ColorCodes
-                                              .blackColor),
-                                    ),
-                                    Image.asset(Images.onlineImg),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-
-                                        " " +
-                                            remainingAmount
-                                                .toStringAsFixed(2)+  _currencyFormat ,
-                                        style: TextStyle(
-                                            color: ColorCodes
-                                                .blackColor,
-                                            fontSize: 12.0)),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    SizedBox(
-                                      width: 20.0,
-                                      child: _myRadioButton(
-                                        title: "",
-                                        value: i,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            _groupValue = newValue;
-                                            _ischeckbox = false;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                              : Container(
-                            width:
-                            MediaQuery.of(context).size.width *
-                                0.40,
-                            padding: EdgeInsets.only(
-                                left: 10.0,
-                                right: 10.0,
-                                bottom: 20.0),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      paymentData.itemspayment[i]
-                                          .paymentName,
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: ColorCodes
-                                              .blackColor),
-                                    ),
-                                    Image.asset(Images.onlineImg),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 20.0,
-                                  child: _myRadioButton(
-                                    title: "",
-                                    value: i,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        _groupValue = newValue;
-                                        _ischeckbox = false;
-                                      });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        if (paymentData.itemspayment[i].paymentMode ==
-                            "0")
-                          Container(
-                            width:
-                            MediaQuery.of(context).size.width * 0.40,
-                            padding: EdgeInsets.only(
-                                top: 20.0,
-                                left: 10.0,
-                                right: 10.0,
-                                bottom: 20.0),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        paymentData
-                                            .itemspayment[i].paymentName,
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: ColorCodes.blackColor),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                              Images.cardMachineImg),
-                                          SizedBox(width: 10.0),
-                                          Expanded(
-                                              child: Text(
-                                                "Our delivery personnel will carry a swipe machine & orders can be paid via Debit/Credit card at the time of delivery.",
-                                                style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    color:
-                                                    ColorCodes.greyColor),
-                                              )),
-                                          SizedBox(width: 50.0),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20.0,
-                                  child: _myRadioButton(
-                                    title: "",
-                                    value: i,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        _groupValue = newValue;
-                                        _ischeckbox = false;
-                                      });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),*//*
-                ),
-                SizedBox(
-                  child: new ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: paymentData.itemspayment.length,
-                    itemBuilder: (_, i) => Column(
-                      children: [
-                        if (paymentData.itemspayment[i].paymentMode == "6")
-                          Container(
-                            color: ColorCodes.lightGreyWebColor,
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(
-                                top: 20.0,
-                                left: 10.0,
-                                right: 10.0,
-                                bottom: 20.0),
-                            child: Text(
-                              paymentData.itemspayment[i].paymentName,
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: ColorCodes.blackColor),
-                            ),
-                          ),
-                        if (paymentData.itemspayment[i].paymentMode == "6")
-                          _isRemainingAmount && !_isOnline
-                              ? GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-                              debugPrint("cadh");
-                              double totalAmount = 0.0;
-                              !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-                              if (_isWallet && _ischeckboxshow) {
-                                _isOnline = false;
-                                _isSod = false;
-                                _isCOD = true;
-                                if (_isOnline || _isCOD || _isSod) {
-                                  setState(() {
-                                    debugPrint("cash....");
-                                    _groupValue = -1;
-                                    _isRemainingAmount = true;
-                                    walletAmount = double.parse(walletbalance);
-                                    remainingAmount =
-                                    _isSwitch && !_isLoyaltyToast && _isLoayalty &&
-                                        (double.parse(loyaltyPoints) > 0)
-                                        ? totalAmount -
-                                        double.parse(walletbalance) - loyaltyAmount
-                                        : (totalAmount - double.parse(walletbalance));
-                                    debugPrint("remamountihdss"+remainingAmount.toString());
-                                  });
-
-                                } else {
-                                  setState(() {
-                                    debugPrint("cash....else");
-                                    _isWallet = false;
-                                    _ischeckbox = false;
-                                  });
-
-                                }
-                                setState(() {
-                                  _groupValue = i;
-                                });
-                              } else {
-                                debugPrint("cash...click.");
-                                _handleRadioValueChange1(i);
-                              }
-                            },
-                            child: Container(
-                              width:
-                              MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                  bottom: 20.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      width:
-                                      MediaQuery.of(context).size.width,
-                                      padding: EdgeInsets.only(
-                                          top: 20.0,
-                                          left: 10.0,
-                                          right: 10.0,
-                                          bottom: 20.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Cash",
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color:
-                                                ColorCodes.blackColor),
-                                          ),
-                                          SizedBox(
-                                            height: 10.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                Images.cashImg,
-                                                width: 26.0,
-                                                height: 26.0,
-                                              ),
-                                              SizedBox(width: 10.0),
-                                              Expanded(
-                                                  child: Text(
-                                                    "Tip: To ensure a contactless delivery, we recommend you use an online payment method.",
-                                                    style: TextStyle(
-                                                        fontSize: 12.0,
-                                                        color: ColorCodes
-                                                            .greyColor),
-                                                  )),
-                                              SizedBox(width: 50.0),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 50.0),
-                                  Text(
-                                      _currencyFormat +
-                                          " " +
-                                          remainingAmount
-                                              .toStringAsFixed(2),
-                                      style: TextStyle(
-                                          color: ColorCodes
-                                              .blackColor,
-                                          fontSize: 12.0)),
-                                  SizedBox(
-                                    width: 10.0,
-                                  ),
-                                  SizedBox(
-                                    width: 20.0,
-                                    child: _myRadioButton(
-                                      title: "",
-                                      value: i,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          debugPrint("clicked radio");
-                                          _groupValue = newValue;
-                                          _ischeckbox = false;
-                                        });
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                              : GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-                              double totalAmount = 0.0;
-                              !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-                              if (_isWallet && _ischeckboxshow) {
-                                _isOnline = false;
-                                _isSod = false;
-                                _isCOD = true;
-                                if (_isOnline || _isCOD || _isSod) {
-                                  debugPrint("cash..........................");
-                                  setState(() {
-                                    _groupValue = -1;
-                                    _isRemainingAmount = true;
-                                    walletAmount = double.parse(walletbalance);
-                                    remainingAmount =
-                                    _isSwitch && !_isLoyaltyToast && _isLoayalty &&
-                                        (double.parse(loyaltyPoints) > 0)
-                                        ? totalAmount -
-                                        double.parse(walletbalance) - loyaltyAmount
-                                        : (totalAmount - double.parse(walletbalance));
-                                  });
-
-                                } else {
-                                  setState(() {
-                                    _isWallet = false;
-                                    _ischeckbox = false;
-                                  });
-
-                                }
-                                setState(() {
-                                  _groupValue = i;
-                                });
-                              } else {
-                                _handleRadioValueChange1(i);
-                              }
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(
-                                  left: 10.0, right: 10.0, bottom: 20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      width:
-                                      MediaQuery.of(context).size.width,
-                                      padding: EdgeInsets.only(
-                                          top: 20.0,
-                                          left: 10.0,
-                                          right: 10.0,
-                                          bottom: 20.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Cash",
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color:
-                                                ColorCodes.blackColor),
-                                          ),
-                                          SizedBox(
-                                            height: 10.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                Images.cashImg,
-                                                width: 26.0,
-                                                height: 26.0,
-                                              ),
-                                              SizedBox(width: 10.0),
-                                              Expanded(
-                                                  child: Text(
-                                                    "Tip: To ensure a contactless delivery, we recommend you use an online payment method.",
-                                                    style: TextStyle(
-                                                        fontSize: 12.0,
-                                                        color: ColorCodes
-                                                            .greyColor),
-                                                  )),
-                                              SizedBox(width: 50.0),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20.0,
-                                    child: _myRadioButton(
-                                      title: "",
-                                      value: i,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          debugPrint("clicked radio");
-                                          _groupValue = newValue;
-                                          _ischeckbox = false;
-                                        });
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-
-
-
-
-
-                        *//*if (paymentData.itemspayment[i].paymentMode == "6")
-                          GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-                              _handleRadioValueChange1(i);
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(
-                                  left: 10.0, right: 10.0, bottom: 20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      width:
-                                      MediaQuery.of(context).size.width,
-                                      padding: EdgeInsets.only(
-                                          top: 20.0,
-                                          left: 10.0,
-                                          right: 10.0,
-                                          bottom: 20.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Cash",
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color:
-                                                ColorCodes.blackColor),
-                                          ),
-                                          SizedBox(
-                                            height: 10.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                Images.cashImg,
-                                                width: 26.0,
-                                                height: 26.0,
-                                              ),
-                                              SizedBox(width: 10.0),
-                                              Expanded(
-                                                  child: Text(
-                                                    "Tip: To ensure a contactless delivery, we recommend you use an online payment method.",
-                                                    style: TextStyle(
-                                                        fontSize: 12.0,
-                                                        color: ColorCodes
-                                                            .greyColor),
-                                                  )),
-                                              SizedBox(width: 50.0),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20.0,
-                                    child: _myRadioButton(
-                                      title: "",
-                                      value: i,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          _groupValue = newValue;
-                                          _ischeckbox = false;
-                                        });
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),*//*
-                      ],
-                    ),
-                  ),
-                ),
-                *//*SizedBox(
-                  child: new ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: paymentData.itemspayment.length,
-                    itemBuilder: (_, i) => Column(
-                      children: [
-                        if (paymentData.itemspayment[i].paymentMode ==
-                            "6")
-                          Container(
-                            color: ColorCodes.lightGreyWebColor,
-                            width:
-                            MediaQuery.of(context).size.width * 0.40,
-                            padding: EdgeInsets.only(
-                                top: 20.0,
-                                left: 10.0,
-                                right: 10.0,
-                                bottom: 20.0),
-                            child: Text(
-                              paymentData.itemspayment[i].paymentName,
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: ColorCodes.blackColor),
-                            ),
-                          ),
-                        if (paymentData.itemspayment[i].paymentMode ==
-                            "6")
-                          _isRemainingAmount
-                              ? Container(
-                            width:
-                            MediaQuery.of(context).size.width *
-                                0.40,
-                            padding: EdgeInsets.only(
-                              // left: 10.0,
-                                right: 10.0,
-                                bottom: 20.0),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      paymentData.itemspayment[i]
-                                          .paymentName,
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: ColorCodes
-                                              .blackColor),
-                                    ),
-                                    Image.asset(Images.onlineImg),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-
-                                        " " +
-                                            remainingAmount
-                                                .toStringAsFixed(2)+  _currencyFormat ,
-                                        style: TextStyle(
-                                            color: ColorCodes
-                                                .blackColor,
-                                            fontSize: 12.0)),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    SizedBox(
-                                      width: 20.0,
-                                      child: _myRadioButton(
-                                        title: "",
-                                        value: i,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            _groupValue = newValue;
-                                            _ischeckbox = false;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                              : Container(
-                            width:
-                            MediaQuery.of(context).size.width *
-                                0.40,
-                            padding: EdgeInsets.only(
-                                left: 10.0,
-                                right: 10.0,
-                                bottom: 20.0),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      paymentData.itemspayment[i]
-                                          .paymentName,
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: ColorCodes
-                                              .blackColor),
-                                    ),
-                                    Image.asset(Images.onlineImg),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 20.0,
-                                  child: _myRadioButton(
-                                    title: "",
-                                    value: i,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        _groupValue = newValue;
-                                        _ischeckbox = false;
-                                      });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        *//**//*   Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.40,
-                                  padding: EdgeInsets.only(
-                                      left: 10.0, right: 10.0, bottom: 20.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.40,
-                                          padding: EdgeInsets.only(
-                                              top: 20.0,
-                                              left: 10.0,
-                                              right: 10.0,
-                                              bottom: 20.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Cash",
-                                                style: TextStyle(
-                                                    fontSize: 14.0,
-                                                    color:
-                                                        ColorCodes.blackColor),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Image.asset(
-                                                    Images.cashImg,
-                                                    width: 26.0,
-                                                    height: 26.0,
-                                                  ),
-                                                  SizedBox(width: 10.0),
-                                                  Expanded(
-                                                      child: Text(
-                                                    "Tip: To ensure a contactless delivery, we recommend you use an online payment method.",
-                                                    style: TextStyle(
-                                                        fontSize: 12.0,
-                                                        color: ColorCodes
-                                                            .greyColor),
-                                                  )),
-                                                  SizedBox(width: 50.0),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 20.0,
-                                        child: _myRadioButton(
-                                          title: "",
-                                          value: i,
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              _groupValue = newValue;
-                                              _ischeckbox = false;
-                                            });
-                                          },
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),*//**//*
-                      ],
-                    ),
-                  ),
-                ),*//*
-              ],
-            )*/
                 : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -5488,15 +3576,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     Widget _bodyMobile() {
       double amountPayable = 0.0;
-      print("loyalty user....body..."+loyaltyPointsUser.toString());
 
       Widget promocodeMethod() {
         if( deliverychargetext== translate('forconvience.FREE')//"FREE"
          ){
           if ((Calculations.totalmrp - (amountPayable-deliverycharge)) > 0) {
-            debugPrint("Your Savings");
             double savings=(Calculations.totalmrp - (amountPayable-deliverycharge));
-            debugPrint(savings.toString());
             return Column(
               children: [
                 SizedBox(
@@ -5545,9 +3630,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           }
         }else{
           if ((Calculations.totalmrp - (amountPayable-deliverycharge)) > 0) {
-            debugPrint("Your Savings");
             double savings=(Calculations.totalmrp - (amountPayable-deliverycharge));
-            debugPrint(savings.toString());
             return Column(
               children: [
                 SizedBox(
@@ -5596,8 +3679,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       }
 
       Widget paymentDetails() {
-        debugPrint("display promo"+_displaypromo.toString());
-        debugPrint("display promo cash"+promomessage.toString());
         return Column(
           children: [
             Container(
@@ -5726,100 +3807,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     behavior: HitTestBehavior.translucent,
                                     onTap: () {
                                       setState(() {
-                                        /* _ischeckbox = !_ischeckbox;
-                                        double totalAmount = 0.0;
-                                        !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));*/
-                                        /* if(_isWallet) {
-                                          if (int.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-                                            _isRemainingAmount = false;
-                                            _ischeckboxshow = false;
-                                            _ischeckbox = false;
-                                          } else if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                            _isRemainingAmount = false;
-                                            _groupValue = -1;
-                                            prefs.setString("payment_type", "wallet");
-                                            walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                          } else if (_isSwitch ? totalAmount > (int.parse(walletbalance) + loyaltyAmount) : totalAmount > int.parse(walletbalance)) {
-                                            for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                              if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                _groupValue = i;
-                                                _isOnline = true;
-                                                break;
-                                              } else if(paymentData.itemspayment[i].paymentMode == "6") {
-                                                _groupValue = i;
-                                                _isCOD = true;
-                                                break;
-                                              }
-                                            }
-                                            if(_isOnline || _isCOD) {
-                                              _groupValue = -1;
-                                              _isRemainingAmount = true;
-                                              walletAmount = double.parse(walletbalance);
-                                              setState(() {
-                                                remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - int.parse(walletbalance));
-                                              });
-
-                                            } else {
-                                              _isWallet = false;
-                                              _ischeckbox = false;
-                                            }
-                                            for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                              if(paymentData.itemspayment[i].paymentMode == "1" || paymentData.itemspayment[i].paymentMode == "6") {
-                                                _groupValue = i;
-                                                break;
-                                              }
-                                            }
-
-                                          }
-                                        } else {
-                                          _ischeckbox = false;
-                                        }*/
-
-                                        /* if(_isWallet) {
-                                          double totalAmount = 0.0;
-                                          !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-
-                                          if (int.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-                                            _isRemainingAmount = false;
-                                            _ischeckboxshow = false;
-                                            _ischeckbox = false;
-                                          } else if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                            _isRemainingAmount = false;
-                                            _groupValue = -1;
-                                            prefs.setString("payment_type", "wallet");
-                                            walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                          } else if (_isSwitch ? totalAmount > (int.parse(walletbalance) + loyaltyAmount) : totalAmount > int.parse(walletbalance)) {
-                                            for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                              if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                _groupValue = i;
-                                                _isOnline = true;
-                                                break;
-                                              } else if(paymentData.itemspayment[i].paymentMode == "6") {
-                                                _groupValue = i;
-                                                _isCOD = true;
-                                                break;
-                                              }
-                                            }
-                                            if(_isOnline || _isCOD) {
-                                              _groupValue = -1;
-                                              _isRemainingAmount = true;
-                                              walletAmount = double.parse(walletbalance);
-                                              remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - int.parse(walletbalance));
-                                            } else {
-                                              _isWallet = false;
-                                              _ischeckbox = false;
-                                            }
-                                            for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                              if(paymentData.itemspayment[i].paymentMode == "1" || paymentData.itemspayment[i].paymentMode == "6") {
-                                                _groupValue = i;
-                                                break;
-                                              }
-                                            }
-                                          }
-                                          debugPrint("remamountinit"+remainingAmount.toString());
-                                        } else {
-                                          _ischeckbox = false;
-                                        }*/
                                       });
                                     },
                                     child: Container(
@@ -5836,104 +3823,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             behavior: HitTestBehavior.translucent,
                                             onTap: () {
                                               setState(() {
-                                                /* _ischeckbox = !_ischeckbox;
-                                                double totalAmount = 0.0;
-                                                !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));*/
-                                                /*if(_isWallet) {
-                                                  if (int.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-                                                    _isRemainingAmount = false;
-                                                    _ischeckboxshow = false;
-                                                    _ischeckbox = false;
-                                                  } else if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                                    _isRemainingAmount = false;
-                                                    _groupValue = -1;
-                                                    prefs.setString("payment_type", "wallet");
-                                                    walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                                  } else if (_isSwitch ? totalAmount > (int.parse(walletbalance) + loyaltyAmount) : totalAmount > int.parse(walletbalance)) {
-                                                    bool _isOnline = false;
-                                                    for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                                      *//*if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                        _isOnline = true;
-                                                        break;
-                                                      }*//*
-                                                      if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                        _groupValue = i;
-                                                        _isOnline = true;
-                                                        break;
-                                                      } else if(paymentData.itemspayment[i].paymentMode == "6") {
-                                                        _groupValue = i;
-                                                        _isCOD = true;
-                                                        break;
-                                                      }
-                                                    }
-                                                    if(_isOnline || _isCOD) {
-                                                      _groupValue = -1;
-                                                      _isRemainingAmount = true;
-                                                      walletAmount = double.parse(walletbalance);
-                                                      setState(() {
-                                                        remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - int.parse(walletbalance));
-                                                      });
-
-                                                    } else {
-                                                      _isWallet = false;
-                                                      _ischeckbox = false;
-                                                    }
-                                                    for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                                      if(paymentData.itemspayment[i].paymentMode == "1" || paymentData.itemspayment[i].paymentMode == "6") {
-                                                        _groupValue = i;
-                                                        break;
-                                                      }
-                                                    }
-
-                                                  }
-                                                } else {
-                                                  _ischeckbox = false;
-                                                }*/
-                                                /* if(_isWallet) {
-                                                  double totalAmount = 0.0;
-                                                  !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-
-                                                  if (int.parse(walletbalance) <= 0 *//*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*//*) {
-                                                    _isRemainingAmount = false;
-                                                    _ischeckboxshow = false;
-                                                    _ischeckbox = false;
-                                                  } else if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                                    _isRemainingAmount = false;
-                                                    _groupValue = -1;
-                                                    prefs.setString("payment_type", "wallet");
-                                                    walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                                  } else if (_isSwitch ? totalAmount > (int.parse(walletbalance) + loyaltyAmount) : totalAmount > int.parse(walletbalance)) {
-                                                    for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                                      if(paymentData.itemspayment[i].paymentMode == "1") {
-                                                        _groupValue = i;
-                                                        _isOnline = true;
-                                                        break;
-                                                      } else if(paymentData.itemspayment[i].paymentMode == "6") {
-                                                        _groupValue = i;
-                                                        _isCOD = true;
-                                                        break;
-                                                      }
-                                                    }
-                                                    if(_isOnline || _isCOD) {
-                                                      _groupValue = -1;
-                                                      _isRemainingAmount = true;
-                                                      walletAmount = double.parse(walletbalance);
-                                                      remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - int.parse(walletbalance));
-                                                    } else {
-                                                      _isWallet = false;
-                                                      _ischeckbox = false;
-                                                    }
-                                                    for(int i = 0; i < paymentData.itemspayment.length; i++) {
-                                                      if(paymentData.itemspayment[i].paymentMode == "1" || paymentData.itemspayment[i].paymentMode == "6") {
-                                                        _groupValue = i;
-                                                        break;
-                                                      }
-                                                    }
-                                                  }
-                                                  debugPrint("remamountinit"+remainingAmount.toString());
-                                                } else {
-                                                  _ischeckbox = false;
-                                                }*/
                                               });
                                             },
                                             child: Row(
@@ -6751,12 +4640,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
 
                               if (double.parse(walletbalance) <= 0 /*|| double.parse((cartTotal + deliveryamount).toStringAsFixed(2)) > int.parse(walletbalance)*/) {
-                               print("wallet lesser...");
                                 _isRemainingAmount = false;
                                 _ischeckboxshow = false;
                                 _ischeckbox = false;
                               } else if (_isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0)  && double.parse(loyaltyPointsUser.toString()) >=100 ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                print("wallet 2ndcondition");
                                 _isRemainingAmount = false;
                                 _groupValue = -1;
                                 prefs.setString("payment_type", "wallet");
@@ -6764,37 +4651,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               }
                               else if (_isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) && double.parse(loyaltyPointsUser.toString()) >=100? totalAmount > (double.parse(walletbalance) + loyaltyAmount) : totalAmount > double.parse(walletbalance))
                               {
-                                print("wallet 3ndcondition");
                                 bool _isOnline = false;
                                 bool _isSod = false;
                                 for(int i = 0; i < paymentData.itemspayment.length; i++) {
                                   if(paymentData.itemspayment[i].paymentMode == "1") {
-                                    print("wallet online");
                                     _groupValue = i;
                                     _isOnline = true;
                                     break;
                                   }
                                   if(paymentData.itemspayment[i].paymentMode == "0") {
-                                    print("wallet sod");
                                     _groupValue = i;
                                     _isSod = true;
                                     break;
                                   }
                                   else if(paymentData.itemspayment[i].paymentMode == "6") {
-                                    debugPrint("csh wallet");
                                     _groupValue = i;
                                     _isCOD = true;
                                     break;
                                   }
                                 }
                                 if(_isOnline || _isSod || _isCOD) {
-                                  print("wallet both or");
-                                 // _groupValue = -1;
                                   _isRemainingAmount = true;
                                   walletAmount = double.parse(walletbalance);
                                   remainingAmount = _isSwitch && !_isLoyaltyToast && _isLoayalty && (double.parse(loyaltyPoints) > 0) && double.parse(loyaltyPointsUser.toString()) >=100 ? totalAmount - double.parse(walletbalance) - loyaltyAmount: (totalAmount - double.parse(walletbalance));
                                 } else {
-                                  print("wallet not ");
                                   _isWallet = false;
                                   _ischeckbox = false;
                                 }
@@ -7098,14 +4978,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             behavior: HitTestBehavior.translucent,
                             onTap: (){
                               double totalAmount = 0.0;
-                              debugPrint("onpay");
                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                               if (_isWallet && _ischeckboxshow) {
                                 _isOnline = true;
                                 _isSod = false;
                                 _isCOD = false;
                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                  debugPrint("wallet greater total");
                                   _isRemainingAmount = false;
                                   _groupValue = -1;
                                   prefs.setString("payment_type", "wallet");
@@ -7135,7 +5013,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   }
                                   setState(() {
-                                    debugPrint("iiiiii" + i.toString());
                                     _groupValue = i;
                                   });
                                 }
@@ -7191,18 +5068,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           value: i,
                                           onChanged: (newValue) {
                                             setState(() {
-                                              debugPrint("clicked radio");
-                                              //  _groupValue = newValue;
-                                              //_ischeckbox = false;
                                               double totalAmount = 0.0;
-                                              debugPrint("onpay");
                                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                               if (_isWallet && _ischeckboxshow) {
                                                 _isOnline = true;
                                                 _isSod = false;
                                                 _isCOD = false;
                                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                                  debugPrint("wallet greater total");
                                                   _isRemainingAmount = false;
                                                   _groupValue = -1;
                                                   prefs.setString("payment_type", "wallet");
@@ -7237,8 +5109,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                     });
                                                   }
                                                   setState(() {
-                                                    debugPrint("iiiiii" +
-                                                        i.toString());
                                                     _groupValue = i;
                                                   });
                                                 }
@@ -7261,13 +5131,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               double totalAmount = 0.0;
                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                               if (_isWallet && _ischeckboxshow) {
-                                debugPrint("Coming . . . . . .");
                                 _isOnline = true;
                                 _isCOD = false;
                                 _isSod = false;
 
                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                  debugPrint("wallet greater total");
                                   _isRemainingAmount = false;
                                   _groupValue = -1;
                                   prefs.setString("payment_type", "wallet");
@@ -7275,7 +5143,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 }else {
                                   if (_isOnline || _isCOD || _isSod) {
                                     setState(() {
-                                      debugPrint("Coming1 . . . . . .");
                                       _groupValue = -1;
                                       _isRemainingAmount = true;
                                       walletAmount =
@@ -7292,7 +5159,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   } else {
                                     setState(() {
-                                      debugPrint("Coming2 . . . . . .");
                                       _isWallet = false;
                                       _ischeckbox = false;
                                     });
@@ -7302,7 +5168,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   });
                                 }
                               } else {
-                                debugPrint("Coming3 . . . . . .");
                                 _handleRadioValueChange1(i);
                               }
                             },
@@ -7310,8 +5175,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               width:
                               MediaQuery.of(context).size.width,
                               padding: EdgeInsets.only(
-                                 // left: 10.0,
-                                  //right: 10.0,
                                   bottom: 20.0),
                               child: Row(
                                 mainAxisAlignment:
@@ -7340,20 +5203,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       value: i,
                                       onChanged: (newValue) {
                                         setState(() {
-                                          debugPrint("clicked radio");
-                                          //  _groupValue = newValue;
-                                          //   _ischeckbox = false;
-
                                           double totalAmount = 0.0;
                                           !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                           if (_isWallet && _ischeckboxshow) {
-                                            debugPrint("Coming . . . . . .");
                                             _isOnline = true;
                                             _isSod = false;
                                             _isCOD = false;
 
                                             if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                              debugPrint("wallet greater total");
                                               _isRemainingAmount = false;
                                               _groupValue = -1;
                                               prefs.setString("payment_type", "wallet");
@@ -7361,8 +5218,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             }else {
                                               if (_isOnline || _isCOD || _isSod) {
                                                 setState(() {
-                                                  debugPrint(
-                                                      "Coming1 . . . . . .");
                                                   _groupValue = -1;
                                                   _isRemainingAmount = true;
                                                   walletAmount = double.parse(
@@ -7382,8 +5237,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 });
                                               } else {
                                                 setState(() {
-                                                  debugPrint(
-                                                      "Coming2 . . . . . .");
                                                   _isWallet = false;
                                                   _ischeckbox = false;
                                                 });
@@ -7393,7 +5246,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               });
                                             }
                                           } else {
-                                            debugPrint("Coming3 . . . . . .");
                                             _handleRadioValueChange1(i);
                                           }
                                         });
@@ -7414,14 +5266,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             behavior: HitTestBehavior.translucent,
                             onTap: (){
                               double totalAmount = 0.0;
-                              debugPrint("onpay");
                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                               if (_isWallet && _ischeckboxshow) {
                                 _isOnline = false;
                                 _isSod = true;
                                 _isCOD = false;
                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                  debugPrint("wallet greater total");
                                   _isRemainingAmount = false;
                                   _groupValue = -1;
                                   prefs.setString("payment_type", "wallet");
@@ -7451,7 +5301,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   }
                                   setState(() {
-                                    debugPrint("iiiiii" + i.toString());
                                     _groupValue = i;
                                   });
                                 }
@@ -7521,18 +5370,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           value: i,
                                           onChanged: (newValue) {
                                             setState(() {
-                                              debugPrint("clicked radio");
                                               //  _groupValue = newValue;
                                               //_ischeckbox = false;
                                               double totalAmount = 0.0;
-                                              debugPrint("onpay");
                                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                               if (_isWallet && _ischeckboxshow) {
                                                 _isOnline = false;
                                                 _isSod = true;
                                                 _isCOD = false;
                                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                                  debugPrint("wallet greater total");
                                                   _isRemainingAmount = false;
                                                   _groupValue = -1;
                                                   prefs.setString("payment_type", "wallet");
@@ -7567,8 +5413,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                     });
                                                   }
                                                   setState(() {
-                                                    debugPrint("iiiiii" +
-                                                        i.toString());
                                                     _groupValue = i;
                                                   });
                                                 }
@@ -7591,13 +5435,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               double totalAmount = 0.0;
                               !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                               if (_isWallet && _ischeckboxshow) {
-                                debugPrint("Coming . . . . . .");
                                 _isOnline = false;
                                 _isCOD = false;
                                 _isSod = true;
 
                                 if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                  debugPrint("wallet greater total");
                                   _isRemainingAmount = false;
                                   _groupValue = -1;
                                   prefs.setString("payment_type", "wallet");
@@ -7605,7 +5447,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 }else {
                                   if (_isOnline || _isCOD || _isSod) {
                                     setState(() {
-                                      debugPrint("Coming1 . . . . . .");
                                       _groupValue = -1;
                                       _isRemainingAmount = true;
                                       walletAmount =
@@ -7622,7 +5463,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   } else {
                                     setState(() {
-                                      debugPrint("Coming2 . . . . . .");
                                       _isWallet = false;
                                       _ischeckbox = false;
                                     });
@@ -7632,7 +5472,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   });
                                 }
                               } else {
-                                debugPrint("Coming3 . . . . . .");
                                 _handleRadioValueChange1(i);
                               }
                             },
@@ -7683,20 +5522,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       value: i,
                                       onChanged: (newValue) {
                                         setState(() {
-                                          debugPrint("clicked radio");
                                           //  _groupValue = newValue;
                                           //   _ischeckbox = false;
 
                                           double totalAmount = 0.0;
                                           !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                           if (_isWallet && _ischeckboxshow) {
-                                            debugPrint("Coming . . . . . .");
                                             _isOnline = false;
                                             _isSod = true;
                                             _isCOD = false;
 
                                             if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                              debugPrint("wallet greater total");
                                               _isRemainingAmount = false;
                                               _groupValue = -1;
                                               prefs.setString("payment_type", "wallet");
@@ -7704,8 +5540,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             }else {
                                               if (_isOnline || _isCOD || _isSod) {
                                                 setState(() {
-                                                  debugPrint(
-                                                      "Coming1 . . . . . .");
                                                   _groupValue = -1;
                                                   _isRemainingAmount = true;
                                                   walletAmount = double.parse(
@@ -7725,8 +5559,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 });
                                               } else {
                                                 setState(() {
-                                                  debugPrint(
-                                                      "Coming2 . . . . . .");
                                                   _isWallet = false;
                                                   _ischeckbox = false;
                                                 });
@@ -7736,7 +5568,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                               });
                                             }
                                           } else {
-                                            debugPrint("Coming3 . . . . . .");
                                             _handleRadioValueChange1(i);
                                           }
                                         });
@@ -7964,8 +5795,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: (){
-                                debugPrint("cadh");
-                                debugPrint("wallet +cash");
                                 double totalAmount = 0.0;
                                 !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                 if (_isWallet && _ischeckboxshow) {
@@ -7973,7 +5802,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   _isCOD = true;
                                   _isSod = false;
                                   if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                    debugPrint("wallet greater total");
                                     _isRemainingAmount = false;
                                     _groupValue = -1;
                                     prefs.setString("payment_type", "wallet");
@@ -7982,7 +5810,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   else {
                                     if (_isOnline || _isCOD || _isSod) {
                                       setState(() {
-                                        debugPrint("cash....");
                                         _groupValue = -1;
                                         _isRemainingAmount = true;
                                         walletAmount =
@@ -7999,7 +5826,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       });
                                     } else {
                                       setState(() {
-                                        debugPrint("cash....else");
                                         _isWallet = false;
                                         _ischeckbox = false;
                                       });
@@ -8009,7 +5835,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     });
                                   }
                                 } else {
-                                  debugPrint("cash...click.");
                                   _handleRadioValueChange1(i);
                                 }
                               },
@@ -8089,11 +5914,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                   value: i,
                                                   onChanged: (newValue) {
                                                     setState(() {
-
-                                                      /* debugPrint("clicked radio");
-                                            _groupValue = newValue;
-                                            _ischeckbox = false;*/
-
                                                       double totalAmount = 0.0;
                                                       !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                                       if (_isWallet && _ischeckboxshow) {
@@ -8101,7 +5921,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         _isCOD = true;
                                                         _isSod = false;
                                                         if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                                          debugPrint("wallet greater total");
                                                           _isRemainingAmount = false;
                                                           _groupValue = -1;
                                                           prefs.setString("payment_type", "wallet");
@@ -8109,8 +5928,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         }
                                                         else {
                                                           if (_isOnline || _isCOD || _isSod) {
-                                                            debugPrint(
-                                                                "cash..........................");
                                                             setState(() {
                                                               _groupValue = -1;
                                                               _isRemainingAmount = true;
@@ -8174,217 +5991,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         ),
                                       ),
                                     ),
-                                    /*Expanded(
-                                      child: Center(
-                                        child: Container(
-                                          width:
-                                          MediaQuery.of(context).size.width,
-                                          padding: EdgeInsets.only(
-                                            //top: 20.0,
-                                            //left: 10.0,
-                                             // right: 10.0,
-                                              bottom: 20.0),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Image.asset(
-                                                Images.cashImg,
-                                                width: 26.0,
-                                                height: 26.0,
-                                              ),
-                                              Center(
-                                                child: Text(
-                                                 translate('forconvience.Cash on Delivery'),
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color:
-                                                      ColorCodes.blackColor,fontWeight: FontWeight.bold),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5.0,
-                                              ),
-
-                                              *//*SizedBox(
-                                                        height: 10.0,
-                                                      ),*//*
-                                              *//* Row(
-                                                        children: [
-                                                          *//**//*Image.asset(
-                                                            Images.cashImg,
-                                                            width: 26.0,
-                                                            height: 26.0,
-                                                          ),*//**//*
-                                                          SizedBox(width: 10.0),
-                                                          Expanded(
-                                                              child: Text(
-                                                            "Tip: To ensure a contactless delivery, we recommend you use an online payment method.",
-                                                            style: TextStyle(
-                                                                fontSize: 12.0,
-                                                                color: ColorCodes
-                                                                    .greyColor),
-                                                          )),
-                                                          SizedBox(width: 50.0),
-                                                        ],
-                                                      ),*//*
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),*/
-                                    /*Expanded(
-                                      child: Container(
-                                        width:
-                                        MediaQuery.of(context).size.width,
-                                        padding: EdgeInsets.only(
-                                          //top: 20.0,
-                                          // left: 10.0,
-                                            right: 10.0,
-                                            bottom: 20.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              translate('forconvience.Cash on Delivery'),
-                                              style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  color:
-                                                  ColorCodes.blackColor,fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            Image.asset(
-                                              Images.cashImg,
-                                              width: 26.0,
-                                              height: 26.0,
-                                            ),
-                                            *//*SizedBox(
-                                                      height: 10.0,
-                                                    ),*//*
-                                            *//* Row(
-                                                      children: [
-                                                        *//**//*Image.asset(
-                                                          Images.cashImg,
-                                                          width: 26.0,
-                                                          height: 26.0,
-                                                        ),*//**//*
-                                                        SizedBox(width: 10.0),
-                                                        Expanded(
-                                                            child: Text(
-                                                          "Tip: To ensure a contactless delivery, we recommend you use an online payment method.",
-                                                          style: TextStyle(
-                                                              fontSize: 12.0,
-                                                              color: ColorCodes
-                                                                  .greyColor),
-                                                        )),
-                                                        SizedBox(width: 50.0),
-                                                      ],
-                                                    ),*//*
-                                          ],
-                                        ),
-                                      ),
-                                    ),*/
-                                    //SizedBox(width: 50.0),
-                                    /*if(remainingAmount>0)
-                                      Text(
-                                          remainingAmount
-                                              .toStringAsFixed(2) +
-                                              " " +_currencyFormat
-                                          ,
-                                          style: TextStyle(
-                                              color: ColorCodes
-                                                  .blackColor,
-                                              fontSize: 12.0)),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    SizedBox(
-                                      width: 20.0,
-                                      child: _myRadioButton(
-                                        title: "",
-                                        value: i,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            //  _groupValue = newValue;
-                                            //  _ischeckbox = false;
-
-                                            debugPrint("cadh");
-                                            double totalAmount = 0.0;
-                                            !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
-                                            if (_isWallet && _ischeckboxshow) {
-                                              _isOnline = false;
-                                              _isCOD = true;
-                                              _isSod = false;
-
-
-                                              if (_isSwitch ? totalAmount <= (int.parse(walletbalance) + loyaltyAmount) : totalAmount <= (int.parse(walletbalance))) {
-                                                debugPrint("wallet greater total");
-                                                _isRemainingAmount = false;
-                                                _groupValue = -1;
-                                                prefs.setString("payment_type", "wallet");
-                                                walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
-                                              }
-                                              else {
-                                                debugPrint("wallet less total");
-                                                if (_isOnline || _isCOD || _isSod) {
-                                                  setState(() {
-                                                    debugPrint("cash....");
-                                                    _groupValue = -1;
-                                                    _isRemainingAmount = true;
-                                                    walletAmount = double.parse(
-                                                        walletbalance);
-                                                    remainingAmount =
-                                                    _isSwitch &&
-                                                        !_isLoyaltyToast &&
-                                                        _isLoayalty &&
-                                                        (double.parse(
-                                                            loyaltyPoints) > 0)
-                                                        ? totalAmount -
-                                                        double.parse(
-                                                            walletbalance) -
-                                                        loyaltyAmount
-                                                        : (totalAmount -
-                                                        int.parse(
-                                                            walletbalance));
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    debugPrint("cash....else");
-                                                    _isWallet = false;
-                                                    _ischeckbox = false;
-                                                  });
-                                                }
-
-                                                setState(() {
-                                                  _groupValue = i;
-                                                });
-                                              }
-                                            } else {
-                                              debugPrint("cash...click.");
-                                              _handleRadioValueChange1(i);
-                                            }
-                                          });
-                                        },
-                                      ),
-                                    )*/
-                                    /* SizedBox(
-                                      width: 20.0,
-                                      child: _myRadioButton(
-                                        title: "",
-                                        value: i,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            _groupValue = newValue;
-                                            _ischeckbox = false;
-                                          });
-                                        },
-                                      ),
-                                    )*/
                                   ],
                                 ),
                               ),
@@ -8401,15 +6007,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   _isSod = false;
 
                                   if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                    debugPrint("wallet greater total");
                                     _isRemainingAmount = false;
                                     _groupValue = -1;
                                     prefs.setString("payment_type", "wallet");
                                     walletAmount = _isSwitch ? (totalAmount - loyaltyAmount) : totalAmount;
                                   }else {
                                     if (_isOnline || _isCOD || _isSod) {
-                                      debugPrint(
-                                          "cash..........................");
                                       setState(() {
                                         _groupValue = -1;
                                         _isRemainingAmount = true;
@@ -8500,10 +6103,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                   onChanged: (newValue) {
                                                     setState(() {
 
-                                                      /* debugPrint("clicked radio");
-                                            _groupValue = newValue;
-                                            _ischeckbox = false;*/
-
                                                       double totalAmount = 0.0;
                                                       !_displaypromo ? _isPickup ? totalAmount = cartTotal : totalAmount = (cartTotal + deliveryamount) : totalAmount = (double.parse(_promoamount));
                                                       if (_isWallet && _ischeckboxshow) {
@@ -8511,7 +6110,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         _isCOD = true;
                                                         _isSod = false;
                                                         if (_isSwitch ? totalAmount <= (double.parse(walletbalance) + loyaltyAmount) : totalAmount <= (double.parse(walletbalance))) {
-                                                          debugPrint("wallet greater total");
                                                           _isRemainingAmount = false;
                                                           _groupValue = -1;
                                                           prefs.setString("payment_type", "wallet");
@@ -8519,8 +6117,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                         }
                                                         else {
                                                           if (_isOnline || _isCOD || _isSod) {
-                                                            debugPrint(
-                                                                "cash..........................");
                                                             setState(() {
                                                               _groupValue = -1;
                                                               _isRemainingAmount = true;
@@ -8765,7 +6361,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
           } else {
             amountPayable = (cartTotal + deliveryamount);
           }
-          print("amount payable final....."+amountPayable.toString());
         }
       } else {
         //else statement for !_displaypromo
@@ -8825,9 +6420,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return
       WillPopScope(
         onWillPop: () { // this is the block you need
-          //Hive.openBox<Product>(productBoxName);
-          print("isorder"+_isorder.toString());
-         // _isorder?Fluttertoast.showToast(msg: "Order Processing...") :
           Navigator.of(context).pop();
           return Future.value(false);
         },

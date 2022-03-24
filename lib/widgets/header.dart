@@ -211,20 +211,16 @@ class _HeaderState extends State<Header> {
     _getmobilenum();
    //IConstants.deliverylocationmain.value = addressLine;
    /* if( prefs.getBool('defaultlocation').toString()=="null" && prefs.getString("ismap").toString()=="null") {
-      debugPrint("iiffff.....");
       getCurrentLocation();
 
     }*/
 
 //
-debugPrint("init heder");
 
     Future.delayed(Duration.zero, () async {
       prefs = await SharedPreferences.getInstance();
       String  defaultloc=prefs.getString('defaultlocation');
-      debugPrint("Init....");
       fetchPrimary();
-debugPrint("value list loc"+IConstants.deliverylocationmain.value);
 
     });
     try {
@@ -407,7 +403,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
   }
 
   Future<void> checkLocation() async {
-    debugPrint("checkLocation . . . , , ");
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'check-location';
     try {
@@ -419,21 +414,14 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final responseJson = json.decode(response.body);
-      debugPrint("checkLocation........");
-      debugPrint(_lat.toString());
-      debugPrint(_lng.toString());
-      debugPrint(responseJson.toString());
       bool _isCartCheck = false;
       if (responseJson['status'].toString() == "yes") {
         if(prefs.getString("branch") == responseJson['branch'].toString()) {
-          debugPrint("trueee..............");
           prefs.setString("nopermission","no");
           prefs.setString("available", "yes");
           prefs.setString("isdelivering","true");
 
           /* if (prefs.getString("formapscreen") == "addressscreen") {
-            debugPrint("Yes..............");
-            debugPrint(addressLine);
             final routeArgs = ModalRoute.of(context).settings.arguments as Map<String, String>;
             Navigator.of(context).pop();
             Navigator.of(context).pushReplacementNamed(ExampleScreen.routeName, arguments: {
@@ -464,7 +452,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
                   prefs.getString("formapscreen") == "homescreen") {
                 if (prefs.containsKey("fromcart")) {
                   if (prefs.getString("fromcart") == "cart_screen") {
-                    debugPrint("Cart login..............");
                     prefs.remove("fromcart");
                     *//*  Navigator.of(context).pushNamedAndRemoveUntil(
                         MapScreen.routeName,
@@ -486,10 +473,7 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
           }*/
         }
         else {
-          debugPrint("false..............");
           /* if (prefs.getString("formapscreen") == "addressscreen") {
-            debugPrint("No...........");
-            debugPrint(addressLine);
             final routeArgs = ModalRoute.of(context).settings.arguments as Map<String, String>;
             Navigator.of(context).pop();
             Navigator.of(context).pushReplacementNamed(ExampleScreen.routeName, arguments: {
@@ -528,7 +512,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
                   if (prefs.containsKey("fromcart")) {
                     if (prefs.getString("fromcart") == "cart_screen") {
                       prefs.remove("fromcart");
-                      debugPrint("Cart loginasdasdasd..............");
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           MapScreen.routeName,
                           ModalRoute.withName(CartScreen.routeName));
@@ -556,7 +539,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
         }
       } else {
         //Navigator.of(context).pop();
-        debugPrint("snack..............");
         prefs.setString("nopermission","yes");
         prefs.setString("available", "no");
         prefs.setString("isdelivering","false");
@@ -565,7 +547,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
         //  _deliverLocation=prefs.getString("deliverylocation");
         });
 
-        //debugPrint("deliverloc"+_deliverLocation.toString());
 
        // showInSnackBar();
       }
@@ -575,7 +556,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
   }
 
   void showInSnackBar() {
-    debugPrint("not available");
     int count=0;
    // HomeScreen.scaffoldKey.currentState.removeCurrentSnackBar();
 
@@ -604,13 +584,11 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
         if (!prefs.containsKey("deliverylocation")) {
           Provider.of<BrandItemsList>(context, listen: false).GetRestaurant().then((_) {
             setState(() {
-              debugPrint("build 1");
               prefs.setString("deliverylocation", prefs.getString("restaurant_location"));
               prefs.setString("latitude", prefs.getString("restaurant_lat"));
               prefs.setString("longitude", prefs.getString("restaurant_long"));
               _deliverLocation = prefs.getString("deliverylocation");
               prefs.setString("isdelivering","false");
-              debugPrint("defalut loc"+_deliverLocation);
               IConstants.deliverylocationmain.value = _deliverLocation;
               prefs.setString("nopermission","yes");
             });
@@ -620,7 +598,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
             _deliverLocation = prefs.getString("deliverylocation");
             prefs.setString("latitude", _lat.toString());
             prefs.setString("longitude", _lng.toString());
-            debugPrint("defalut loc"+_deliverLocation);
             prefs.setString("isdelivering","false");
             IConstants.deliverylocationmain.value = _deliverLocation;
             prefs.setString("nopermission","yes");
@@ -687,7 +664,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
         addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
         setState(() {
           var first = addresses.first;
-          print("${first.featureName} : ${first.addressLine}");
 
           _mapaddress = (first.featureName!=null)?(first.featureName):first.featureName;
           addressLine=first.addressLine;//(first.subLocality!=null)?(first.subLocality+","+first.locality+","+first.adminArea)
@@ -705,13 +681,9 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
          // prefs.setString("delivery")
          // _deliverLocation=addressLine;
           // :(first.locality+","+first.adminArea);
-          debugPrint("Check Location..start........");
           checkLocation();
 
-          debugPrint("Check Location...end......");
-          debugPrint("latlong: "+_lat.toString()+ _lng.toString());
-          debugPrint("address: "+_mapaddress);
-          debugPrint("addressline"+addressLine);
+
         });
 
         // _child = mapWidget();
@@ -723,7 +695,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
           new Coordinates(_lat, _lng));
       setState(() {
         var first = addresses.first;
-        print("${first.featureName} : ${first.addressLine}");
 
         _mapaddress = (first.featureName!=null)?(first.featureName):first.featureName;
         addressLine=first.addressLine;
@@ -737,18 +708,13 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
           prefs.setString("longitude", _lng.toString());
           //prefs.getString("deliverylocation");//addressLine;
         });
-        debugPrint("Check Location..start........");
         checkLocation();
 
-        debugPrint("Check Location...end......");
        // prefs.setString("deliverylocation",addressLine);
        // _deliverLocation=addressLine;
         /*  addressLine = (first.subLocality != null) ? (first.subLocality + "," +
               first.locality + "," + first.adminArea)
               : (first.locality + "," + first.adminArea);*/
-        debugPrint("latlong: " + _lat.toString() + _lng.toString());
-        debugPrint("address: " + _mapaddress);
-        debugPrint("addressline" + addressLine);
       });
       // _child = mapWidget();
     }
@@ -761,7 +727,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
       _serviceEnabled = temp;
     });
     if (!_serviceEnabled) {
-      debugPrint("Service Not Enabled ::");
       setState(() {
         _deliverLocation=prefs.getString("deliverylocation");
         prefs.setString("latitude", _lat.toString());
@@ -806,7 +771,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
       }
     } else {
       prefs.setString("nopermission","no");
-      debugPrint("Service Enabled ::");
       Position res = await Geolocator().getCurrentPosition();
       setState(() {
         position = res;
@@ -822,7 +786,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
     }
   }
   void _onFocusChange() {
-    debugPrint("Focus: " + _focus.hasFocus.toString());
     setState(() {
       if (_focus.hasFocus.toString() == "true") {
         _isShowItem = true;
@@ -877,7 +840,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
     //FocusScope.of(context).requestFocus(_focus);
     /*_focus = new FocusNode();
     FocusScope.of(context).requestFocus(_focus);*/
-//debugPrint("vaule for search"+value);
     await Provider.of<ItemsList>(context,listen: false).fetchsearchItems(value).then((_) {
       searchData = Provider.of<ItemsList>(context,listen: false);
       searchDispaly = searchData.searchitems.toList();
@@ -923,7 +885,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
 
    welcomeSheet() {
    // _getdeleverlocation();
-    print("welcomlocation"+_deliverLocation);
     prefs.setBool("welcomeSheet", true);
     // _deliverLocation = prefs.getString("deliverylocation");
     SingingCharacter _character = SingingCharacter.english;
@@ -1353,7 +1314,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
   Widget build(BuildContext context) {
 
  //   _getdeleverlocation();
-    debugPrint("init build");
     return GestureDetector(
       onTapDown: (TapDownDetails details) => onTapDown(context, details),
       child: Container(
@@ -1411,7 +1371,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
     var url = IConstants.API_PATH + 'useremail-login';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // debugPrint("tokenid"+ prefs.getString('tokenid'));
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "email": prefs.getString('Email'),
@@ -1426,13 +1385,8 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
             textColor: Colors.white);
         Navigator.of(context).pop(true);
       }*/
-      debugPrint("response login"+responseJson.toString());
-      debugPrint(responseJson['data'].toString());
-      debugPrint("response"+responseJson.toString());
       if (responseJson['status'].toString() == "200") {
         final data = responseJson['data'] as Map<String, dynamic>;
-        debugPrint("response"+responseJson.toString());
-        debugPrint("mobl"+data['mobile'].toString());
         //prefs.setString('Otp', data['otp'].toString());
         prefs.setString('apiKey', data['apiKey'].toString());
         prefs.setString('userID', data['userID'].toString());
@@ -1446,7 +1400,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
         prefs.setString('branch', data['branch'].toString());
         prefs.setString('deliverylocation', data['area'].toString());
         IConstants.deliverylocationmain.value=data['area'].toString();
-        debugPrint("name"+prefs.getString('FirstName'));
         prefs.setString('LoginStatus', "true");
 
         //prefs.setString('LoginStatus', "true");
@@ -1505,8 +1458,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
           HomeScreen.routeName,
         );*/
         prefs.setString('skip', "no");
-        debugPrint("Login , , , , , , ,1 " + IConstants.currentdeliverylocation.value.toString());
-        debugPrint("default location available..."+prefs.getString("defaultlocation").toString());
         Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routeName, (route) => false);
 
       } else if (responseJson['status'].toString() == "400") {
@@ -1561,8 +1512,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
           }
       );
       final responseJson = json.decode(response.body);
-      debugPrint("checkemail ........");
-      debugPrint("responseemailcheck"+responseJson.toString());
       if (responseJson['status'].toString() == "true") {
         if (responseJson['type'].toString() == "old") {
           Navigator.of(context).pop();
@@ -1680,7 +1629,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
       checkusertype("Googlesigin");
     } catch (error) {
       Navigator.of(context).pop();
-      debugPrint("sign in faliel");
       Fluttertoast.showToast(
           msg: "Sign in failed!",
           backgroundColor: Colors.black87,
@@ -1698,7 +1646,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
     switch (result.status) {
       case FacebookLoginStatus.error:
         Navigator.of(context).pop();
-        debugPrint("failed");
         Fluttertoast.showToast(
             msg: "Sign in failed!",
             backgroundColor: Colors.black87,
@@ -1707,7 +1654,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
         break;
       case FacebookLoginStatus.cancelledByUser:
         Navigator.of(context).pop();
-        debugPrint("cancelled");
         Fluttertoast.showToast(
            // msg: "Sign in cancelled by user!",
             backgroundColor: Colors.black87,
@@ -1716,7 +1662,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
         break;
       case FacebookLoginStatus.loggedIn:
 
-        debugPrint("loggedin");
         final token = result.accessToken.token;
         final graphResponse = await http.get(
             'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,picture,email&access_token=${token}');
@@ -1888,7 +1833,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
       }
 
       final responseJson = json.decode(response.body);
-      debugPrint("response"+responseJson.toString());
       if (responseJson['type'].toString() == "old") {
         if (responseJson['data'] != "null") {
           final data = responseJson['data'] as Map<String, dynamic>;
@@ -1900,7 +1844,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
             prefs.setString("mobile", data['mobile'].toString());
             prefs.setString("latitude", data['latitude'].toString());
             prefs.setString("longitude", data['longitude'].toString());
-            print("tapped");
           } else if (responseJson['status'].toString() == "false") {}
         }
 
@@ -2210,8 +2153,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
 
 
   Future<void> SignupUser() async {
-    debugPrint('signupuser');
-    debugPrint("availabilty....."+IConstants.currentdeliverylocation.value.toString()) ;
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'customer/password-register';
 
@@ -2226,7 +2167,6 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
       channel = "Web";
     }
 
-    print("channel"+channel.toString());
     try {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -2239,11 +2179,9 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
 
       String name =
       prefs.getString('FirstName') ;
-      print("channel"+channel.toString());
-      print("signup respond.......");
+
      //  var resBody = {};
      //  resBody["device"] = channel.toString();
-     // debugPrint("respay"+resBody.toString());
 
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
@@ -2257,21 +2195,8 @@ debugPrint("value list loc"+IConstants.deliverylocationmain.value);
         "password" :  prefs.getString('Password') ,
         "device": channel.toString(),
       });
-print("response signup body"+{
-  // await keyword is used to wait to this operation is complete.
-  "username":  prefs.getString('FirstName'),
-  "email": prefs.getString('Email'),
-  "mobileNumber": "",
-  "path": apple,
-  "tokenId": prefs.getString('tokenid'),
-  "branch": prefs.getString('branch'),
-  "password" :  prefs.getString('Password') ,
-  "device": channel.toString(),
-}.toString());
 
-      print("channel"+channel.toString());
       final responseJson = json.decode(response.body);
-      debugPrint("responseemailcheckafter"+responseJson.toString());
       if (responseJson['status'].toString() == "true") {
         final data = responseJson['data'] as Map<String, dynamic>;
         prefs.setString('apiKey', data['apiKey'].toString());
@@ -2281,7 +2206,6 @@ print("response signup body"+{
         prefs.setString("skip", "no");
         prefs.setString('LoginStatus', "true");
 
-        debugPrint("getmap"+prefs.getString("ismap").toString());
         //Navigator.of(context).pop();
         // if(prefs.getString("latitude").toString()!="null"||prefs.getString("longitude").toString()!="null") {
        // prefs.setString('LoginStatus', "true");
@@ -2320,16 +2244,13 @@ print("response signup body"+{
           }
         });
         if (prefs.getString("ismap").toString() == "true") {
-          print("if........");
 
           addprimarylocation();
         } else if (prefs.getString("isdelivering").toString() == "true") {
-          print("if else........");
           // Navigator.of(context).pop();
           addprimarylocation();
         } else {
           Navigator.of(context).pop();
-          debugPrint("else...");
           prefs.setString("formapscreen", "homescreen");
           Navigator.of(context).pushReplacementNamed(MapScreen.routeName);
           /* Navigator.of(context).pushReplacementNamed(
@@ -2364,7 +2285,6 @@ print("response signup body"+{
 
 
   Future<void> addprimarylocation() async {
-    debugPrint("A d d p r i m r y .....");
     setState(() {
       checkSkip = false;
       if (prefs.getString('FirstName') != null) {
@@ -2404,9 +2324,6 @@ print("response signup body"+{
     var url = IConstants.API_PATH + 'add-primary-location';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      debugPrint("del location"+IConstants.deliverylocationmain.value.toString());
-      debugPrint("del lat"+prefs.getString("latitude"));
-      debugPrint("del longitude"+prefs.getString("longitude"));
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "id": prefs.getString("userID"),
@@ -2416,7 +2333,6 @@ print("response signup body"+{
         "branch": prefs.getString('branch'),
       });
       final responseJson = json.decode(response.body);
-      debugPrint("response add primary...."+responseJson.toString());
       if (responseJson["data"].toString() == "true") {
         if(prefs.getString("ismap").toString()=="true") {
           if(prefs.getString("fromcart").toString()=="cart_screen"){
@@ -2471,12 +2387,8 @@ print("response signup body"+{
 
         }
         else if(prefs.getString("isdelivering").toString()=="true"){
-          debugPrint("no permission"+prefs.getString("nopermission").toString());
-          debugPrint("ismap"+prefs.getString("ismap").toString());
-          debugPrint("is delivery"+prefs.getString("isdelivering").toString());
           //if(prefs.getString("nopermission").toString()!="null"){
           /*if(prefs.getString("isdelivering").toString()=="true"){*/
-          debugPrint("iffff..." + (prefs.getString("nopermission").toString()!="null").toString() + "    " + (prefs.getString("nopermission").toString()!="").toString());
 
           /*Navigator.of(context).pushReplacementNamed(
             HomeScreen.routeName,
@@ -2520,7 +2432,6 @@ print("response signup body"+{
 
         }
         else {
-          debugPrint("else...");
           prefs.setString("formapscreen", "homescreen");
           Navigator.of(context).pushReplacementNamed(MapScreen.routeName);
           /*Navigator.of(context).pushReplacementNamed(
@@ -2680,13 +2591,10 @@ print("response signup body"+{
   }
 
   Future<void> Resetpass() async {
-    debugPrint('pwd'+newpasscontroller.text);
-    debugPrint('id'+prefs.getString('userID'));
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'reset-password';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // debugPrint("tokenid"+ prefs.getString('tokenid'));
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "id":prefs.getString('userID'),
@@ -2696,7 +2604,6 @@ print("response signup body"+{
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
       // final data = responseJson['data'] as Map<String, dynamic>;
-      debugPrint("response"+responseJson.toString());
       if (responseJson['status'].toString() == "200") {
         Navigator.pop(context);
         Navigator.of(context).pop(true);
@@ -2708,7 +2615,7 @@ print("response signup body"+{
         // Navigator.pop(context);
         //Navigator.of(context).pop();
         // Navigator.of(context).pop();
-        /*debugPrint("response"+responseJson.toString());
+        /*
         //prefs.setString('Otp', data['otp'].toString());
         prefs.setString('Otp', responseJson['otp'].toString());
         prefs.setString('apiKey', data['apiKey'].toString());
@@ -2721,7 +2628,6 @@ print("response signup body"+{
         prefs.setString("longitude", data['longitude'].toString());
         prefs.setString('apple', data['apple'].toString());
         prefs.setString('branch', data['branch'].toString());
-        debugPrint("name"+prefs.getString('FirstName'));
         prefs.setString('LoginStatus', "true");
         if (prefs.getString('prevscreen') != null) {
           if (prefs.getString('prevscreen') == 'signingoogle') {
@@ -2733,7 +2639,7 @@ print("response signup body"+{
             prefs.setString("photoUrl", "");
           }
         }
-        debugPrint("otp"+prefs.getString('Otp'));*/
+       */
 
         //Navigator.of(context).pop();
         // _resetpass();
@@ -2763,12 +2669,10 @@ print("response signup body"+{
   }
 
   Future<void> Forgotpass() async {
-    debugPrint("email"+emailcontrolleralert.text.toString());
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'forgot-password';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // debugPrint("tokenid"+ prefs.getString('tokenid'));
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "email": emailcontrolleralert.text,//prefs.getString('Email'),
@@ -2777,9 +2681,7 @@ print("response signup body"+{
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
       final data = responseJson['data'] as Map<String, dynamic>;
-      debugPrint("response"+responseJson.toString());
       if (responseJson['status'].toString() == "200") {
-        debugPrint("response forgotpass"+responseJson.toString());
         //prefs.setString('Otp', data['otp'].toString());
         prefs.setString('Otp', responseJson['otp'].toString());
         //  prefs.setString('apiKey', data['apiKey'].toString());
@@ -2792,7 +2694,6 @@ print("response signup body"+{
         prefs.setString("longitude", data['longitude'].toString());
         prefs.setString('apple', data['apple'].toString());
         prefs.setString('branch', data['branch'].toString());
-        debugPrint("name"+prefs.getString('FirstName'));
         prefs.setString('LoginStatus', "true");
         if (prefs.getString('prevscreen') != null) {
           if (prefs.getString('prevscreen') == 'signingoogle') {
@@ -2804,7 +2705,6 @@ print("response signup body"+{
             prefs.setString("photoUrl", "");
           }
         }*/
-        debugPrint("otp"+prefs.getString('Otp'));
         Navigator.of(context).pop();
         //Navigator.of(context).pop();
         //Navigator.of(context).pop();
@@ -3032,7 +2932,6 @@ print("response signup body"+{
                       SizedBox(height: 15,),
                       GestureDetector(
                         onTap: () {
-                          print("tapped");
                           //  _enabled ? _onTap:
                           // clikform();
                           //   _dialogforProcessing();
@@ -3048,7 +2947,6 @@ print("response signup body"+{
                           prefs.setString('prevscreen', "mobilenumber");
                           // Navigator.of(context).pop();
                           _ResetPassword();
-                          print("count" + count.toString());
                         },
                         child: Container(
                           width: MediaQuery
@@ -3650,9 +3548,7 @@ print("response signup body"+{
                               :
                           /*prefs.setString('skip', "no");
                           prefs.setString('prevscreen', "mobilenumber");*/
-                          debugPrint("Login , , , , , , , " + IConstants.currentdeliverylocation.value.toString());
                           _saveFormsignup();
-                          print("count" + count.toString());
                           //_saveAddInfoForm();
                           //_saveFormsignup();
                          // _dialogforProcessing();
@@ -4148,7 +4044,6 @@ print("response signup body"+{
                       SizedBox(height: 15,),
                       GestureDetector(
                         onTap: () {
-                          print("tapped");
                           //  _enabled ? _onTap:
                           // clikform();
                           //   _dialogforProcessing();
@@ -4165,7 +4060,6 @@ print("response signup body"+{
                           prefs.setString('prevscreen', "mobilenumber");
                           //  Navigator.of(context).pop();
                           _ForgotPassword();
-                          print("count" + count.toString());
                         },
                         child: Container(
                           width: MediaQuery
@@ -4345,7 +4239,6 @@ print("response signup body"+{
                       ),
                       GestureDetector(
                         onTap:(){
-                          print("clicked forgotpas....");
                          _dialogforForgotpass();
                         },
                         child: Container(
@@ -4366,7 +4259,6 @@ print("response signup body"+{
                       ),
                       GestureDetector(
                         onTap: () {
-                          print("tapped");
                           //  _enabled ? _onTap:
                           // clikform();
                           //   _dialogforProcessing();
@@ -4380,9 +4272,7 @@ print("response signup body"+{
                           )
                               : prefs.setString('skip', "no");
                           prefs.setString('prevscreen', "mobilenumber");
-                          debugPrint("Login , , , , , , , " + IConstants.currentdeliverylocation.value.toString());
                           _saveForm();
-                          print("count" + count.toString());
                         },
                         child:
                         Container(
@@ -4468,7 +4358,6 @@ print("response signup body"+{
                             child: GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
-                                debugPrint("click google");
                              _dialogforProcessing();
                               _handleSignIn();
                               },
@@ -5998,8 +5887,6 @@ print("response signup body"+{
     final discountitemData = Provider.of<SellingItemsList>(context,listen: false);
     final subcategoryData = Provider.of<FeaturedCategoryList>(context, listen: false);
     _deliverLocation = prefs.getString("deliverylocation");
-    print("delivery locatio web ...."+_deliverLocation.toString());
-    print("sub vat length"+subcategoryData .catTwoitems.length.toString());
     if (brandsData.items.length > 0 ||
         sellingitemData.items.length > 0 ||
         categoriesData.items.length > 0 ||
@@ -6068,8 +5955,6 @@ print("response signup body"+{
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      debugPrint("Locationnnnnnn");
-                      debugPrint(_deliverLocation);
                      prefs.setString("formapscreen", "homescreen");
                       Navigator.of(context).pushNamed(MapScreen.routeName);
                       floatingDropdown.remove();
@@ -6185,7 +6070,6 @@ print("response signup body"+{
                                   });
                                 } else if (newVal.length >= 3) {
                                   _debouncer.run(() {
-                                    // print(string);
                                     search(newVal);
                                     //  onSubmit(newVal);
                                     _focus.requestFocus();
@@ -6682,7 +6566,6 @@ print("response signup body"+{
 
                               } else if (newVal.length >= 3) {
                                 _debouncer.run(() {
-                                  // print(string);
                                   search(newVal);
                                   //  onSubmit(newVal);
                                   _focus.requestFocus();
@@ -6998,25 +6881,18 @@ print("response signup body"+{
     String isMapfetch,isdefaultloc;
     isMapfetch = prefs.getString("ismapfetch").toString();
      isdefaultloc=prefs.getString('defaultlocation').toString();//(prefs.getBool('defaultlocation')!=null)?prefs.getBool('defaultlocation'):false;
-    debugPrint("ismapfetch"+isMapfetch.toString());
-    debugPrint("default loc"+isdefaultloc.toString());
     if(prefs.getString("defaultlocation").toString()!="null" && prefs.getString("ismapfetch").toString()!="null"){
-      debugPrint("iffffffff.....");
       setState(() {
         _deliverLocation = prefs.getString("deliverylocation");
         IConstants.deliverylocationmain.value = _deliverLocation;
         IConstants.currentdeliverylocation.value = "Available";
-        debugPrint("delloc"+_deliverLocation.toString());
       });
     }else{
-      debugPrint("else........");
 
       getCurrentLocation();
     }
   }
   createHeaderForMobile() {
-    debugPrint("init heder mobile");
-    debugPrint("skip"+_isSkip.toString());
     final brandsData = Provider.of<BrandItemsList>(context,listen: false);
     final categoriesData = Provider.of<CategoriesItemsList>(context,listen: false);
     final sellingitemData = Provider.of<SellingItemsList>(context,listen: false);
@@ -7031,7 +6907,6 @@ print("response signup body"+{
       _isDelivering = false;
     }
     setState(() {
-      debugPrint("open.......");
       HomeScreen.scaffoldKey.currentState.isDrawerOpen?  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.white,
       )) :  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
@@ -7098,7 +6973,6 @@ print("response signup body"+{
               ValueListenableBuilder(
               valueListenable: IConstants.currentdeliverylocation,
               builder: (context, value, widget) {
-                debugPrint("no nitification");
                 return Container(
                   width: 25,
                   height: 25,
@@ -7130,7 +7004,6 @@ print("response signup body"+{
                   : ValueListenableBuilder(
               valueListenable: IConstants.currentdeliverylocation,
     builder: (context, value, widget) {
-      debugPrint(" nitification");
       return Consumer<NotificationItemsList>(
         builder: (_, cart, ch) =>
             Badge(
@@ -7188,7 +7061,6 @@ print("response signup body"+{
                   : ValueListenableBuilder(
                   valueListenable: IConstants.currentdeliverylocation,
     builder: (context, value, widget) {
-      debugPrint(" nitification noti");
       return Container(
         width: 25,
         height: 25,
@@ -7323,7 +7195,6 @@ print("response signup body"+{
     //TODO 2nd: listen playerPointsToAdd
     valueListenable: IConstants.currentdeliverylocation,
     builder: (context, value, widget) {
-      debugPrint("valuedelivery location" + value.toString());
      return GestureDetector(
         onTap: () {
           if (value != "Not Available")
@@ -7349,7 +7220,6 @@ print("response signup body"+{
                     //TODO 2nd: listen playerPointsToAdd
                     valueListenable: IConstants.currentdeliverylocation,
     builder: (context, value, widget) {
-    debugPrint("valuedelivery location" + value.toString());
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
     onTap: () {
@@ -7429,7 +7299,6 @@ print("response signup body"+{
                     //TODO 2nd: listen playerPointsToAdd
                     valueListenable: IConstants.deliverylocationmain,
                     builder: (context, value, widget) {
-                      debugPrint("valuedelivery location header"+value.toString());
                       //TODO here you can setState or whatever you need
                       return Text(
                         //TODO e.g.: create condition with playerPointsToAdd's value

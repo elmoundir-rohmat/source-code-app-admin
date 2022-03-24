@@ -25,11 +25,8 @@ import '../screens/mobile_authentication.dart';
 import '../screens/address_screen.dart';
 import '../screens/payment_screen.dart';
 import '../constants/images.dart';
-import 'cart_screen.dart';
-import 'searchitem_screen.dart';
 import 'package:http/http.dart' as http;
 import '../screens/example_screen.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -115,8 +112,6 @@ String otp="";
       setState(() {
         currency_format = prefs.getString("currency_format");
         deliverlocation = prefs.getString("deliverylocation");
-        /*mobile=prefs.getString('mobile');
-        debugPrint("mobileinit"+mobile);*/
         prefs.setString('fixtime', "");
         prefs.setString("fixdate", "");
         if (prefs.getString("membership") == "1") {
@@ -135,10 +130,6 @@ String otp="";
             _checkaddress = true;
             checkLocation();
           } else {
-            /*_checkaddress = false;
-            _loading = false;*/
-//Navigator.of(context).pop();
-              debugPrint("confirmorder address.......");
             Navigator.of(context).pushReplacementNamed(
                 ExampleScreen.routeName,
                 arguments: {
@@ -152,37 +143,6 @@ String otp="";
           }
         });
       });
-      /*Provider.of<AddressItemsList>(context, listen: false).fetchAddress().then((_) {
-        addressitemsData =
-            Provider.of<AddressItemsList>(context, listen: false);
-        if (addressitemsData.items.length > 0) {
-          _checkaddress = true;
-          addtype = addressitemsData
-              .items[addressitemsData.items.length - 1].useraddtype;
-          address = addressitemsData
-              .items[addressitemsData.items.length - 1].useraddress;
-          addressicon = addressitemsData
-              .items[addressitemsData.items.length - 1].addressicon;
-          prefs.setString("addressId",
-              addressitemsData.items[addressitemsData.items.length - 1].userid);
-          calldeliverslots(
-              addressitemsData.items[addressitemsData.items.length - 1].userid);
-          deliveryCharge(
-              addressitemsData.items[addressitemsData.items.length - 1].userid);
-        } else {
-          _checkaddress = false;
-        }
-      });*/
-      /*addressitemsData = Provider.of<AddressItemsList>(context, listen: false);
-      checkLocation();
-      Provider.of<BrandItemsList>(context,listen: false).fetchWalletBalance();
-      debugPrint("confirmorder init......");*/
-
-      //Provider.of<BrandItemsList>(context, listen: false).fetchPaymentMode();
-
-      /*initializeDateFormatting(localeName);
-
-      weekDays(localeName);*/
     });
 
 
@@ -191,7 +151,6 @@ String otp="";
 
   static List<String> weekDays(String localeName) {
     DateFormat formatter = DateFormat(DateFormat.WEEKDAY, localeName);
-    debugPrint("days"+formatter.format(DateTime.now()).toString());
     return [DateTime(2000, 1, 3, 1), DateTime(2000, 1, 4, 1), DateTime(2000, 1, 5, 1),
       DateTime(2000, 1, 6, 1), DateTime(2000, 1, 7, 1), DateTime(2000, 1, 8, 1),
       DateTime(2000, 1, 9, 1)].map((day) => formatter.format(day)).toList();
@@ -279,7 +238,6 @@ String otp="";
       deliveryslotData = Provider.of<DeliveryslotitemsList>(context, listen: false);
       for(int i=0;i<deliveryslotData.items.length; i++){
         setState((){
-          print("call deliver slot i ....."+i.toString());
           if(i==0){
             deliveryslotData.items[i].selectedColor=Color(0xFF45B343);
             deliveryslotData.items[i].borderColor=Color(0xFF45B343);
@@ -325,9 +283,7 @@ String otp="";
           for(int i = 0; i < timeslotsData.length; i++) {
             setState(() {
               prefs.setString("fixdate", deliveryslotData.items[0].dateformat);
-              print("call time slot i ....."+i.toString());
               if (timeslotsData[i].status == "1") {
-                debugPrint("status.....1");
                 timeslotsData[i].selectedColor = ColorCodes.dividerColor;
                 timeslotsData[i].borderColor = ColorCodes.dividerColor;
                 timeslotsData[i].isSelect = false;
@@ -992,7 +948,6 @@ String otp="";
               Fluttertoast.showToast(msg: "Please provide a address");
             }
             else if(prefs.getString('fixtime') == ""){
-              debugPrint("timeslotfull" );
               Fluttertoast.showToast(
                   msg: "Please select Time slot",
                   fontSize: MediaQuery
@@ -1003,10 +958,8 @@ String otp="";
             }
 
             else {
-              debugPrint("mobile"+prefs.getString('mobile').toString());
 mobile=prefs.getString('mobile').toString();
               if (prefs.getString('mobile').toString()!="null") {
-                debugPrint("present");
                 prefs.setString("isPickup", "no");
                 Navigator.of(context)
                     .pushNamed(PaymentScreen.routeName, arguments: {
@@ -1023,43 +976,9 @@ mobile=prefs.getString('mobile').toString();
                 });
               }
               else{
-                debugPrint(" not present");
-                debugPrint("mobile" +"if");
-                //prefs.setString('prevscreen', "confirmorder");
                 Navigator.of(context)
                     .pushNamed(MobileAuthScreen.routeName,);
               }
-
-
-           /*   if (prefs.getString('mobile') != "null") {
-                debugPrint("mobile" +"if else");
-                prefs.setString("isPickup", "no");
-                Navigator.of(context)
-                    .pushNamed(PaymentScreen.routeName, arguments: {
-                  'minimumOrderAmountNoraml': _minimumOrderAmountNoraml,
-                  'deliveryChargeNormal': _deliveryChargeNormal,
-                  'minimumOrderAmountPrime': _minimumOrderAmountPrime,
-                  'deliveryChargePrime': _deliveryChargePrime,
-                  'minimumOrderAmountExpress':
-                  _minimumOrderAmountExpress,
-                  'deliveryChargeExpress': _deliveryChargeExpress,
-                  'deliveryType': *//*(_tabController.index == 0)*//*
-                  "standard",
-                  *//* : "express",*//*
-                  'note': _message.text,
-                });
-
-              }
-
-
-            else{
-
-          debugPrint("mobile" +"if");
-          //prefs.setString('prevscreen', "confirmorder");
-          Navigator.of(context)
-              .pushNamed(MobileAuthScreen.routeName,);
-      }*/
-
             }
           }
         },
@@ -1366,183 +1285,16 @@ mobile=prefs.getString('mobile').toString();
       aspectRatio =
           (deviceWidth - (20 + ((widgetsInRow - 1) * 10))) / widgetsInRow / 145;
     }
-    debugPrint("prev confirm "+prev.toString());
     return  WillPopScope(
       onWillPop: () {
-      //  SchedulerBinding.instance.addPostFrameCallback((_) {
-
-           /* if(prev == "cart_screen"){
-              debugPrint("if");
-              Navigator.pushNamedAndRemoveUntil(
-                  context, CartScreen.routeName, (route) => false);
-            }
-            else {*/
-              debugPrint("else");
               Navigator.of(context).pop();
-           // }
-         // });
-          //Navigator.of(context).pop();
 
-        // this is the block you need
-       /* Navigator.pushNamedAndRemoveUntil(
-            context, CartScreen.routeName, (route) => false);*/
-      //  Navigator.of(context).pop();
-        //Navigator.of(context).popUntil(ModalRoute.withName('/cart-screen'));
         return Future.value(false);
       },
       child: Scaffold(
         appBar: ResponsiveLayout.isSmallScreen(context)
             ? gradientappbarmobile()
             : null,
-        /*(_checkaddress)? GradientAppBar(
-          elevation: 1,
-          gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-               ColorCodes.whiteColor,
-                ColorCodes.whiteColor,
-              ]),
-          title: Text(
-            "Checkout",style: TextStyle(color: ColorCodes.backbutton),
-          ),
-          leading:  IconButton(
-              icon: Icon(Icons.arrow_back_ios_outlined,size: 20, color:ColorCodes.backbutton),
-              onPressed: () {
-               // SchedulerBinding.instance.addPostFrameCallback((_) {
-                  *//*if(prev == "address_screen"){
-                      debugPrint("if");
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, CartScreen.routeName, (route) => false);
-                  }
-                  else {*//*
-                    debugPrint("else");
-                    Navigator.of(context).pop();
-                  //}
-               // });
-               // Navigator.of(context).pop();
-               *//* Navigator.pushNamedAndRemoveUntil(
-                    context, CartScreen.routeName, (route) => false);*//*
-             //   Navigator.of(context).popUntil(ModalRoute.withName('/cart-screen'));
-              }
-          ),
-         *//* actions: [
-            Container(
-              height: 25,
-              width: 25,
-              margin: EdgeInsets.only(top: 15, bottom: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushReplacementNamed(
-                    SearchitemScreen.routeName,
-                  );
-                },
-                child: Icon(
-                  Icons.search,
-                  size: 18,
-                  color: ColorCodes.blackColor,
-                ),
-              ),
-            ),
-            SizedBox(width: 10),
-            // Container(
-            //   height: 35,
-            //   width: 35,
-            //   margin: EdgeInsets.only(top: 10, bottom: 10),
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(100),
-            //   ),
-            //   child: GestureDetector(
-            //     behavior: HitTestBehavior.translucent,
-            //     onTap: () {
-            //       if (Platform.isIOS) {
-            //         Share.share('Download ' +
-            //             IConstants.APP_NAME +
-            //             ' from App Store https://apps.apple.com/us/app/id1563407384');
-            //       } else {
-            //         Share.share('Download ' +
-            //             IConstants.APP_NAME +
-            //             ' from Google Play Store https://play.google.com/store/apps/details?id=com.fellahi.store');
-            //       }
-            //     },
-            //     child: Icon(
-            //       Icons.share_outlined,
-            //       color: Color(0xFF124475),
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(width: 10),
-            // Container(
-            //   margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-            //   child: ValueListenableBuilder(
-            //     valueListenable: Hive.box<Product>(productBoxName).listenable(),
-            //     builder: (context, Box<Product> box, index) {
-            //       if (box.values.isEmpty)
-            //         return Container(
-            //           width: 35,
-            //           height: 35,
-            //           decoration: BoxDecoration(
-            //               borderRadius: BorderRadius.circular(100),
-            //               color: Theme.of(context).buttonColor),
-            //           child: GestureDetector(
-            //             onTap: () {
-            //               Navigator.of(context).pushNamed(CartScreen.routeName);
-            //             },
-            //             child: Icon(
-            //               Icons.shopping_cart_outlined,
-            //               size: 20,
-            //               color: Theme.of(context).primaryColor,
-            //             ),
-            //           ),
-            //         );
-            //       int cartCount = 0;
-            //       for (int i = 0;
-            //           i < Hive.box<Product>(productBoxName).length;
-            //           i++) {
-            //         cartCount = cartCount +
-            //             Hive.box<Product>(productBoxName)
-            //                 .values
-            //                 .elementAt(i)
-            //                 .itemQty;
-            //       }
-            //       return Container(
-            //         //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-            //         child: Consumer<Calculations>(
-            //           builder: (_, cart, ch) => Badge(
-            //             child: ch,
-            //             color: Colors.green,
-            //             value: cartCount.toString(),
-            //           ),
-            //           child: Container(
-            //             width: 35,
-            //             height: 35,
-            //             //margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-            //             decoration: BoxDecoration(
-            //                 borderRadius: BorderRadius.circular(100),
-            //                 color: Theme.of(context).buttonColor),
-            //             child: GestureDetector(
-            //               onTap: () {
-            //                 Navigator.of(context).pushNamed(CartScreen.routeName);
-            //               },
-            //               child: Icon(
-            //                 Icons.shopping_cart_outlined,
-            //                 color: Theme.of(context).primaryColor,
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            // SizedBox(width: 10),
-          ],*//*
-        ):null,*/
 
         backgroundColor: Colors.white,
         body: _loading
@@ -1926,7 +1678,6 @@ mobile=prefs.getString('mobile').toString();
                                 itemBuilder:(ctx, i){
                                 return GestureDetector(
                                   onTap: (){
-                                    print('hello');
                                     setState(() {
                                       prefs.setString("fixdate", deliveryslotData.items[i].dateformat);
                                       day = deliveryslotData.items[i].day;
@@ -1942,7 +1693,6 @@ mobile=prefs.getString('mobile').toString();
 
                                       for(int j=0;j<deliveryslotData.items.length;j++){
                                         if(i==j){
-                                          print("day j = i");
                                           deliveryslotData.items[j].selectedColor=Color(0xFF45B343);
                                           deliveryslotData.items[j].borderColor=Color(0xFF45B343);
                                           deliveryslotData.items[j].textColor=ColorCodes.whiteColor;
@@ -1950,7 +1700,6 @@ mobile=prefs.getString('mobile').toString();
 
                                         }
                                         else{
-                                          print("day not j = i");
                                           deliveryslotData.items[j].selectedColor=ColorCodes.whiteColor;
                                           deliveryslotData.items[j].borderColor=Color(0xffBEBEBE);
                                           deliveryslotData.items[j].textColor=ColorCodes.blackColor;
@@ -1960,22 +1709,8 @@ mobile=prefs.getString('mobile').toString();
                                         }
                                       }
                                       for(int j=0;j<timeslotsData.length; j++){
-                                        debugPrint("dellength"+deliveryslotData.items.length.toString());
-                                        debugPrint("timlength"+timeslotsData.length.toString());
-                                        debugPrint("i"+i.toString()+"j"+(j-1).toString());
                                         setState((){
-
-
                                           if(j == 0){
-                                            debugPrint("j equal zero"+timeslotsData.length.toString());
-                                            debugPrint("j equal "+timeslotsData[0].time.toString());
-                                            debugPrint("j equal "+prefs.getString('fixtime').toString());
-                                           //  timeslotsData[0].selectedColor=Color(0xFF45B343);
-                                           // // deliveryslotData.items[i].selectedColor=Color(0xFF45B343);
-                                           //  timeslotsData[0].borderColor=Color(0xFF45B343);
-                                           //  timeslotsData[0].textColor=ColorCodes.whiteColor;
-                                           //  timeslotsData[0].isSelect = true;
-
                                             prefs.setString('fixtime',
                                                 timeslotsData[j].time);
                                               if (timeslotsData[0].status =="1") {
@@ -2014,18 +1749,9 @@ mobile=prefs.getString('mobile').toString();
                                                 true;
                                                 prefs.setString('fixtime',
                                                     timeslotsData[j].time);
-
-
                                               }
-                                            debugPrint("j equal end"+prefs.getString('fixtime').toString());
-
 
                                           }else{
-
-                                            // timeslotsData[j].selectedColor=ColorCodes.whiteColor;
-                                            // timeslotsData[j].borderColor=Color(0xffBEBEBE);
-                                            // timeslotsData[j].textColor=ColorCodes.blackColor;
-                                            // timeslotsData[j].isSelect = false;
                                             if (timeslotsData[j].status =="1") {
 
                                               timeslotsData[j]
@@ -2110,29 +1836,13 @@ mobile=prefs.getString('mobile').toString();
                                 itemBuilder:(ctx, i){
                                   return GestureDetector(
                                     onTap: (){
-                                      debugPrint("i clicl"+i.toString());
-                                      debugPrint("fixtimei"+timeslotsData[i].time);
-                                      print("fixtime....click"+prefs.getString("fixtime").toString());
                                       setState(() {
-
                                         for(int j = 0; j< timeslotsData.length; j++) {
                                           setState(() {
-                                            //prefs.setString('fixtime', timeslotsData[i].time);
                                             final timeData = Provider.of<DeliveryslotitemsList>(context, listen: false);
-                                              // if (timeslotsData[j].status == "1") {
-                                              // debugPrint("status.....1");
-                                              // timeslotsData[j].selectedColor = Colors.grey;
-                                              // timeslotsData[j].borderColor = Colors.grey;
-                                              // timeslotsData[j].isSelect = false;
-                                              // timeslotsData[j].textColor = Colors.grey;
-                                              // prefs.setString('fixtime', "");
-                                              // }
-                                              // else {
-
                                                 if (i == j) {
                                                   if (timeslotsData[j].status ==
                                                       "1") {
-                                                    debugPrint("status.....1");
                                                     timeslotsData[j]
                                                         .selectedColor =
                                                         ColorCodes.dividerColor;
@@ -2172,7 +1882,6 @@ mobile=prefs.getString('mobile').toString();
                                                 }else {
                                                   if (timeslotsData[j].status ==
                                                       "1") {
-                                                    debugPrint("status.....1");
                                                     timeslotsData[j]
                                                         .selectedColor =
                                                         ColorCodes.dividerColor;
@@ -2199,18 +1908,8 @@ mobile=prefs.getString('mobile').toString();
                                                   }
                                                 }
 
-                                                // setState(() {
-                                                //   prefs.setString('fixtime', timeslotsData[i].time);
-                                                // });
-
-                                              //}
-
                                           });
-
-                                          /*day = deliveryslotData.items[i].day;
-                                          date = deliveryslotData.items[i].date;*/
                                         }
-                                        print("fixtime....click"+prefs.getString("fixtime").toString());
 
                                       });
 
@@ -2327,21 +2026,7 @@ mobile=prefs.getString('mobile').toString();
       leading:  IconButton(
           icon: Icon(Icons.arrow_back_ios_outlined,size: 20, color:ColorCodes.backbutton),
           onPressed: () {
-            // SchedulerBinding.instance.addPostFrameCallback((_) {
-            /*if(prev == "address_screen"){
-                      debugPrint("if");
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, CartScreen.routeName, (route) => false);
-                  }
-                  else {*/
-            debugPrint("else");
             Navigator.of(context).pop();
-            //}
-            // });
-            // Navigator.of(context).pop();
-            /* Navigator.pushNamedAndRemoveUntil(
-                    context, CartScreen.routeName, (route) => false);*/
-            //   Navigator.of(context).popUntil(ModalRoute.withName('/cart-screen'));
           }
       ),
       titleSpacing: 0,
@@ -2792,17 +2477,7 @@ mobile=prefs.getString('mobile').toString();
 //******************************* new listview design**********
   Widget slotBasedDelivery() {
     int index = 0;
-    /*for (int i = 0; i < deliveryslotData.items.length; i++) {
-      for (int j = 1; j <= timeslotsData.length; j++) {
-        index = index + j;
-      }
-    }*/
-
-    debugPrint("slotBasedDelivery . . . . . .. " + deliveryslotData.items.length.toString());
-
     return
-
-
       Container(
 
       child:
@@ -2814,10 +2489,6 @@ mobile=prefs.getString('mobile').toString();
           child:  ListView.builder(
               shrinkWrap: true,
               physics: new AlwaysScrollableScrollPhysics(),
-
-              //physics: NeverScrollableScrollPhysics(),
-              //controller: _controller,
-              // physics: NeverScrollableScrollPhysics(),
               itemCount: deliveryslotData.items.length,
               //shrinkWrap: true,
               itemBuilder: (_, i) => Column(
@@ -2882,26 +2553,12 @@ mobile=prefs.getString('mobile').toString();
             //_groupValue = _index = (i == 0 && j == 0) ? 0 : _index + 1;
             //_index = (i == 0 && j == 0) ? 0 : _index + 1;
             time = timeslotsData[j].time;
-            /*for (int k = 0; k < timeslotsData.length; k++) {
-              setState(() {
-                if (timeslotsData[j].id == timeslotsData[k].id) {
-                  //checkBoxdata[j] = true;
-                  timeslotsData[k].selectedColor = Color(0xFF2966A2);
-                  timeslotsData[k].isSelect = true;
-                } else {
-                  //checkBoxdata[k] = false;
-                  timeslotsData[k].selectedColor = Color(0xffBEBEBE);
-                  timeslotsData[k].isSelect = false;
-                }
-              });
-            }*/
             final timeData = Provider.of<DeliveryslotitemsList>(context, listen: false);
             prefs.setString("fixdate", deliveryslotData.items[i].dateformat);
             prefs.setString('fixtime', timeslotsData[i].time);
 
             _index = (i == 0 && j == 0) ? 0 : _index + 1;
             for(int i = 0; i < timeData.times.length; i++) {
-              //debugPrint("compare .  .. . . .. " + j.toString() + "............" + timeslotsData[j].time + "      " + _index.toString() + ". . . . . ." + timeslotsData[j].index + "     " + timeData.times[i].index);
               setState(() {
                 if(/*timeData.times[_index].index*/(int.parse(id) + j).toString() == timeData.times[i].index) {
                   timeData.times[i].selectedColor = Color(0xFF2966A2);
@@ -2912,15 +2569,6 @@ mobile=prefs.getString('mobile').toString();
                 }
               });
             }
-            /*   for (int k = 0; k < timeslotsData.length; k++) {
-              if (j == k) {
-                timeslotsData[j].titlecolor = Color(0xFF2966A2);
-                timeslotsData[j].iconcolor = Color(0xFF2966A2);
-              } else {
-                timeslotsData[k].titlecolor = Color(0xffBEBEBE);
-                timeslotsData[k].iconcolor = Color(0xFFFFFFFF);
-              }
-            }*/
           });
         },
         child: Container(

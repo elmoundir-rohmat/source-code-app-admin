@@ -81,8 +81,6 @@ class _AddressScreenState extends State<AddressScreen> {
           _latitude = prefs.getString('latitude');
           _longitude = prefs.getString('longitude');
           _branch = prefs.getString("branch");
-          debugPrint("lataddemp"+_latitude);
-          debugPrint("longaddwmp"+_longitude);
         });
       } else {
         setState(() {
@@ -90,8 +88,6 @@ class _AddressScreenState extends State<AddressScreen> {
           _latitude = routeArgs['latitude'];
           _longitude = routeArgs['longitude'];
           _branch = routeArgs['branch'];
-debugPrint("latadd"+_latitude.toString());
-          debugPrint("longadd"+_longitude.toString());
           _controllerHouseno.text = routeArgs['houseNo'];
           _controllerApartment.text = routeArgs['apartment'];
           _controllerStreet.text = routeArgs['street'];
@@ -153,7 +149,6 @@ debugPrint("latadd"+_latitude.toString());
   _saveaddress() async {
 
     prefs.setString('newaddresstype', _addresstag);
-    debugPrint("addresstag"+_addresstag.toString());
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -191,10 +186,6 @@ debugPrint("latadd"+_latitude.toString());
       } else {
         pincode = ", " + _controllerPincode.text;
       }
-     /* debugPrint("location"+_deliverylocation);
-      debugPrint("house"+_controllerHouseno.text);
-      debugPrint("location"+_deliverylocation);
-      debugPrint("location"+_deliverylocation);*/
       prefs.setString('newaddress', (_controllerHouseno.text + apartment + street + landmark + ", " + _controllerArea.text + ", " + _deliverylocation + " - " + pincode));
       if(addresstype == "edit") {
         Provider.of<AddressItemsList>(context,listen: false).UpdateAddress(addressid, _latitude, _longitude, _branch).then((_) {
@@ -212,15 +203,12 @@ debugPrint("latadd"+_latitude.toString());
               } else {
                 Navigator.of(context).pop();
                 if (prefs.getString('mobile').toString()!="null") {
-                  debugPrint("present");
                   prefs.setString("isPickup", "no");
                   Navigator.of(context).pushReplacementNamed(
                       ConfirmorderScreen.routeName,
                       arguments: {"prev": "cart_screen"});
                 }
                 else{
-                  debugPrint(" not present");
-                  debugPrint("mobile" +"if");
                   //prefs.setString('prevscreen', "confirmorder");
                   Navigator.of(context)
                       .pushNamed(MobileAuthScreen.routeName,);
@@ -235,17 +223,13 @@ debugPrint("latadd"+_latitude.toString());
             }
             else {
               Navigator.of(context).pop();
-              debugPrint("address"+prefs.getString('mobile').toString());
               if (prefs.getString('mobile').toString()!="null") {
-                debugPrint("present");
                 prefs.setString("isPickup", "no");
                 Navigator.of(context).pushReplacementNamed(
                     ConfirmorderScreen.routeName,
                     arguments: {"prev": "cart_screen"});
               }
               else{
-                debugPrint(" not present");
-                debugPrint("mobile" +"if");
                 //prefs.setString('prevscreen', "confirmorder");
                 Navigator.of(context)
                     .pushNamed(MobileAuthScreen.routeName,);

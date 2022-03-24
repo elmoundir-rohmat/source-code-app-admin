@@ -265,22 +265,9 @@ class _SingleProductImageScreenState extends State<SingleProductImageScreen> {
           icon: Icon(Icons.arrow_back_ios_outlined,size: 20, color: ColorCodes.backbutton),
           onPressed: () {
             try {
-              debugPrint("Moving to home");
-              /*Navigator.of(context).popUntil(
-                ModalRoute.withName(HomeScreen.routeName,));*/
-              //  SchedulerBinding.instance.addPostFrameCallback((_) {
-              /* Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/home-screen', (Route<dynamic> route) => false);*/
-
               Navigator.of(context).pop();
-              // });
-              //Navigator.of(context).pop();
             }catch(e){
-              debugPrint("Printing Error");
-              debugPrint(e.toString());
             }
-            // return Future.value(false);
-            // Navigator.popUntil(context, (route) => route.isFirst);
           }
       ),
 

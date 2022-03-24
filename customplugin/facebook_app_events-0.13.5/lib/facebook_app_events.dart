@@ -84,7 +84,6 @@ class FacebookAppEvents {
     Map<String, dynamic>? parameters,
     double? valueToSum,
   }) {
-    print(name);
     final args = <String, dynamic>{
       'name': name,
       'parameters': parameters,

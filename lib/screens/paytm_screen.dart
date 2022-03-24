@@ -56,7 +56,6 @@ class _PaytmScreenState extends State<PaytmScreen> {
     final queryParams =
         '?orderid=$orderId&customer=$customerId&price=$amount';
 
-    debugPrint("urllllll " + IConstants.API_PAYTM + queryParams);
 
     try{
       if(io.Platform.isIOS) {
@@ -125,8 +124,6 @@ class _PaytmScreenState extends State<PaytmScreen> {
 
                     },
                     onPageFinished: (page){
-                      debugPrint("Page . . . . .. " + page.toString());
-                     // _isLoading=false;
                       if(page.contains("/order")) {
                         setState(() {
                           _loadingPayment = false;

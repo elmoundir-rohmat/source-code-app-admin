@@ -710,7 +710,6 @@ class _SearchitemScreenState extends State<SearchitemScreen> {
                             ),
                             onSubmitted: (value) {
                               searchValue = value;
-                              debugPrint("value length"+value.length.toString());
                               if (value.length == 0) {
                                 _isSearchShow = false;
                                 _isLoading=false;
@@ -726,12 +725,9 @@ class _SearchitemScreenState extends State<SearchitemScreen> {
                             onChanged: (String newVal) {
                               setState(() {
                                 searchValue = newVal;
-                                debugPrint("value length"+newVal.length.toString());
                                 if (newVal.length == 0) {
                                   _isSearchShow = false;
                                 } else if (newVal.length == 2) {
-                                  //Provider.of<ItemsList>(context, listen: false).fetchsearchItems(newVal);
-                                  //search(newVal);
                                 } else if (newVal.length >= 3) {
                                   search(newVal);
                                 }
@@ -820,7 +816,6 @@ class _SearchitemScreenState extends State<SearchitemScreen> {
                           ),
                           onSubmitted: (value) {
                             searchValue = value;
-                            debugPrint("value length"+value.length.toString());
                             if(value.length==0){
                               _isSearchShow = false;
                               _isLoading=false;
@@ -837,22 +832,11 @@ class _SearchitemScreenState extends State<SearchitemScreen> {
                           onChanged: (String newVal) {
                             setState(() {
                               searchValue = newVal;
-                              debugPrint("value length"+newVal.length.toString());
                               if (newVal.length == 0) {
                                 _isSearchShow = false;
                               } else if (newVal.length == 2) {
-                                //Provider.of<ItemsList>(context, listen: false).fetchsearchItems(newVal);
-                                //search(newVal);
                               } else if (newVal.length >= 3) {
                                 search(newVal);
-                                /*searchDispaly = searchData.searchitems
-                                                    .where((elem) =>
-                                                    elem.title
-                                                        .toString()
-                                                        .toLowerCase()
-                                                        .contains(newVal.toLowerCase()))
-                                                    .toList();
-                                                _isSearchShow = true;*/
                               }
                             });
                           })),

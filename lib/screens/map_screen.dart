@@ -2366,9 +2366,6 @@ class MapScreenState extends State<MapScreen> {
             });
             //(first.subLocality!=null)?(first.subLocality+","+first.locality+","+first.adminArea)
             // :(first.locality+","+first.adminArea);
-            debugPrint("latlong: " + _lat.toString() + _lng.toString());
-            debugPrint("address: " + _address);
-            debugPrint("addressline" + addressLine);
           });
 
           _child = mapWidget();
@@ -2380,7 +2377,6 @@ class MapScreenState extends State<MapScreen> {
             new Coordinates(_lat, _lng));
         setState(() {
           var first = addresses.first;
-          print("${first.featureName} : ${first.addressLine}");
 
           _address =
           (first.featureName != null) ? (first.featureName) : first.featureName;
@@ -2388,9 +2384,6 @@ class MapScreenState extends State<MapScreen> {
             addressLine = first.addressLine;
           });
 
-          debugPrint("latlong: " + _lat.toString() + _lng.toString());
-          debugPrint("address: " + _address);
-          debugPrint("addressline" + addressLine);
         });
         _child = mapWidget();
       }
@@ -2669,7 +2662,6 @@ class MapScreenState extends State<MapScreen> {
       future: _mapFuture,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          print("empty");
           return SizedBox.shrink();
         }
 
@@ -2727,10 +2719,6 @@ class MapScreenState extends State<MapScreen> {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final responseJson = json.decode(response.body);
-      debugPrint("checkLocation........");
-      debugPrint(_lat.toString());
-      debugPrint(_lng.toString());
-      debugPrint(responseJson.toString());
       bool _isCartCheck = false;
       if (responseJson['status'].toString() == "yes") {
         prefs.setString('defaultlocation', "true");
@@ -2773,7 +2761,6 @@ class MapScreenState extends State<MapScreen> {
                   prefs.getString("formapscreen") == "homescreen") {
                 if (prefs.containsKey("fromcart")) {
                   if (prefs.getString("fromcart") == "cart_screen") {
-                    debugPrint("Cart login..............");
                     prefs.remove("fromcart");
 
                     Navigator.of(context)

@@ -66,7 +66,6 @@ class MapAddressScreenState extends State<MapAddressScreen> {
         deliverlocation = prefs.getString("deliverylocation");
         addressitemsData = Provider.of<AddressItemsList>(context, listen: false);
         mapForAddress();
-        debugPrint("locmapinit"+addressitemsData.items.length.toString());
       });
 
     });
@@ -76,7 +75,6 @@ class MapAddressScreenState extends State<MapAddressScreen> {
 
   void mapForAddress() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    debugPrint("new adreess map"+prefs.getString('newaddress').toString());
     var addresses;
     try {
       addresses = await Geocoder.local.findAddressesFromQuery(
@@ -257,7 +255,6 @@ class MapAddressScreenState extends State<MapAddressScreen> {
           } else {
             if(productBox.length > 0) {
               if (prefs.getString('mobile').toString()!="null") {
-                debugPrint("present");
                 prefs.setString("isPickup", "no");
                 Navigator.of(context).pushReplacementNamed(
                     ConfirmorderScreen.routeName,

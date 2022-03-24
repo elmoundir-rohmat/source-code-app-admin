@@ -109,7 +109,6 @@ class _AddressbookScreenState extends State<AddressbookScreen> {
       setState(() {
         _address = prefs.getString("restaurant_address");
         deliverylocation= prefs.getString("deliverylocation");
-        debugPrint("dellocaddbook"+deliverylocation);
         prefs.getString("lati");
         prefs.getString("long");
         Provider.of<AddressItemsList>(context, listen: false).fetchAddress().then((_) {
@@ -1294,7 +1293,6 @@ class _AddressbookScreenState extends State<AddressbookScreen> {
       setState(() {
         _address = prefs.getString("restaurant_address");
         deliverylocation= prefs.getString("deliverylocation");
-        debugPrint("dellocaddbook"+deliverylocation);
         prefs.getString("lati");
         prefs.getString("long");
         Provider.of<AddressItemsList>(context,listen: false).fetchAddress().then((_) {

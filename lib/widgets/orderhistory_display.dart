@@ -34,7 +34,6 @@ class _OrderhistoryDisplayState extends State<OrderhistoryDisplay> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      debugPrint("variation"+widget.varname);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {
         currency_format = prefs.getString("currency_format");

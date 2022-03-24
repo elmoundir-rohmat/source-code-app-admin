@@ -449,8 +449,6 @@ class _PickupScreenState extends State<PickupScreen> {
                                                       setState(() {
                                                         _groupValue = newValue;
                                                       });
-                                                     // print("aaaaaaa"+z.toString());
-                                                      //print("aaaaaaaaaa"+ _groupValue.toString());
                                                       changeStore(pickuplocItem.itemspickuploc[i].id);
                                                     },
                                                   ),

@@ -20,10 +20,6 @@ class ItemsList with ChangeNotifier {
   List<SellingItemsFields> _multiimages = [];
 
   Future<void> fetchItems(String catId, String type, int startitem, String checkinitialy) async {
-    debugPrint("id"+catId);
-    debugPrint("type"+type);
-    debugPrint("sitem"+startitem.toString());
-    debugPrint("sinit"+checkinitialy.toString());
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'restaurant/get-menuitem';
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -47,7 +43,6 @@ class ItemsList with ChangeNotifier {
           }
       );
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("responsenested"+responseJson.toString());
       if (responseJson.toString() == "[]"){
         prefs.setBool("endOfProduct", true);
       } else {

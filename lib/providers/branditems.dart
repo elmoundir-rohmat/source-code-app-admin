@@ -51,7 +51,6 @@ Future<void> RegisterEmail() async{
     final data = responseJson['data'] as Map<String, dynamic>;
 
     if (responseJson['status'].toString() == "true") {
-      print("response" + data.toString());
     }
 
  else if (responseJson['status'].toString() == "false") {}
@@ -62,7 +61,6 @@ Future<void> RegisterEmail() async{
 }
 
   Future<void> LoginEmail() async {
-debugPrint("loginemail");
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'useremail-login';
     try {
@@ -76,9 +74,7 @@ debugPrint("loginemail");
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
       final data = responseJson['data'] as Map<String, dynamic>;
-      debugPrint("response"+responseJson.toString());
       if (responseJson['status'].toString() == 200) {
-        debugPrint("response"+responseJson.toString());
         //prefs.setString('Otp', data['otp'].toString());
         prefs.setString('apiKey', data['apiKey'].toString());
         prefs.setString('userID', data['userID'].toString());
@@ -90,16 +86,7 @@ debugPrint("loginemail");
         prefs.setString("longitude", data['longitude'].toString());
         prefs.setString('apple', data['apple'].toString());
         prefs.setString('branch', data['branch'].toString());
-        /*if (prefs.getString('prevscreen') != null) {
-          if (prefs.getString('prevscreen') == 'signingoogle') {
-          } else if (prefs.getString('prevscreen') == 'signinfacebook') {
-          } else {
-            prefs.setString('FirstName', data['name'].toString());
-            prefs.setString('LastName', "");
-            prefs.setString('Email', data['email'].toString());
-            prefs.setString("photoUrl", "");
-          }
-        }*/
+
 
       /* Navigator.of(context).pushNamed(
          OtpconfirmScreen.routeName,
@@ -118,7 +105,6 @@ debugPrint("loginemail");
     var url = IConstants.API_PATH + 'customer/pre-register';
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      debugPrint('token'+prefs.getString('tokenid').toString());
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "mobileNumber": prefs.getString('Mobilenum'),
@@ -205,7 +191,6 @@ debugPrint("loginemail");
           });
 
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("response rest......" + "branch:  " + prefs.getString('branch') + responseJson.toString());
       if (responseJson.toString() == "[]") {
       } else {
         List data = [];
@@ -256,21 +241,11 @@ debugPrint("loginemail");
     var url = IConstants.API_PATH + 'customer/register/guest/user';
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      print("body initial..."+{
-        // await keyword is used to wait to this operation is complete.
-        "token": prefs.getString('tokenid'),//prefs.getString('apiKey'),
-      }.toString());
-      print("apikey"+prefs.getString('apiKey').toString());
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "token": prefs.getString('tokenid'),//prefs.getString('apiKey'),
       });
-      print("body sending..."+{
-      // await keyword is used to wait to this operation is complete.
-      "token": prefs.getString('tokenid'),//prefs.getString('apiKey'),
-      }.toString());
       final responseJson = json.decode(response.body);
-      print("response profile"+responseJson.toString());
 
       if (responseJson['status'].toString() == "200") {
         prefs.setString('tokenid',responseJson['guestUserId']);
@@ -286,13 +261,11 @@ debugPrint("loginemail");
     var url = IConstants.API_PATH + 'customer/get-profile';
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      print("apikey"+prefs.getString('apiKey').toString());
       final response = await http.post(url, body: {
         // await keyword is used to wait to this operation is complete.
         "apiKey": prefs.getString('apiKey'),
       });
       final responseJson = json.decode(response.body);
-      print("response profile"+responseJson.toString());
       final dataJson =
       json.encode(responseJson['data']); //fetching categories data
       final dataJsondecode = json.decode(dataJson);
@@ -311,24 +284,6 @@ debugPrint("loginemail");
     }
   }
 
-  // Future<void> userDetails() async {
-  //   // imp feature in adding async is the it automatically wrap into Future.
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   var url =
-  //       IConstants.API_PATH + 'get-user-status/' + prefs.getString('userID');
-  //   try {
-  //     final response = await http.get(
-  //       url,
-  //     );
-  //     final responseJson = json.decode(utf8.decode(response.bodyBytes));
-  //     print("respojse user details..."+responseJson.toString());
-  //     if (responseJson.toString() != "") {
-  //       prefs.setString('membership', responseJson.toString());
-  //     }
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
 
   Future<void> fetchBrands() async {
     // imp feature in adding async is the it automatically wrap into Future.
@@ -542,7 +497,6 @@ debugPrint("loginemail");
         // await keyword is used to wait to this operation is complete.
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      print("fetch wallet response..."+responseJson.toString());
       List data = [];
 
       responseJson.asMap().forEach((index, value) =>
@@ -580,7 +534,6 @@ debugPrint("loginemail");
         // await keyword is used to wait to this operation is complete.
       });
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("wallet response"+responseJson.toString());
       List data = [];
 
       responseJson.asMap().forEach((index, value) =>
@@ -865,7 +818,6 @@ debugPrint("loginemail");
       });
 
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      print("loyalty response...."+responseJson.toString());
       if (responseJson.toString() != "[]") {
         List data = [];
 
@@ -903,7 +855,6 @@ debugPrint("loginemail");
       );
 
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      print("loyalty response...."+responseJson.toString());
       prefs.setDouble("loyaltyPointsUser",
           (responseJson["points"].toString() == "null")
               ? 0.0
@@ -926,7 +877,6 @@ debugPrint("loginemail");
           }
       );
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("refer..."+responseJson.toString());
       if (responseJson.toString() != "[]") {
         List data = [];
         /*responseJson.asMap().forEach((index, value) =>

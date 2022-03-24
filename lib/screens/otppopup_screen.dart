@@ -79,7 +79,6 @@ class _OtpPopupState extends State<OtpPopup> {
     throw UnimplementedError();
   }
   _dialogforotp(){
-    debugPrint("otp pop");
   return  showDialog(
         barrierDismissible: false,
         context: context,
@@ -391,17 +390,8 @@ class _OtpPopupState extends State<OtpPopup> {
                   SizedBox(width: 30.0),
                   GestureDetector(
                     onTap: () {
-debugPrint("changepop");
-//Navigator.pop(context);
 
                      _dialogforAddInfo();
-                    //
-                      //_dialogforSignIn();
-                      /*Navigator.of(context).pushNamedAndRemoveUntil(
-                        LoginCredentialScreen.routeName,
-                        ModalRoute.withName('/'));*/
-                      // Navigator.of(context).pop();
-
                     },
                     child: Container(
                       height: 35,

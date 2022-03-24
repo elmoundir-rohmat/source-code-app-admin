@@ -185,10 +185,6 @@ class _MyorderDisplayState extends State<MyorderDisplay> {
         _isWeb = true;
       });
     }
-debugPrint("total"+widget.oid);
-    debugPrint("ostatustext"+widget.ostatustext.toString());
-
-    debugPrint("itemleft"+widget.itemLeftCount.toString());
    setState(() {
      _message.text = "";
    });
@@ -271,10 +267,7 @@ debugPrint("total"+widget.oid);
   }
 
   Future<void> cancelOrder(String oid) async {
-    debugPrint("oidcanor"+oid.toString());
-    debugPrint('branch');
     prefs = await SharedPreferences.getInstance();
-    debugPrint(prefs.getString('branch').toString());
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'cancel-order';
     try {
@@ -285,7 +278,6 @@ debugPrint("total"+widget.oid);
         "branch": prefs.getString('branch'),
       });
       final responseJson = json.decode(response.body);
-      debugPrint("responsecancel"+responseJson.toString());
       Navigator.pop(context);
       Navigator.pop(context);
       if (responseJson['status'].toString() == "200") {
@@ -346,7 +338,6 @@ debugPrint("total"+widget.oid);
   }
 
   _dialogforCancel(BuildContext context) {
-    debugPrint("oidcancel"+widget.oid.toString());
     return showDialog(
         context: context,
         builder: (context) {
@@ -418,8 +409,6 @@ debugPrint("total"+widget.oid);
       final response = await http.post(url, body: {});
 
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("ordersDetails . . . . . . . .");
-      debugPrint(responseJson.toString());
       if (responseJson.toString() == "[]") {
       } else {
         final itemJson = json.encode(responseJson['items']);
@@ -431,7 +420,6 @@ List variationId=[];
             data.add(itemJsondecode[index] as Map<String, dynamic>));
 
         for (int i = 0; i < data.length; i++) {
-          debugPrint("item qty"+data[i]['quantity'].toString());
           quantity=int.parse(data[i]['quantity']);
           //varIds=data[i]['itemId'];
           variationId.add(data[i]['itemId']);
@@ -451,47 +439,25 @@ List variationId=[];
   }
 
   Future<void> _repeatOrder(String varIds,List quantity,List variationId) async {
-    debugPrint("_repeatOrder . . . . . . variation Id. . . ."+varIds.toString());
     // imp feature in adding async is the it automatically wrap into Future.
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String qty;
     var url = IConstants.API_PATH + 'get-items-for-reorder/' + varIds;
-    debugPrint("url"+url.toString());
     try {
       final response = await http.get(url);
 
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("_repeatOrder . . . . . . . . . .");
-      debugPrint(responseJson.toString());
       if (responseJson.toString() == "[]") {
       } else {
         List data = [];
         responseJson.asMap().forEach((index, value) =>
             data.add(responseJson[index] as Map<String, dynamic>));
-      /*  for(int j=0;j<quantity.length;j++){
-          qty=quantity[j];
-          debugPrint("qty inner reorder"+qty.toString());
-        }
-
-        //var list = ['one', 'two', 'three'];
-        var concatenate = StringBuffer();
-
-        quantity.forEach((item){
-          concatenate.writeAll(item);
-        });
-
-        print(concatenate); // displays 'onetwothree'
-
-*/
         final fruitMap = quantity.asMap();
-        debugPrint("lengthmap"+fruitMap.toString());
         final varid= variationId.asMap();
-        debugPrint("lengthmapvariataionid"+varid.toString());
         for (int i = 0; i < data.length; i++) {
 
           final pricevarJson = json.encode(data[i]['price_variation']); //fetching sub categories data
           final pricevarJsondecode = json.decode(pricevarJson);
-          debugPrint("price variation"+pricevarJsondecode.toString());
           List pricevardata = []; //list for subcategories
           if (pricevarJsondecode == null) {
           }
@@ -523,28 +489,8 @@ List variationId=[];
                 for (int k = 0; k < quantity.length; k++){
                   if (pricevardata[j]['id'].toString() == variationId[k]) {
                     count = quantity[k];
-                    debugPrint("count" + count.toString());
                     break;
                   }
-                /*for(int j=0;j<variationId.length;i++) {
-                    debugPrint("i  i  i i i i jjj " + j.toString() + "       " +
-                        i.toString());
-
-                    debugPrint("i  i  i i i i " + k.toString() + "       " +
-                        i.toString());
-                    if(j==i){
-                      count=variationId[j];
-                      debugPrint("count var id" + count.toString());
-                      break;
-                    }
-
-                    if (k == i) {
-                      count = quantity[k];
-                      debugPrint("count" + count.toString());
-                      break;
-                    }
-                  }*/
-
                 }
 
                 try {
@@ -643,94 +589,51 @@ List variationId=[];
 
   @override
   Widget build(BuildContext context) {
-   /* final orderitemData = Provider.of<MyorderList>(
-      context,
-      listen: false,
-    ).findById(widget.oid);*/
-    //debugPrint("itemcharge"+widget.itemmodelcharge.toString());
-   /* debugPrint("subtotal"+widget.subtotal.toString());
-    debugPrint("delcharge"+widget.totaldiscount.toString());
-    debugPrint("left count"+widget.itemLeftCount.toString());
-    debugPrint("oid"+widget.oid.toString());
-*/
-   // debugPrint("total discount order displaybuild"+widget.totaldiscount.toString());
-    //for(int i=0;i<orderitemData.length;i++) {
-    debugPrint("total discount order display"+widget.wallet.toString());
-    debugPrint("del charge"+widget.itemmodelcharge.toString());
-    debugPrint("total discount"+widget.totaldiscount.toString());
-    debugPrint("status"+widget.loyalty.toString());
-     /* if (widget.totaldiscount != 0) {
-        debugPrint("if.....");
-        total = double.parse(widget.itemoactualamount) +
-            double.parse(widget.itemmodelcharge) - widget.wallet
-            - double.parse(widget.totaldiscount);
-      }
-      else {
-        debugPrint("else.....");
-        total = double.parse(widget.itemoactualamount) -
-            widget.wallet
-            - double.parse(widget.totaldiscount);
-      }*/
 
     if(widget.ostatus=="CANCELLED"){
       orderstatus=translate('forconvience.CANCELLED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(widget.ostatus=="COMPLETED"){
       orderstatus=translate('forconvience.COMPLETED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
 
     else if(widget.ostatus=="DELIVERED"){
       orderstatus=translate('forconvience.DELIVERED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
 
     else if(widget.ostatus=="DISPATCHED"){
       orderstatus=translate('forconvience.DISPATCHED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(widget.ostatus=="PROCESSING"){
       orderstatus=translate('forconvience.PROCESSING');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(widget.ostatus=="PICK"){
       orderstatus="PICK";//translate('forconvience.DISPATCHED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(widget.ostatus=="RECEIVED"){
       orderstatus=translate('forconvience.RECEIVED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(widget.ostatus=="READY"){
       orderstatus="READY";//translate('forconvience.DISPATCHED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(widget.ostatus=="RESCHEDULE"){
       orderstatus=translate('forconvience.RESCHEDULE');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(widget.ostatus=="ONWAY"){
       orderstatus=translate('forconvience.ONWAY');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(widget.ostatus=="FAILED"){
       orderstatus=translate('forconvience.FAILED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     if(widget.itemmodelcharge != "0"){
       total= double.parse(widget.itemoactualamount) +
           double.parse(widget.itemmodelcharge) -widget.wallet
           - widget.loyalty- double.parse(widget.totaldiscount);
-      debugPrint("totalmy order display with model charge"+total.toString());
     }
     else{
       total= double.parse(widget.itemoactualamount) -(widget.wallet
           + double.parse(widget.totaldiscount)) - widget.loyalty;
-      debugPrint("totalmy order display without model charge"+total.toString());
     }
-   // }
-    debugPrint("totalmy order display"+total.toString());
 
     if (widget.ostatus.toLowerCase() == "received" ||
         widget.ostatus.toLowerCase() == "ready") {

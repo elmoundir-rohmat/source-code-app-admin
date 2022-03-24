@@ -61,24 +61,18 @@ class _CartitemsDisplayState extends State<CartitemsDisplay> {
   @override
   void initState() {
     productBox = Hive.box<Product>(productBoxName);
-    debugPrint("var stock itemcount"+widget.itemcount.toString());
-    debugPrint("var stock i"+widget.varstock.toString());
-    debugPrint("item name"+widget.title);
     /*List<String> numbers =[];//widget.title.toString();//[]; //['one', 'two', 'three', 'four'];
     numbers.add(widget.title.toString());
     numbers.sort();
-    print(numbers);
     List<String> sortstring =[];
     for(int i=0;i<numbers.length;i++){
 
       sortstring.add(numbers[i]);
-      print("sort list"+sortstring.toString());
     }
     sortstring.sort();
-    print("sort list"+sortstring.toString());
     final List<String> fruits = <String>[widget.title];
     fruits.sort();
-    print(fruits);*/
+  */
     Future.delayed(Duration.zero, () async {
       prefs = await SharedPreferences.getInstance();
       setState(() {
@@ -211,7 +205,6 @@ class _CartitemsDisplayState extends State<CartitemsDisplay> {
         _itemPrice = widget.varprice;
       }
     }
-debugPrint("Widget mrp"+widget.varmrp.toString());
     return Stack(
 
       children: [

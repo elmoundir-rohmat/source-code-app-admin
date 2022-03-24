@@ -68,17 +68,14 @@ class _OrderhistoryScreenState extends State<OrderhistoryScreen> {
         _currencyFormat = prefs.getString("currency_format");
       });
 
-debugPrint("order noti......");
       final routeArgs = ModalRoute
           .of(context)
           .settings
           .arguments as Map<String, String>;
       if(routeArgs['fromScreen'] == "pushNotification") {
-        debugPrint("push noti");
         Provider.of<NotificationItemsList>(context, listen: false).updateNotificationStatus(routeArgs['notificationId'], "1" );
       } else {
         if(routeArgs['notificationStatus'] == "0"){
-          debugPrint("push noti 0");
           Provider.of<NotificationItemsList>(context, listen: false).updateNotificationStatus(routeArgs['notificationId'], "1" ).then((value){
             setState(() {
               Provider.of<NotificationItemsList>(context, listen: false).fetchNotificationLogs(
@@ -90,7 +87,6 @@ debugPrint("order noti......");
         }
       }
       final orderid = routeArgs['orderid'];
-      debugPrint("order id......"+orderid.toString());
       if(routeArgs['fromScreen'] == "pushNotification" || routeArgs['fromScreen'] == "pushNotificationScreen") {
         _isWillpop = true;
         Provider.of<MyorderList>(context, listen: false).Vieworders(orderid).then((_) {

@@ -108,7 +108,6 @@ class OtpconfirmScreenState extends State<OtpconfirmScreen> {
         }
         mobile =prefs.getString('Mobilenum');
         tokenid = prefs.getString('tokenid');
-        debugPrint("mobileinit"+mobile);
       });
     });
     super.initState();
@@ -178,7 +177,6 @@ class OtpconfirmScreenState extends State<OtpconfirmScreen> {
   }
 
   Future<void> SignupUser() async {
-    debugPrint('signupuser');
     // imp feature in adding async is the it automatically wrap into Future.
     var url = IConstants.API_PATH + 'customer/password-register';
     try {

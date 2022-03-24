@@ -171,16 +171,9 @@ class OrderconfirmationScreenState extends State<OrderconfirmationScreen> {
   Widget build(BuildContext context) {
      return WillPopScope(
         onWillPop: () { // this is the block you need
-          //Hive.openBox<Product>(productBoxName);
           (_isWeb && !ResponsiveLayout.isSmallScreen(context)) ?
-          //   SchedulerBinding.instance.addPostFrameCallback((_) {
-          /* Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/home-screen', (Route<dynamic> route) => false);*/
-          // Navigator.of(context).pop();
-          // debugPrint("web....... home.........");
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/home-screen', (Route<dynamic> route) => false)
-          //  })
               :
 
           Navigator.of(context).popUntil(ModalRoute.withName(HomeScreen.routeName,));

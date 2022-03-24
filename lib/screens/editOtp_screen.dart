@@ -109,7 +109,6 @@ class EditOtpScreenState extends State<EditOtpScreen> {
       });
 
       final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      debugPrint("response"+responseJson.toString());
       if (responseJson["status"] == 200) {
         prefs.setString('FirstName', routeArgs['firstName']);
         prefs.setString('LastName', "");
@@ -137,8 +136,6 @@ class EditOtpScreenState extends State<EditOtpScreen> {
 
   _verifyOtp() async {
     //var otpval = otp1 + otp2 + otp3 + otp4;
-debugPrint("otp value"+otpvalue.toString());
-debugPrint("otp pref"+prefs.getString('Otp').toString());
     if (otpvalue == prefs.getString('Otp')) {
       _dialogforProcessing();
       UpdateProfile();

@@ -64,7 +64,6 @@ class _CarouselSliderimageState extends State<CarouselSliderimage> {
                     onTap: () {
                       if(bannerData.items[i].banner_for == "1" ) {
                         // Specific product
-debugPrint("specific");
                         Navigator.of(context).pushNamed(
                             BannerProductScreen.routeName,
                             arguments: {
@@ -75,7 +74,6 @@ debugPrint("specific");
 
                       } else if(bannerData.items[i].banner_for == "2") {
                         //Category
-                        debugPrint("category");
                         final categoriesData = Provider.of<CategoriesItemsList>(context, listen: false);
                         String cattitle = "";
                         for(int j = 0; j < categoriesData.items.length; j++) {
@@ -92,7 +90,6 @@ debugPrint("specific");
                         );
                       } else if(bannerData.items[i].banner_for == "3") {
                         //subcategory
-                        debugPrint("subcat");
                         String subTitle = "";
 
                         Navigator.of(context).pushNamed(
@@ -108,7 +105,6 @@ debugPrint("specific");
                         );
                       } else if(bannerData.items[i].banner_for == "5") {
                         //brands
-                        debugPrint("brands");
                         Navigator.of(context).pushNamed(NotBrandScreen.routeName,
                             arguments: {
                               'brandsId' : bannerData.items[i].banner_data,
@@ -119,7 +115,6 @@ debugPrint("specific");
                         );
                       } else if(bannerData.items[i].banner_for == "4") {
                         //Subcategory and nested category
-                        debugPrint("subnest");
                         Navigator.of(context).pushNamed(BannerProductScreen.routeName,
                             arguments: {
                               'id' : bannerData.items[i].banner_data,

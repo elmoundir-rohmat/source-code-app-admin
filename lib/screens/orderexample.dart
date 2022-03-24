@@ -106,7 +106,6 @@ class _orderexampleState extends State<orderexample> {
               if(orderitemData.vieworder1[0].returnTime!="")
                 setState(() {
                   _showReturn = true;
-                 // debugPrint(_showReturn.toString());
                 });
             }
           }
@@ -221,7 +220,6 @@ class _orderexampleState extends State<orderexample> {
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/home-screen', (Route<dynamic> route) => false);
           }else {
-          debugPrint("else");
           Navigator.of(context).pop();
         }
         return Future.value(false);
@@ -362,66 +360,50 @@ vieworderweb(){
   wid= queryData.size.width;
   maxwid=wid*0.90;
   double total;
-  debugPrint("wallet order view"+orderitemData.vieworder[0].wallet.toString());
-  debugPrint("actual amount view"+orderitemData.vieworder[0].itemoactualamount.toString());
-  debugPrint("itemmodelcharge"+orderitemData.vieworder[0].itemodelcharge.toString());
   if(orderitemData.vieworder[0].itemodelcharge != "0"){
     total= double.parse(orderitemData.vieworder[0].itemoactualamount) +
         double.parse(orderitemData.vieworder[0].itemodelcharge) - orderitemData.vieworder[0].wallet
         - double.parse(orderitemData.vieworder[0].totalDiscount);
-    debugPrint("total if charge"+total.toString());
   }
   else{
     total= double.parse(orderitemData.vieworder[0].itemoactualamount) - (orderitemData.vieworder[0].wallet + double.parse(orderitemData.vieworder[0].totalDiscount)) ;
-    debugPrint("total if not charge"+total.toString());
   }
 
 
   if(orderitemData.vieworder[0].ostatus=="CANCELLED"){
     orderstatus=translate('forconvience.CANCELLED');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
   else if(orderitemData.vieworder[0].ostatus=="COMPLETED"){
     orderstatus=translate('forconvience.COMPLETED');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
 
   else if(orderitemData.vieworder[0].ostatus=="DELIVERED"){
     orderstatus=translate('forconvience.DELIVERED');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
 
   else if(orderitemData.vieworder[0].ostatus=="DISPATCHED"){
     orderstatus=translate('forconvience.DISPATCHED');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
   else if(orderitemData.vieworder[0].ostatus=="PROCESSING"){
     orderstatus=translate('forconvience.PROCESSING');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
   else if(orderitemData.vieworder[0].ostatus=="PICK"){
     orderstatus="PICK";//translate('forconvience.DISPATCHED');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
   else if(orderitemData.vieworder[0].ostatus=="RECEIVED"){
     orderstatus=translate('forconvience.RECEIVED');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
   else if(orderitemData.vieworder[0].ostatus=="READY"){
     orderstatus="READY";//translate('forconvience.DISPATCHED');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
   else if(orderitemData.vieworder[0].ostatus=="RESCHEDULE"){
     orderstatus=translate('forconvience.RESCHEDULE');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
   else if(orderitemData.vieworder[0].ostatus=="ONWAY"){
     orderstatus=translate('forconvience.ONWAY');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
   else if(orderitemData.vieworder[0].ostatus=="FAILED"){
     orderstatus=translate('forconvience.FAILED');
-    debugPrint("ostatustext after fr"+orderstatus);
   }
   if(orderitemData.vieworder[0].opaytype == "cod"){
     ordertype=translate('forconvience.cod');
@@ -835,67 +817,50 @@ vieworderweb(){
     wid= queryData.size.width;
     maxwid=wid*0.90;
     double total;
-    debugPrint("wallet order view"+orderitemData.vieworder[0].wallet.toString());
-    debugPrint("wallet order view"+orderitemData.vieworder[0].loyalty.toString());
-    debugPrint("actual amount view"+orderitemData.vieworder[0].itemoactualamount.toString());
-    debugPrint("itemmodelcharge"+orderitemData.vieworder[0].itemodelcharge.toString());
     if(orderitemData.vieworder[0].itemodelcharge != "0"){
       total= double.parse(orderitemData.vieworder[0].itemoactualamount) +
           double.parse(orderitemData.vieworder[0].itemodelcharge) - orderitemData.vieworder[0].wallet - orderitemData.vieworder[0].loyalty
           - double.parse(orderitemData.vieworder[0].totalDiscount);
-      debugPrint("total if charge"+total.toString());
     }
     else{
       total= double.parse(orderitemData.vieworder[0].itemoactualamount) - (orderitemData.vieworder[0].wallet  + double.parse(orderitemData.vieworder[0].totalDiscount)) - orderitemData.vieworder[0].loyalty ;
-      debugPrint("total if not charge"+total.toString());
     }
 
 
     if(orderitemData.vieworder[0].ostatus=="CANCELLED"){
       orderstatus=translate('forconvience.CANCELLED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(orderitemData.vieworder[0].ostatus=="COMPLETED"){
       orderstatus=translate('forconvience.COMPLETED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
 
     else if(orderitemData.vieworder[0].ostatus=="DELIVERED"){
       orderstatus=translate('forconvience.DELIVERED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
 
     else if(orderitemData.vieworder[0].ostatus=="DISPATCHED"){
       orderstatus=translate('forconvience.DISPATCHED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(orderitemData.vieworder[0].ostatus=="PROCESSING"){
       orderstatus=translate('forconvience.PROCESSING');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(orderitemData.vieworder[0].ostatus=="PICK"){
       orderstatus="PICK";//translate('forconvience.DISPATCHED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(orderitemData.vieworder[0].ostatus=="RECEIVED"){
       orderstatus=translate('forconvience.RECEIVED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(orderitemData.vieworder[0].ostatus=="READY"){
       orderstatus="READY";//translate('forconvience.DISPATCHED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(orderitemData.vieworder[0].ostatus=="RESCHEDULE"){
       orderstatus=translate('forconvience.RESCHEDULE');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(orderitemData.vieworder[0].ostatus=="ONWAY"){
       orderstatus=translate('forconvience.ONWAY');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     else if(orderitemData.vieworder[0].ostatus=="FAILED"){
       orderstatus=translate('forconvience.FAILED');
-      debugPrint("ostatustext after fr"+orderstatus);
     }
     if(orderitemData.vieworder[0].opaytype == "cod"){
       ordertype=translate('forconvience.cod');
@@ -910,7 +875,6 @@ vieworderweb(){
       ordertype=translate('forconvience.online');
     }
 
-    debugPrint("total"+total.toString());
     return Align(
       alignment: Alignment.center,
       child: Container(
@@ -1289,10 +1253,8 @@ vieworderweb(){
 
   void launchWhatsApp() async {
     String phone = /*"+212652-655363"*/prefs.getString("secondary_mobile");
-    debugPrint("Whatsapp . .. . . .. . .");
     String url() {
       if (Platform.isIOS) {
-        debugPrint("Whatsapp1 . .. . . .. . .");
         return "whatsapp://wa.me/$phone/?text=${Uri.parse(translate('forconvience.hello'))}";
       } else {
         return "whatsapp://send?phone=$phone&text=${Uri.parse(translate('forconvience.hello'))}";

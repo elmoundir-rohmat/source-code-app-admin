@@ -29,7 +29,6 @@ class DeliveryslotitemsList with ChangeNotifier {
  List<DeliveryslotFields> _itemsPickup = [ ];
  var dayformatter,monthformatter;
  Future<void> fetchDeliveryslots (String addressid) async { // imp feature in adding async is the it automatically wrap into Future.
-  debugPrint("addressid"+addressid);
   _items.clear();
   _time.clear();
 
@@ -49,7 +48,6 @@ class DeliveryslotitemsList with ChangeNotifier {
    );
 
    final responseJson = json.decode(utf8.decode(response.bodyBytes));
-   debugPrint("responsejson delivery"+responseJson.toString());
    if(responseJson.toString() == "[]") {
 
    } else {
@@ -66,34 +64,14 @@ class DeliveryslotitemsList with ChangeNotifier {
 
       final f = new DateFormat('dd-MM-yyyy');
       var parsedDate = f.parse(data[i]['date']);
-      debugPrint("day"+DateFormat('EEEEEEE').format(parsedDate).toUpperCase());
-      debugPrint("date"+parsedDate.toString());
 
-      /* initializeDateFormatting("fr", null).then((_) {
-       var now = DateTime.now();
-*/
       dayformatter = DateFormat.EEEE('fr');
       monthformatter=DateFormat.MMMd('fr');
-      print("locale"+dayformatter.locale);
-      // print("month foratter"+monthformatter.toString());
 
       finalday = dayformatter.format(parsedDate).toUpperCase();
       finalmonth=monthformatter.format(parsedDate).toUpperCase();
-      print("day final"+finalday);
       List<String> month =finalmonth.split(".");
-      debugPrint("spilit"+month[0]);
-      /*var formatedTime = finalmonth.toString().split(':');
-      debugPrint("month spilt"+formatedTime.toString());*/
-      // String s = "date   :   '2019:04:01'";
-      /* int idx = finalmonth.indexOf(":");
-      debugPrint("month spilt"+finalmonth.substring(0,idx).trim().toUpperCase());*/
-      //List parts = [finalmonth.substring(0,idx).trim(), finalmonth.substring(idx+1).trim()];
 
-      /* });*/
-
-      // print("day final outer  "+  finalday);
-      /*debugPrint("day final outside"+finalday);
-      frdate.add(finalday);*/
       var width = 3.0;
       if (i == 0) {
        width = 3.0;
